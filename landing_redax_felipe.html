@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O estrategista por trás da nova geração de obras — BNI Business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --vermelho: #C8102E;
+    --preto: #1a1a1a;
+    --creme: #F5F0E8;
+    --creme-escuro: #EAE3D5;
+    --cinza: #888;
+    --cinza-claro: #f9f6f0;
+    --branco: #fff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--creme);
+    color: var(--preto);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ABERTURA ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 90vh;
+    background: var(--creme);
+  }
+
+  .hero-foto {
+    position: relative;
+    overflow: hidden;
+    background: #2a2a2a;
+  }
+  .hero-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(8%);
+  }
+  .hero-foto-caption {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+  }
+  .hero-foto-caption p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    color: var(--branco);
+    line-height: 1.5;
+    background: rgba(26,26,26,0.75);
+    padding: 10px 14px;
+    display: inline-block;
+    max-width: 280px;
+  }
+  .hero-foto-caption strong { display: block; font-weight: 600; }
+
+  .hero-texto {
+    padding: 4rem 4rem 4rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--creme);
+  }
+  .hero-byline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--cinza);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .hero-byline span { color: var(--vermelho); margin-right: 8px; font-size: 13px; }
+
+  .hero-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--preto);
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+  }
+  .hero-titulo .destaque { color: var(--vermelho); }
+
+  .hero-chapeu {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: #333;
+    border-left: 3px solid var(--vermelho);
+    padding-left: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-chapeu strong { font-style: normal; color: var(--preto); }
+
+  .hero-assina {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--cinza);
+    text-transform: uppercase;
+  }
+  .hero-assina span { color: var(--preto); font-weight: 600; }
+
+  /* ── LINHA DIVISÓRIA ── */
+  .divisor {
+    height: 3px;
+    background: linear-gradient(90deg, var(--vermelho) 0%, var(--vermelho) 40%, var(--creme-escuro) 40%);
+  }
+
+  /* ── CORPO DO ARTIGO ── */
+  .artigo {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  /* TEXTO EM COLUNAS */
+  .texto-duplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .texto-duplo p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: #2a2a2a;
+    text-indent: 1.5em;
+  }
+  .texto-duplo p:first-child { text-indent: 0; }
+
+  /* TEXTO 3 COLUNAS */
+  .texto-triplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .texto-triplo p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.85;
+    color: #2a2a2a;
+    text-indent: 1.2em;
+  }
+  .texto-triplo p:first-child { text-indent: 0; }
+
+  /* SUBTÍTULOS DE SEÇÃO */
+  .secao-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--vermelho);
+    margin-bottom: 1.2rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--vermelho);
+    display: inline-block;
+  }
+
+  /* CITAÇÃO EM DESTAQUE */
+  .citacao-bloco {
+    background: var(--vermelho);
+    padding: 3.5rem 4rem;
+    margin: 3rem 0;
+    position: relative;
+  }
+  .citacao-bloco blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--branco);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .citacao-bloco blockquote::before {
+    content: '"';
+    font-size: 5rem;
+    color: var(--branco);
+    line-height: 0;
+    vertical-align: -1.5rem;
+    margin-right: 8px;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* CITAÇÃO LATERAL (sidebar) */
+  .citacao-lateral {
+    border-left: 4px solid var(--vermelho);
+    padding: 1rem 1.5rem;
+    margin: 0;
+    float: right;
+    width: 45%;
+    margin-left: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .citacao-lateral p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--preto);
+    line-height: 1.5;
+    text-indent: 0 !important;
+  }
+
+  /* FOTOS DA CHINA */
+  .fotos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 3rem 0;
+  }
+  .fotos-grid img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+  }
+  .foto-legenda {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    color: var(--cinza);
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--creme-escuro);
+    padding-top: 0.5rem;
+    grid-column: 1 / -1;
+  }
+
+  /* FOTO LARGA */
+  .foto-larga {
+    margin: 3rem 0 1rem;
+  }
+  .foto-larga img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    display: block;
+  }
+  .foto-larga figcaption {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    color: var(--cinza);
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--creme-escuro);
+    padding-top: 0.5rem;
+  }
+
+  /* SEPARADOR DE SEÇÃO */
+  .sep {
+    border: none;
+    border-top: 1px solid var(--creme-escuro);
+    margin: 3rem 0;
+  }
+
+  /* CARD FINAL (perfil) */
+  .card-perfil {
+    background: var(--branco);
+    border: 1px solid var(--creme-escuro);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    margin-top: 4rem;
+    max-width: 500px;
+  }
+  .card-perfil-info h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--preto);
+  }
+  .card-perfil-info p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    color: var(--cinza);
+    text-indent: 0 !important;
+  }
+  .card-perfil-qr {
+    width: 64px;
+    height: 64px;
+    background: var(--creme-escuro);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* CLEARFIX */
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-foto { height: 60vw; max-height: 480px; }
+    .hero-texto { padding: 2.5rem 1.5rem; }
+    .texto-duplo, .texto-triplo { grid-template-columns: 1fr; gap: 0; }
+    .citacao-lateral { float: none; width: 100%; margin: 1.5rem 0; }
+    .artigo { padding: 3rem 1.2rem; }
+    .citacao-bloco { padding: 2rem 1.5rem; }
+    .fotos-grid { grid-template-columns: 1fr; }
+  }
+
+
+  /* ── HEADER / NAV ── */
+  nav {
+    background: var(--vermelho);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .nav-logo svg { display: block; height: 18px; width: auto; }
+  .nav-menu { display: flex; align-items: center; }
+  .nav-item { position: relative; }
+  .nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0 1.4rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.12); }
+  .nav-btn .arrow { font-size: 8px; transition: transform 0.2s; opacity: 0.8; }
+  .nav-item.open .arrow { transform: rotate(180deg); }
+
+  /* dropdown idiomas */
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--vermelho);
+    min-width: 160px;
+    border-top: 2px solid rgba(255,255,255,0.25);
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 300;
+  }
+  .nav-item.open .dropdown { display: flex; }
+  .dropdown a {
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 13px 20px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    transition: background 0.15s;
+  }
+  .dropdown a:last-child { border-bottom: none; }
+  .dropdown a:hover { background: rgba(255,255,255,0.15); }
+
+  /* ── POPUP SUMÁRIO ── */
+  .sumario-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--vermelho);
+    z-index: 500;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sumario-overlay.open { display: flex; }
+  .sumario-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 70px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  .sumario-fechar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sumario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(9, 1fr);
+    gap: 0 70px;
+    padding: 0 2.5rem 1rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .sumario-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.22);
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .sumario-item:hover { background: rgba(255,255,255,0.07); }
+  .sumario-titulo-linha {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .sumario-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--branco);
+    flex-shrink: 0;
+    line-height: 1.15;
+    width: 3.8rem;
+  }
+  .sumario-secao {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--branco);
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sumario-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.0rem;
+    color: rgba(255,255,255,0.72);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 3px;
+    line-height: 1.35;
+    padding-left: calc(3.8rem + 1rem);
+  }
+  @media (max-width: 700px) {
+    .sumario-overlay { overflow-y: auto; }
+    .sumario-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: unset;
+      overflow-y: unset;
+    }
+    .sumario-item {
+      grid-column: 1 !important;
+      grid-row: unset !important;
+    }
+    .sumario-desc { display: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- SUMÁRIO POPUP -->
+<div class="sumario-overlay" id="sumario">
+  <div class="sumario-header">
+    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" height="18" style="display:block">
+  <defs>
+    <clipPath id="cp0"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp1"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp2"><rect width="192.9" height="20"/></clipPath>
+  </defs>
+  <g clip-path="url(#cp0)">
+    <path fill="#fff" d="M188.88,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.02.58,3.38.58M180.56,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M170.46,13.2c.17-1.87.93-2.89,1.68-2.89,1.1,0,1.34,1.59,1.34,2.89h-3.01ZM171.8,20c2.33,0,3.77-1.18,4.59-3.32l-.13-.06c-.52,1.12-1.38,1.68-2.61,1.68-2,0-3.23-1.66-3.23-3.94,0-.26-.02-.67.02-.93,1.21.04,5.82.11,5.82.11.02-.13.04-.26.04-.41,0-1.33-1.1-3.12-3.86-3.12-2.91,0-5.28,2.18-5.28,5.19,0,2.71,1.98,4.8,4.63,4.8M155.11,19.66h5.49l-.04-.13-.32-.02c-.75-.06-.84-.13-.84-.3v-6.89c.41-.24.82-.45,1.53-.45.95,0,1.66.43,1.66,1.83v5.47c0,.17.04.3-.71.34l-.39.02-.07.13h5.58l-.06-.13-.19-.02c-1.01-.13-1.12-.19-1.12-.32v-5.79c0-1.03-.19-2.07-.69-2.58-.49-.47-.99-.75-1.72-.75-1.4,0-2.78,1.1-3.79,1.98h-.02l.06-1.94-4.48,1.23-.02.09.49.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.06.13ZM149,19.66h5.64l-.06-.13-.17-.02c-.99-.11-1.12-.13-1.12-.3v-9.11l-4.41,1.23-.02.09.5.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.07.13ZM151.67,8.95c1.19,0,1.83-.91,1.83-1.77s-.65-1.77-1.83-1.77-1.83.88-1.83,1.77.67,1.77,1.83,1.77M144.24,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M136.12,20l4.44-1.31.02-.09-.54-.11c-.71-.19-.84-.39-.84-1.64v-6.48h-4.52l.07.13.3.02c.97.06,1.12.09,1.12.3v6.87c-.39.22-.75.45-1.36.45-1.03,0-1.74-.45-1.7-1.81l.07-5.96h-4.59l.07.13.3.02c1.1.09,1.19.17,1.19.26l-.09,5.79c-.04,1.08.17,2.07.69,2.58.52.52.86.8,1.59.8,1.4,0,2.74-1.01,3.81-2h.06l-.09,2.05ZM121.15,12.27v-5.75l.24-.04c1.75,0,3.23.86,3.23,2.86,0,2.13-1.57,3.01-3.38,2.93h-.09ZM122.12,19.44l-.97-.37v-6.59c.07-.02.22-.04.39-.04,1.94,0,3.62,1.25,3.62,3.38s-1.34,3.36-2.86,3.55l-.17.06ZM115.77,19.66h6.87c4.24,0,6.07-1.55,6.07-3.98,0-2.02-1.7-3.32-4.41-3.55v-.04c2.33-.39,3.75-1.29,3.75-2.78,0-2.24-1.77-3.1-6.03-3.1h-6.22l.06.17.58.06c1.08.13,1.2.13,1.2.28v12.36c0,.13-.24.26-.99.37l-.82.09-.06.13Z"/>
+    <polygon fill="#fff" points="97.37 0 97.37 9.66 89.77 0 83.88 0 83.88 19.49 89.77 19.49 89.77 9.15 97.97 19.49 103.23 19.49 103.23 0 97.37 0"/>
+    <g clip-path="url(#cp1)">
+      <path fill="#fff" d="M70.36,11.94h3.1c1.4,0,2.34.51,2.31,1.57-.03,1.02-.86,1.49-1.96,1.49h-3.45v-3.06ZM70.36,4.5h2.27c1.21,0,2.08.34,2.05,1.6-.03,1.09-.98,1.5-2.05,1.5h-2.27v-3.1ZM64.34,19.48h8.03s2.29,0,2.29,0c1.64,0,3.16-.25,4.55-1.06,3.1-1.8,3.37-5.77,1.12-7.9-1.19-1.05-1.98-1.22-2.53-1.39.76-.38,1.48-.88,2.03-1.54.55-.66.9-1.62.86-2.74C80.55.84,77.01,0,74.21,0h-2.8l-7.07.02v19.47Z"/>
+    </g>
+    <polygon fill="#fff" points="105.72 8.24 105.72 19.49 111.7 19.49 111.7 2.32 105.72 8.24"/>
+    <polygon fill="#fff" points="105.72 0 105.72 5.96 111.7 0 105.72 0"/>
+    <g clip-path="url(#cp2)">
+      <path fill="#fff" d="M1.26,6.14h6.32c2.5,0,4.3,1.42,4.3,3.76,0,1.6-.72,2.75-2.47,3.31v.05c1.42.43,1.94,1.24,2.09,2.9.22,1.96.23,3.06.59,3.24v.13h-2.52c-.34-.22-.34-1.26-.49-3.06-.14-1.58-.88-2.27-2.48-2.27h-2.86v5.33H1.26V6.14ZM3.74,12.3h3.24c1.57,0,2.39-.79,2.39-2.03,0-1.33-.7-2.09-2.3-2.09h-3.33v4.12Z"/>
+      <path fill="#fff" d="M12.78,14.75c0-2.86,1.93-5.08,4.77-5.08,1.4,0,2.5.49,3.31,1.35.94.99,1.39,2.5,1.37,4.29h-7.18c.16,1.66,1.04,2.77,2.65,2.77,1.1,0,1.82-.47,2.12-1.26h2.23c-.47,1.73-2.02,3.01-4.38,3.01-3.06,0-4.9-2.23-4.9-5.08ZM15.08,13.87h4.79c-.09-1.58-.94-2.54-2.32-2.54-1.49,0-2.27,1.03-2.47,2.54Z"/>
+      <path fill="#fff" d="M22.21,9.92h2.4l1.4,4.48c.41,1.3.81,3.22.81,3.22h.05s.38-1.93.79-3.22l1.46-4.48h2.32l-3.4,9.62h-2.5l-3.33-9.62Z"/>
+      <path fill="#fff" d="M32.09,6.14h2.34v2.21h-2.34v-2.21ZM32.13,9.92h2.29v9.62h-2.29v-9.62Z"/>
+      <path fill="#fff" d="M35.44,16.59h2.2c.18,1.15,1.06,1.64,2.29,1.64s1.85-.54,1.85-1.31c0-.95-.97-1.13-2.48-1.42-1.8-.36-3.51-.77-3.51-2.95,0-1.82,1.55-2.86,3.8-2.86,2.56,0,3.84,1.15,4.07,2.83h-2.18c-.16-.83-.77-1.28-1.91-1.28-1.06,0-1.62.49-1.62,1.15,0,.85.99,1.01,2.45,1.28,1.82.34,3.62.77,3.62,3.12,0,2.02-1.73,3.08-4.1,3.08-2.74,0-4.32-1.31-4.47-3.26Z"/>
+      <path fill="#fff" d="M44.37,9.92h1.48v-3.06h2.25v3.06h1.93v1.57h-1.93v5.38c0,.7.38.9,1.03.9.23,0,.56-.04.74-.07h.11v1.78c-.38.07-.9.14-1.51.14-1.55,0-2.61-.56-2.61-2.25v-5.89h-1.48v-1.57Z"/>
+      <path fill="#fff" d="M57.17,18.3h-.04c-.63.85-1.49,1.48-3.02,1.48-1.87,0-3.28-.97-3.28-2.84,0-2.18,1.66-2.7,3.94-2.97,1.58-.2,2.38-.45,2.38-1.31s-.58-1.39-1.73-1.39c-1.28,0-1.91.59-1.96,1.55h-2.16c.07-1.64,1.37-3.13,4.1-3.13,1.1,0,1.94.16,2.57.56.9.54,1.37,1.46,1.37,2.74v5.06c0,.79.14,1.21.36,1.35v.16h-2.21c-.16-.22-.29-.59-.32-1.24ZM57.2,16.05v-1.42c-.45.29-1.17.49-1.87.63-1.4.27-2.21.56-2.21,1.62s.77,1.33,1.66,1.33c1.57,0,2.43-1.08,2.43-2.16Z"/>
+    </g>
+  </g>
+</svg></div>
+    <button class="sumario-fechar" onclick="fecharSumario()">
+      Fechar <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" width="20" height="20"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+    </button>
+  </div>
+  <div class="sumario-grid">
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:1;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">06</span><span class="sumario-secao">Evento</span></span>
+      <span class="sumario-desc">BNI Summit 2026 MOVIMENTO: onde conexões se transformam em resultados.</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:2;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">08</span><span class="sumario-secao">Turismo</span></span>
+      <span class="sumario-desc">Do passaporte à coragem: o que muda quando você cruza as fronteiras pela primeira vez.</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:3;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-secao">Matéria de Capa</span></span>
+      <span class="sumario-desc">BNI Revoluciona o Networking na Região Oeste de São Paulo: 12 Grupos unindo empresários e transformando negócios</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:4;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">16</span><span class="sumario-secao">Branding</span></span>
+      <span class="sumario-desc">A transformação acontece quando design e propósito se encontram</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:5;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">20</span><span class="sumario-secao">Case BNI</span></span>
+      <span class="sumario-desc">Quando um grupo aposta em um sonho: a história de Anderson "Nen" e o verdadeiro significado de "Givers Gain"</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:6;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">22</span><span class="sumario-secao">Estilo</span></span>
+      <span class="sumario-desc">Onde paixão encontra propósito: a história de quem achou seu lugar</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:7;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">24</span><span class="sumario-secao">Design</span></span>
+      <span class="sumario-desc">O alquimista do Aço: a história de quem transforma metal em sonhos</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:8;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">28</span><span class="sumario-secao">CEOs no BNI</span></span>
+      <span class="sumario-desc">John Rodgerson: valores, relacionamentos e a arte de construir uma das maiores companhias aéreas do Brasil</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:9;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">32</span><span class="sumario-secao">Desenvolvimento pessoal</span></span>
+      <span class="sumario-desc">A raridade que desperta onde o fim se transforma em novos começos</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:1;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">34</span><span class="sumario-secao">Idiomas</span></span>
+      <span class="sumario-desc">"Inglês não é para mim!!"</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:2;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">36</span><span class="sumario-secao">Engenharia</span></span>
+      <span class="sumario-desc">Quando a estrutura conta uma história: projetos que desafiam o impossível</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:3;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">40</span><span class="sumario-secao">ONG</span></span>
+      <span class="sumario-desc">Novas Trilhas: empresários transformam vidas além dos negócios</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:4;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">42</span><span class="sumario-secao">Saúde mental</span></span>
+      <span class="sumario-desc">O segredo dos líderes que performam sem ansiedade: conheça a Tonos</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:5;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">44</span><span class="sumario-secao">Saúde</span></span>
+      <span class="sumario-desc">A nova era da fisioterapia: visão integrada, resultado real</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:6;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">46</span><span class="sumario-secao">Publicidade</span></span>
+      <span class="sumario-desc">Quando a luz se acende, a cidade vê</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:7;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">48</span><span class="sumario-secao">Investimentos</span></span>
+      <span class="sumario-desc">Além dos números: a arte de construir legados que transcendem gerações</span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:8;">
+      <span class="sumario-titulo-linha"><span class="sumario-num">50</span><span class="sumario-secao">Saúde mental</span></span>
+      <span class="sumario-desc">Educação financeira: o caminho para construir segurança, patrimônio e liberdade</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" height="18" style="display:block">
+  <defs>
+    <clipPath id="cp0"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp1"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp2"><rect width="192.9" height="20"/></clipPath>
+  </defs>
+  <g clip-path="url(#cp0)">
+    <path fill="#fff" d="M188.88,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.02.58,3.38.58M180.56,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M170.46,13.2c.17-1.87.93-2.89,1.68-2.89,1.1,0,1.34,1.59,1.34,2.89h-3.01ZM171.8,20c2.33,0,3.77-1.18,4.59-3.32l-.13-.06c-.52,1.12-1.38,1.68-2.61,1.68-2,0-3.23-1.66-3.23-3.94,0-.26-.02-.67.02-.93,1.21.04,5.82.11,5.82.11.02-.13.04-.26.04-.41,0-1.33-1.1-3.12-3.86-3.12-2.91,0-5.28,2.18-5.28,5.19,0,2.71,1.98,4.8,4.63,4.8M155.11,19.66h5.49l-.04-.13-.32-.02c-.75-.06-.84-.13-.84-.3v-6.89c.41-.24.82-.45,1.53-.45.95,0,1.66.43,1.66,1.83v5.47c0,.17.04.3-.71.34l-.39.02-.07.13h5.58l-.06-.13-.19-.02c-1.01-.13-1.12-.19-1.12-.32v-5.79c0-1.03-.19-2.07-.69-2.58-.49-.47-.99-.75-1.72-.75-1.4,0-2.78,1.1-3.79,1.98h-.02l.06-1.94-4.48,1.23-.02.09.49.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.06.13ZM149,19.66h5.64l-.06-.13-.17-.02c-.99-.11-1.12-.13-1.12-.3v-9.11l-4.41,1.23-.02.09.5.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.07.13ZM151.67,8.95c1.19,0,1.83-.91,1.83-1.77s-.65-1.77-1.83-1.77-1.83.88-1.83,1.77.67,1.77,1.83,1.77M144.24,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M136.12,20l4.44-1.31.02-.09-.54-.11c-.71-.19-.84-.39-.84-1.64v-6.48h-4.52l.07.13.3.02c.97.06,1.12.09,1.12.3v6.87c-.39.22-.75.45-1.36.45-1.03,0-1.74-.45-1.7-1.81l.07-5.96h-4.59l.07.13.3.02c1.1.09,1.19.17,1.19.26l-.09,5.79c-.04,1.08.17,2.07.69,2.58.52.52.86.8,1.59.8,1.4,0,2.74-1.01,3.81-2h.06l-.09,2.05ZM121.15,12.27v-5.75l.24-.04c1.75,0,3.23.86,3.23,2.86,0,2.13-1.57,3.01-3.38,2.93h-.09ZM122.12,19.44l-.97-.37v-6.59c.07-.02.22-.04.39-.04,1.94,0,3.62,1.25,3.62,3.38s-1.34,3.36-2.86,3.55l-.17.06ZM115.77,19.66h6.87c4.24,0,6.07-1.55,6.07-3.98,0-2.02-1.7-3.32-4.41-3.55v-.04c2.33-.39,3.75-1.29,3.75-2.78,0-2.24-1.77-3.1-6.03-3.1h-6.22l.06.17.58.06c1.08.13,1.2.13,1.2.28v12.36c0,.13-.24.26-.99.37l-.82.09-.06.13Z"/>
+    <polygon fill="#fff" points="97.37 0 97.37 9.66 89.77 0 83.88 0 83.88 19.49 89.77 19.49 89.77 9.15 97.97 19.49 103.23 19.49 103.23 0 97.37 0"/>
+    <g clip-path="url(#cp1)">
+      <path fill="#fff" d="M70.36,11.94h3.1c1.4,0,2.34.51,2.31,1.57-.03,1.02-.86,1.49-1.96,1.49h-3.45v-3.06ZM70.36,4.5h2.27c1.21,0,2.08.34,2.05,1.6-.03,1.09-.98,1.5-2.05,1.5h-2.27v-3.1ZM64.34,19.48h8.03s2.29,0,2.29,0c1.64,0,3.16-.25,4.55-1.06,3.1-1.8,3.37-5.77,1.12-7.9-1.19-1.05-1.98-1.22-2.53-1.39.76-.38,1.48-.88,2.03-1.54.55-.66.9-1.62.86-2.74C80.55.84,77.01,0,74.21,0h-2.8l-7.07.02v19.47Z"/>
+    </g>
+    <polygon fill="#fff" points="105.72 8.24 105.72 19.49 111.7 19.49 111.7 2.32 105.72 8.24"/>
+    <polygon fill="#fff" points="105.72 0 105.72 5.96 111.7 0 105.72 0"/>
+    <g clip-path="url(#cp2)">
+      <path fill="#fff" d="M1.26,6.14h6.32c2.5,0,4.3,1.42,4.3,3.76,0,1.6-.72,2.75-2.47,3.31v.05c1.42.43,1.94,1.24,2.09,2.9.22,1.96.23,3.06.59,3.24v.13h-2.52c-.34-.22-.34-1.26-.49-3.06-.14-1.58-.88-2.27-2.48-2.27h-2.86v5.33H1.26V6.14ZM3.74,12.3h3.24c1.57,0,2.39-.79,2.39-2.03,0-1.33-.7-2.09-2.3-2.09h-3.33v4.12Z"/>
+      <path fill="#fff" d="M12.78,14.75c0-2.86,1.93-5.08,4.77-5.08,1.4,0,2.5.49,3.31,1.35.94.99,1.39,2.5,1.37,4.29h-7.18c.16,1.66,1.04,2.77,2.65,2.77,1.1,0,1.82-.47,2.12-1.26h2.23c-.47,1.73-2.02,3.01-4.38,3.01-3.06,0-4.9-2.23-4.9-5.08ZM15.08,13.87h4.79c-.09-1.58-.94-2.54-2.32-2.54-1.49,0-2.27,1.03-2.47,2.54Z"/>
+      <path fill="#fff" d="M22.21,9.92h2.4l1.4,4.48c.41,1.3.81,3.22.81,3.22h.05s.38-1.93.79-3.22l1.46-4.48h2.32l-3.4,9.62h-2.5l-3.33-9.62Z"/>
+      <path fill="#fff" d="M32.09,6.14h2.34v2.21h-2.34v-2.21ZM32.13,9.92h2.29v9.62h-2.29v-9.62Z"/>
+      <path fill="#fff" d="M35.44,16.59h2.2c.18,1.15,1.06,1.64,2.29,1.64s1.85-.54,1.85-1.31c0-.95-.97-1.13-2.48-1.42-1.8-.36-3.51-.77-3.51-2.95,0-1.82,1.55-2.86,3.8-2.86,2.56,0,3.84,1.15,4.07,2.83h-2.18c-.16-.83-.77-1.28-1.91-1.28-1.06,0-1.62.49-1.62,1.15,0,.85.99,1.01,2.45,1.28,1.82.34,3.62.77,3.62,3.12,0,2.02-1.73,3.08-4.1,3.08-2.74,0-4.32-1.31-4.47-3.26Z"/>
+      <path fill="#fff" d="M44.37,9.92h1.48v-3.06h2.25v3.06h1.93v1.57h-1.93v5.38c0,.7.38.9,1.03.9.23,0,.56-.04.74-.07h.11v1.78c-.38.07-.9.14-1.51.14-1.55,0-2.61-.56-2.61-2.25v-5.89h-1.48v-1.57Z"/>
+      <path fill="#fff" d="M57.17,18.3h-.04c-.63.85-1.49,1.48-3.02,1.48-1.87,0-3.28-.97-3.28-2.84,0-2.18,1.66-2.7,3.94-2.97,1.58-.2,2.38-.45,2.38-1.31s-.58-1.39-1.73-1.39c-1.28,0-1.91.59-1.96,1.55h-2.16c.07-1.64,1.37-3.13,4.1-3.13,1.1,0,1.94.16,2.57.56.9.54,1.37,1.46,1.37,2.74v5.06c0,.79.14,1.21.36,1.35v.16h-2.21c-.16-.22-.29-.59-.32-1.24ZM57.2,16.05v-1.42c-.45.29-1.17.49-1.87.63-1.4.27-2.21.56-2.21,1.62s.77,1.33,1.66,1.33c1.57,0,2.43-1.08,2.43-2.16Z"/>
+    </g>
+  </g>
+</svg></div>
+  <div class="nav-menu">
+    <div class="nav-item" id="item-idiomas">
+      <button class="nav-btn" onclick="toggleDropdown('item-idiomas')">
+        Idiomas <span class="arrow">▼</span>
+      </button>
+      <div class="dropdown">
+        <a href="#">Português</a>
+        <a href="#">Inglês</a>
+        <a href="#">Espanhol</a>
+        <a href="#">Francês</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="abrirSumario()">
+        Sumário
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-foto">
+    <!-- Placeholder: substituir pela foto real do Felipe -->
+    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=900&q=80" alt="Felipe Antonio Xavier Andrade" />
+    <div class="hero-foto-caption">
+      <p><strong>Felipe Xavier</strong>de servidor público ao empreendedor — a trajetória de quem aprendeu as regras do jogo de dentro para fora</p>
+    </div>
+  </div>
+
+  <div class="hero-texto fade-in">
+    <div class="hero-byline">
+      <span>◤</span> Matéria de Capa &nbsp;|&nbsp; Por Fernanda Sodré
+    </div>
+
+    <h1 class="hero-titulo">
+      O estrategista<br>
+      por trás da nova<br>
+      <span class="destaque">geração de obras</span>
+    </h1>
+
+    <p class="hero-chapeu">
+      <strong>Felipe Antonio Xavier Andrade</strong> transformou oito anos de experiência regulatória em uma engenharia que não aceita obra sem planejamento — e está reescrevendo as regras das licitações públicas
+    </p>
+
+    <div class="hero-assina">Por <span>Fernanda Sodré</span></div>
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<!-- ARTIGO PRINCIPAL -->
+<main class="artigo">
+
+  <!-- ABERTURA -->
+  <div class="texto-duplo fade-in">
+    <p>Uma empresa com menos de três anos de mercado. Do outro lado, uma concorrente com três décadas de estrada. O argumento da mais velha era simples — e, em outros tempos, teria funcionado: "Eles são novos demais. Não têm experiência para isso." A comissão de licitação leu os documentos, avaliou o acervo técnico, analisou a proposta. E deu o contrato para a empresa nova.</p>
+    <p>Essa empresa nova é a Redax Engenharia. E o homem por trás dela, Felipe Antonio Xavier Andrade, não pareceu surpreso com o resultado. Havia calculado cada movimento antes de entrar — como faz sempre. "Me considero um enxadrista", diz, sem alarme na voz. "Antes de participar de qualquer licitação, leio o edital do início ao fim, mapeio cada cláusula como uma peça no tabuleiro, e só entro quando sei que posso vencer. Não tentar. Vencer."</p>
+  </div>
+
+  <hr class="sep">
+
+  <!-- OITO ANOS DO LADO DE DENTRO -->
+  <div class="fade-in">
+    <span class="secao-titulo">Oito anos do lado de dentro</span>
+    <div class="texto-duplo">
+      <p>Antes da Redax, havia o CREA. O Conselho Regional de Engenharia e Agronomia de São Paulo, onde atuou como servidor público na área de fiscalização por oito anos. Não é pouco tempo — é tempo suficiente para entender, de dentro do sistema, como as normas técnicas são construídas, onde elas são respeitadas e onde são ignoradas.</p>
+      <p>Felipe passou pela diretoria do CREA. Absorveu uma visão sistêmica que vai muito além do canteiro de obras: governança, acervo técnico, conformidade com normas, os critérios que separam uma empresa habilitada de uma desclassificada em uma licitação. "Essa experiência me deu algo que nenhum curso substitui", diz. "Eu vi o sistema por dentro. Sei onde estão as oportunidades e sei onde estão as armadilhas."</p>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 1 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      Me considero um enxadrista das obras públicas. Cada cláusula do edital é uma peça no tabuleiro. Não entro num processo licitatório para disputar — entro para vencer. Esse espaço não se herda. Se conquista.
+    </blockquote>
+  </div>
+
+  <!-- O ENXADRISTA E O EDITAL -->
+  <div class="fade-in">
+    <span class="secao-titulo">O enxadrista e o edital</span>
+    <div class="texto-duplo clearfix">
+      <div>
+        <p>Existe um tipo de mercado que assusta a maioria das empresas pequenas: as licitações públicas. Processos longos, documentação densa, linguagem jurídica que parece projetada para excluir quem não tem um departamento inteiro dedicado ao assunto. Durante décadas, esse mercado foi de grupos estabelecidos que dominavam o jogo por caminhos que a antiga Lei 8.666/93 deixava em aberto.</p>
+        <p>Em 2021, chegou a Lei 14.133 — a Nova Lei de Licitações. E com ela, as regras mudaram de forma estrutural. O pregão online tornou-se a modalidade preferencial. Um portal nacional centralizou os editais. As exigências técnicas ficaram mais rigorosas — e mais transparentes.</p>
+      </div>
+      <div>
+        <p>"O jogo mudou", resume Felipe. "E eu estava preparado para o novo jogo." Quem domina a documentação, entende as cláusulas e tem o acervo técnico organizado ganhou uma vantagem real sobre quem dependia de atalhos.</p>
+        <p>Esse método foi testado de forma contundente quando a Redax — empresa com menos de três anos no mercado — venceu uma licitação na área de combate e prevenção de incêndio contra uma concorrente com 30 anos de estrada. A comissão técnica olhou para os documentos. E decidiu pelo mérito.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- A OBRA QUE EXISTE ANTES DA OBRA -->
+  <div class="fade-in">
+    <span class="secao-titulo">A obra que existe antes da obra</span>
+    <div class="texto-duplo clearfix">
+      <div>
+        <p>A Redax opera obras em municípios distantes do escritório central, coordenando equipes locais que dependem de orientação técnica precisa. Em um projeto recente, a obra estava em Marília. Felipe estava na Região Oeste de São Paulo. O empreiteiro no canteiro precisava saber exatamente quais paredes poderia demolir, quais tubulações podiam ser tocadas, qual era o valor autorizado para aquela etapa. Sem esse ponto focal, qualquer decisão tomada no canteiro vira improviso.</p>
+      </div>
+      <div>
+        <p>"É o que eu chamo de organização do desorganizado", diz Felipe. "O cliente muitas vezes chega sem projeto executivo completo, sem planilha de quantitativos, às vezes mandando planta no dia anterior ao início da obra. A Redax entra para estruturar isso — e a partir da estrutura, a obra acontece com segurança técnica e jurídica." O maior case de sucesso tem endereço certo: o IFSP, Campus Osasco, com obras em Cotia, São Vicente e Carapicuíba.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 2 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      A ART não é um papel. É uma reputação comprovada. E reputação não se recupera com desconto no próximo orçamento.
+    </blockquote>
+  </div>
+
+  <!-- O DIA QUE DISSE NÃO -->
+  <div class="fade-in">
+    <span class="secao-titulo">O dia em que disse não</span>
+    <div class="texto-duplo">
+      <p>Existe uma decisão que Felipe menciona com a serenidade de quem sabe que fez a escolha certa — mas também com a consciência de quanto ela custou no curto prazo. Uma incorporadora em São Caetano do Sul havia entregado um edifício com diversas patologias. Vícios construtivos visíveis, itens fora de conformidade, estrutura que exigia intervenção de engenharia real. Felipe foi chamado para "resolver".</p>
+      <p>Quando chegou ao local, o quadro era claro: a incorporadora não queria engenharia. Queria cobertura. "Tocar naquela estrutura significava assumir a responsabilidade técnica por intervenções que eu não poderia garantir. Meu nome e minha ART não servem para cobrir o que os outros construíram mal." A resposta foi não. Sem drama, sem negociação — não. No mundo das reformas e construções, saber recusar uma obra é tão importante quanto saber executá-la.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- DA CHINA PARA CÁ -->
+  <div class="fade-in">
+    <span class="secao-titulo">Da China para cá: o futuro que chega antes do esperado</span>
+
+    <figure class="foto-larga">
+      <img src="https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=1200&q=80" alt="Felipe Xavier na China — certificação técnica" />
+      <figcaption>Felipe Xavier na China: a visita técnica que transformou uma certificação internacional em visão de futuro para a Redax Engenharia</figcaption>
+    </figure>
+
+    <div class="texto-duplo" style="margin-top:2rem;">
+      <p>No final de 2025, Felipe embarcou para a China. Não como turista — como profissional. A missão era participar de um processo de certificação de uma das maiores estatais de transmissão e distribuição de energia elétrica do mundo, com operações em Campinas e Paulínia. O que encontrou transformou sua percepção sobre o futuro do setor de uma forma que nenhum congresso havia conseguido antes.</p>
+      <p>"Eu tinha uma imagem da China que não correspondia à realidade. Fui e me deparei com um país que respira tecnologia." Uma das cenas que ficaram gravadas: drones industriais — robustos, autônomos, precisos — realizando limpeza e pintura de fachadas de edifícios inteiros. No Brasil, esse mesmo serviço é feito com rapel, andaimes e plataformas elevatórias. A diferença não é só de produtividade. É de segurança. Queda em altura ainda é uma das principais causas de morte na construção civil brasileira.</p>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 3 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      Não penso em expansão para o Paraguai, que é onde muita gente está indo agora. Penso em trazer tecnologia da China para aplicar aqui. O mercado vai chegar lá. A questão é quem chega primeiro.
+    </blockquote>
+  </div>
+
+  <hr class="sep">
+
+  <!-- O CHURRASCO QUE MUDOU O RUMO -->
+  <div class="fade-in">
+    <span class="secao-titulo">O churrasco que mudou o rumo da empresa</span>
+    <div class="texto-duplo">
+      <p>A história de sua entrada no BNI começa com um churrasco e um vizinho chamado Danilo Marques, da Royal Prestige. Foi esperando uma tarde descompromissada. Saiu com um convite para conhecer uma reunião de prospecção do BNI — às 6h30 da manhã, num grupo em Osasco — e teve na recepção um balde de água fria: a cadeira de Reformas e Construções já estava ocupada.</p>
+      <p>Outro teria desistido. Felipe tentou mais uma vez — o grupo Conectus, reuniões às 10h da manhã num restaurante de costela em Alphaville. "Era meu grupo. A energia era completamente diferente. As pessoas se ajudavam de verdade." Em três meses, as indicações recebidas já tinham coberto o valor da anuidade anual. Para Felipe, o BNI não é apenas uma rede de indicações. É uma estrutura de posicionamento de mercado.</p>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 4 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      O relacionamento constrói o negócio antes que o negócio apareça. Quando a necessidade surge, o nome já precisa estar na cabeça de alguém.
+    </blockquote>
+  </div>
+
+  <!-- A CADEIA QUE NINGUÉM VÊ -->
+  <div class="fade-in">
+    <span class="secao-titulo">A cadeia que ninguém vê — mas que move tudo</span>
+    <div class="texto-triplo">
+      <p>Existe uma cena que se repete com frequência dentro do BNI e que Felipe Xavier aprendeu a enxergar com clareza: um arquiteto fecha um projeto com um cliente. O cliente precisa de quem execute. O arquiteto indica a Redax. A Redax entra na obra — e no processo, referencia o marmorista, o vidraceiro, o designer de interiores, o fornecedor de esquadrias.</p>
+      <p>"É assim que a construção civil funciona dentro do BNI quando as pessoas entendem o potencial da cadeira", diz Felipe. "Reformas e Construções não é uma cadeira isolada. É um ponto de convergência. Quase toda obra privada passa por aqui em algum momento — e quando passa, ela conecta uma série de outros profissionais que estão na mesma mesa."</p>
+      <p>"O arquiteto projeta o que eu vou construir. Quando ele me referencia para o cliente, está colocando o nome dele junto com o meu. Então a confiança já vem embutida — não preciso me vender do zero." Em três meses de grupo, as indicações recebidas já cobriam o investimento da anuidade anual. Não por acaso — por posicionamento.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- UMA NOVA GERAÇÃO -->
+  <div class="fade-in">
+    <span class="secao-titulo">Uma nova geração — de mentalidade, não de idade</span>
+    <div class="texto-duplo">
+      <p>O setor de construção civil vive um momento de dupla pressão. De um lado, os números são positivos: crescimento de 4,1% em 2024, mercado imobiliário aquecido, investimentos públicos em infraestrutura que seguem pautados para 2026 e além. De outro, os custos sobem — o INCC registrou alta de 6,34% nos últimos 12 meses, acima da inflação oficial — e a escassez de mão de obra qualificada é um gargalo que a CBIC aponta como um dos maiores desafios do setor.</p>
+      <p>É nesse contexto que Felipe encerra a conversa: "A nova geração de obras públicas não é definida pela idade da empresa. É definida pela mentalidade. Uma empresa de 30 anos que depende de acordos informais está para trás. Uma empresa de três anos que domina o edital, tem o acervo técnico em dia e entende o ambiente regulatório — essa está na frente." O tabuleiro está montado. As peças estão posicionadas. Felipe Xavier já deu sua abertura — e está jogando para vencer.</p>
+    </div>
+  </div>
+
+  <!-- PERFIL -->
+  <div class="card-perfil fade-in">
+    <div class="card-perfil-info">
+      <h3>Felipe Antonio Xavier Andrade</h3>
+      <p>Sócio-proprietário da Redax Engenharia</p>
+    </div>
+    <div class="card-perfil-qr">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <rect x="2" y="2" width="16" height="16" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+        <rect x="6" y="6" width="8" height="8" fill="#1a1a1a"/>
+        <rect x="26" y="2" width="16" height="16" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+        <rect x="30" y="6" width="8" height="8" fill="#1a1a1a"/>
+        <rect x="2" y="26" width="16" height="16" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+        <rect x="6" y="30" width="8" height="8" fill="#1a1a1a"/>
+        <rect x="26" y="26" width="4" height="4" fill="#1a1a1a"/>
+        <rect x="34" y="26" width="4" height="4" fill="#1a1a1a"/>
+        <rect x="26" y="34" width="4" height="4" fill="#1a1a1a"/>
+        <rect x="34" y="34" width="4" height="4" fill="#1a1a1a"/>
+      </svg>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer style="background: var(--vermelho); color: rgba(255,255,255,0.7); text-align: center; padding: 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">
+  BNI Business OESP &nbsp;·&nbsp; <span style="color: var(--branco);">Matéria de Capa</span>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  setTimeout(() => {
+    const h = document.querySelector('.hero-texto');
+    if (h) h.classList.add('visible');
+  }, 100);
+
+  // Dropdown idiomas
+  function toggleDropdown(id) {
+    const item = document.getElementById(id);
+    item.classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-item')) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    }
+  });
+
+  // Sumário popup
+  function abrirSumario() {
+    document.getElementById('sumario').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharSumario() {
+    document.getElementById('sumario').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharSumario();
+  });
+</script>
+</body>
+</html>
