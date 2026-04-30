@@ -1635,8 +1635,14 @@
   // Share buttons appear after scrolling past hero
   const shareSidebar = document.getElementById('shareSidebar');
   const shareMobile = document.getElementById('shareMobile');
+  const outrasMaterias = document.querySelector('.cta-section');
   window.addEventListener('scroll', () => {
-    const show = window.pageYOffset > window.innerHeight * 0.6;
+    const scrolled = window.pageYOffset;
+    const afterHero = scrolled > window.innerHeight * 0.6;
+    const beforeOtras = outrasMaterias
+      ? scrolled < outrasMaterias.getBoundingClientRect().top + scrolled - 80
+      : true;
+    const show = afterHero && beforeOtras;
     if (shareSidebar) shareSidebar.classList.toggle('visible', show);
     if (shareMobile) shareMobile.classList.toggle('visible', show);
   }, { passive: true });
