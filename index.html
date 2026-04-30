@@ -55,21 +55,21 @@
   }
   .hero-foto-caption {
     position: absolute;
-    bottom: 2rem;
-    left: 2rem;
+    bottom: 5rem;
     right: 2rem;
+    text-align: right;
   }
   .hero-foto-caption p {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--branco);
     line-height: 1.5;
     background: rgba(26,26,26,0.75);
     padding: 10px 14px;
     display: inline-block;
-    max-width: 280px;
+    max-width: 250px;
   }
-  .hero-foto-caption strong { display: block; font-weight: 600; }
+  .hero-foto-caption strong { display: block; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
 
   .hero-texto {
     padding: 4rem 4rem 4rem 5rem;
@@ -80,13 +80,19 @@
   }
   .hero-byline {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     letter-spacing: 2px;
     color: var(--cinza);
     text-transform: uppercase;
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
-  .hero-byline span { color: var(--vermelho); margin-right: 8px; font-size: 13px; }
+  .hero-byline .bl-secao { color: var(--vermelho); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .hero-byline .bl-secao::before { content: '◤'; font-size: 11px; }
+  .hero-byline .bl-data { color: var(--cinza); }
+  .hero-byline .bl-leitura { color: var(--cinza); }
 
   .hero-titulo {
     font-family: 'Playfair Display', serif;
@@ -130,7 +136,15 @@
   .artigo {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 5rem 2rem;
+    padding: 4rem 4rem;
+  }
+
+  /* ESPAÇAMENTO UNIFORME — todos os filhos diretos do artigo */
+  .artigo > div {
+    margin-top: 3.5rem;
+  }
+  .artigo > div:first-child {
+    margin-top: 0;
   }
 
   /* TEXTO EM COLUNAS */
@@ -138,52 +152,59 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
-    margin-bottom: 3rem;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  /* só aplica espaço após o secao-titulo dentro do bloco */
+  .secao-titulo + .texto-duplo,
+  .secao-titulo + figure + .texto-duplo {
+    margin-top: 1.5rem;
   }
   .texto-duplo p {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.125rem;
     line-height: 1.85;
     color: #2a2a2a;
     text-indent: 1.5em;
   }
-  .texto-duplo p:first-child { text-indent: 0; }
 
   /* TEXTO 3 COLUNAS */
   .texto-triplo {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2.5rem;
-    margin-bottom: 3rem;
+    margin-top: 1.5rem;
   }
   .texto-triplo p {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1.125rem;
     line-height: 1.85;
     color: #2a2a2a;
-    text-indent: 1.2em;
+    text-indent: 1.5em;
   }
-  .texto-triplo p:first-child { text-indent: 0; }
 
   /* SUBTÍTULOS DE SEÇÃO */
   .secao-titulo {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 600;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--vermelho);
-    margin-bottom: 1.2rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--vermelho);
-    display: inline-block;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--vermelho);
+    padding-bottom: 0.4rem;
+    display: block;
   }
 
   /* CITAÇÃO EM DESTAQUE */
   .citacao-bloco {
     background: var(--vermelho);
     padding: 3.5rem 4rem;
-    margin: 3rem 0;
+    margin: 0;
+    position: relative;
+  }
+  .citacao-bloco {
     position: relative;
   }
   .citacao-bloco blockquote {
@@ -193,15 +214,19 @@
     color: var(--branco);
     line-height: 1.5;
     font-weight: 400;
+    padding-left: 5rem;
+    position: relative;
   }
   .citacao-bloco blockquote::before {
-    content: '"';
-    font-size: 5rem;
-    color: var(--branco);
-    line-height: 0;
-    vertical-align: -1.5rem;
-    margin-right: 8px;
+    content: '\201C';
     font-family: 'Playfair Display', serif;
+    font-size: 9rem;
+    font-style: normal;
+    color: rgba(255,255,255,0.25);
+    position: absolute;
+    left: -0.5rem;
+    top: -1.5rem;
+    line-height: 1;
   }
 
   /* CITAÇÃO LATERAL (sidebar) */
@@ -238,7 +263,7 @@
   }
   .foto-legenda {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     color: var(--cinza);
     letter-spacing: 0.5px;
     margin-top: 0.5rem;
@@ -259,7 +284,7 @@
   }
   .foto-larga figcaption {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     color: var(--cinza);
     margin-top: 0.5rem;
     border-top: 1px solid var(--creme-escuro);
@@ -267,11 +292,6 @@
   }
 
   /* SEPARADOR DE SEÇÃO */
-  .sep {
-    border: none;
-    border-top: 1px solid var(--creme-escuro);
-    margin: 3rem 0;
-  }
 
   /* CARD FINAL (perfil) */
   .card-perfil {
@@ -308,13 +328,14 @@
   }
 
   /* CLEARFIX */
-  .clearfix::after { content: ''; display: table; clear: both; }
+  .clearfix::after { content: ''; display: block; clear: both; height: 0; }
 
   /* FADE IN */
   .fade-in {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
+    overflow: hidden;
   }
   .fade-in.visible {
     opacity: 1;
@@ -324,7 +345,7 @@
   /* RESPONSIVE */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-foto { height: 60vw; max-height: 480px; }
+    .hero-foto { height: 100vh; max-height: none; }
     .hero-texto { padding: 2.5rem 1.5rem; }
     .texto-duplo, .texto-triplo { grid-template-columns: 1fr; gap: 0; }
     .citacao-lateral { float: none; width: 100%; margin: 1.5rem 0; }
@@ -346,6 +367,27 @@
     top: 0;
     z-index: 200;
   }
+  @media (max-width: 700px) {
+    nav { padding: 0 20px; height: 60px; }
+    .nav-btn { padding: 0 0.8rem; gap: 4px; height: 60px; }
+    .nav-label { display: none; }
+    .nav-btn .arrow { display: none; }
+    .hero-foto-caption { bottom: 6rem; }
+    .citacao-bloco { padding: 2rem 1.5rem; }
+    .citacao-bloco blockquote {
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .citacao-bloco blockquote::before {
+      position: static;
+      display: block;
+      font-size: 9rem;
+      line-height: 0.3;
+      margin-bottom: -0.5rem;
+      color: rgba(255,255,255,0.25);
+    }
+  }
   .nav-logo svg { display: block; height: 18px; width: auto; }
   .nav-menu { display: flex; align-items: center; }
   .nav-item { position: relative; }
@@ -356,7 +398,7 @@
     color: var(--branco);
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 500;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 0 1.4rem;
@@ -491,18 +533,53 @@
   }
   @media (max-width: 700px) {
     .sumario-overlay { overflow-y: auto; }
+    .sumario-header { padding: 0 20px; }
     .sumario-grid {
       grid-template-columns: 1fr;
       grid-template-rows: unset;
       overflow-y: unset;
+      padding: 0 20px 2rem;
     }
     .sumario-item {
       grid-column: 1 !important;
       grid-row: unset !important;
     }
     .sumario-desc { display: none; }
+    .sumario-num { font-size: 1.2rem; width: 2rem; }
+    .sumario-secao { font-size: 1.2rem; }
   }
 
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-hint {
+    display: none;
+  }
+  @media (max-width: 700px) {
+    .scroll-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.75;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+  }
+  .scroll-hint span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--branco);
+  }
+  .scroll-hint svg { display: block; }
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.75; }
+    50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+  }
 </style>
 </head>
 <body>
@@ -641,7 +718,9 @@
   <div class="nav-menu">
     <div class="nav-item" id="item-idiomas">
       <button class="nav-btn" onclick="toggleDropdown('item-idiomas')">
-        Idiomas <span class="arrow">▼</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="nav-label">Idiomas</span>
+        <span class="arrow">▼</span>
       </button>
       <div class="dropdown">
         <a href="#">Português</a>
@@ -652,7 +731,8 @@
     </div>
     <div class="nav-item">
       <button class="nav-btn" onclick="abrirSumario()">
-        Sumário
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span class="nav-label">Sumário</span>
       </button>
     </div>
   </div>
@@ -662,15 +742,23 @@
 <section class="hero">
   <div class="hero-foto">
     <!-- Placeholder: substituir pela foto real do Felipe -->
-    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=900&q=80" alt="Felipe Antonio Xavier Andrade" />
+    <img src="img/felipe-xavier.webp" alt="Felipe Antonio Xavier Andrade" />
     <div class="hero-foto-caption">
       <p><strong>Felipe Xavier</strong>de servidor público ao empreendedor — a trajetória de quem aprendeu as regras do jogo de dentro para fora</p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
     </div>
   </div>
 
   <div class="hero-texto fade-in">
     <div class="hero-byline">
-      <span>◤</span> Matéria de Capa &nbsp;|&nbsp; Por Fernanda Sodré
+      <span class="bl-secao">Matéria de Capa</span>
+      <span class="bl-data">29 de abril de 2026</span>
+      <span class="bl-leitura">9 min de leitura</span>
     </div>
 
     <h1 class="hero-titulo">
@@ -698,7 +786,6 @@
     <p>Essa empresa nova é a Redax Engenharia. E o homem por trás dela, Felipe Antonio Xavier Andrade, não pareceu surpreso com o resultado. Havia calculado cada movimento antes de entrar — como faz sempre. "Me considero um enxadrista", diz, sem alarme na voz. "Antes de participar de qualquer licitação, leio o edital do início ao fim, mapeio cada cláusula como uma peça no tabuleiro, e só entro quando sei que posso vencer. Não tentar. Vencer."</p>
   </div>
 
-  <hr class="sep">
 
   <!-- OITO ANOS DO LADO DE DENTRO -->
   <div class="fade-in">
@@ -719,7 +806,7 @@
   <!-- O ENXADRISTA E O EDITAL -->
   <div class="fade-in">
     <span class="secao-titulo">O enxadrista e o edital</span>
-    <div class="texto-duplo clearfix">
+    <div class="texto-duplo">
       <div>
         <p>Existe um tipo de mercado que assusta a maioria das empresas pequenas: as licitações públicas. Processos longos, documentação densa, linguagem jurídica que parece projetada para excluir quem não tem um departamento inteiro dedicado ao assunto. Durante décadas, esse mercado foi de grupos estabelecidos que dominavam o jogo por caminhos que a antiga Lei 8.666/93 deixava em aberto.</p>
         <p>Em 2021, chegou a Lei 14.133 — a Nova Lei de Licitações. E com ela, as regras mudaram de forma estrutural. O pregão online tornou-se a modalidade preferencial. Um portal nacional centralizou os editais. As exigências técnicas ficaram mais rigorosas — e mais transparentes.</p>
@@ -731,12 +818,10 @@
     </div>
   </div>
 
-  <hr class="sep">
-
   <!-- A OBRA QUE EXISTE ANTES DA OBRA -->
   <div class="fade-in">
     <span class="secao-titulo">A obra que existe antes da obra</span>
-    <div class="texto-duplo clearfix">
+    <div class="texto-duplo">
       <div>
         <p>A Redax opera obras em municípios distantes do escritório central, coordenando equipes locais que dependem de orientação técnica precisa. Em um projeto recente, a obra estava em Marília. Felipe estava na Região Oeste de São Paulo. O empreiteiro no canteiro precisava saber exatamente quais paredes poderia demolir, quais tubulações podiam ser tocadas, qual era o valor autorizado para aquela etapa. Sem esse ponto focal, qualquer decisão tomada no canteiro vira improviso.</p>
       </div>
@@ -762,18 +847,16 @@
     </div>
   </div>
 
-  <hr class="sep">
-
   <!-- DA CHINA PARA CÁ -->
   <div class="fade-in">
     <span class="secao-titulo">Da China para cá: o futuro que chega antes do esperado</span>
 
     <figure class="foto-larga">
-      <img src="https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=1200&q=80" alt="Felipe Xavier na China — certificação técnica" />
+      <img src="img/felipe-china-1.webp" alt="Felipe Xavier na China — certificação técnica" />
       <figcaption>Felipe Xavier na China: a visita técnica que transformou uma certificação internacional em visão de futuro para a Redax Engenharia</figcaption>
     </figure>
 
-    <div class="texto-duplo" style="margin-top:2rem;">
+    <div class="texto-duplo">
       <p>No final de 2025, Felipe embarcou para a China. Não como turista — como profissional. A missão era participar de um processo de certificação de uma das maiores estatais de transmissão e distribuição de energia elétrica do mundo, com operações em Campinas e Paulínia. O que encontrou transformou sua percepção sobre o futuro do setor de uma forma que nenhum congresso havia conseguido antes.</p>
       <p>"Eu tinha uma imagem da China que não correspondia à realidade. Fui e me deparei com um país que respira tecnologia." Uma das cenas que ficaram gravadas: drones industriais — robustos, autônomos, precisos — realizando limpeza e pintura de fachadas de edifícios inteiros. No Brasil, esse mesmo serviço é feito com rapel, andaimes e plataformas elevatórias. A diferença não é só de produtividade. É de segurança. Queda em altura ainda é uma das principais causas de morte na construção civil brasileira.</p>
     </div>
@@ -786,7 +869,6 @@
     </blockquote>
   </div>
 
-  <hr class="sep">
 
   <!-- O CHURRASCO QUE MUDOU O RUMO -->
   <div class="fade-in">
@@ -814,7 +896,12 @@
     </div>
   </div>
 
-  <hr class="sep">
+
+  <!-- FOTO UMA NOVA GERAÇÃO -->
+  <figure class="foto-larga fade-in">
+    <img src="img/nova-geracao.webp" alt="No mercado que não para de crescer, vence quem planeja antes de construir" />
+    <figcaption>No mercado que não para de crescer, vence quem planeja antes de construir</figcaption>
+  </figure>
 
   <!-- UMA NOVA GERAÇÃO -->
   <div class="fade-in">
