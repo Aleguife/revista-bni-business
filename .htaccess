@@ -1,0 +1,8 @@
+DirectoryIndex index.html
+
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{REQUEST_URI} !^/edicao-
+RewriteCond %{REQUEST_URI} !^/checklist/
+RewriteCond %{REQUEST_URI} !^/assets/
+RewriteRule ^$ /edicao-01/materia-de-capa/ [R=302,L]
