@@ -45,14 +45,14 @@
   /* ── Constrói o HTML do footer ── */
   function buildFooter() {
     return ''
-      + '<div style="padding:3rem 2rem;display:flex;flex-wrap:wrap;gap:2.5rem;background:var(--vermelho);">'
+      + '<div style="padding:2rem 2rem 1.5rem;display:flex;flex-wrap:wrap;gap:1.5rem;background:var(--vermelho);">'
 
       /* Coluna 1 — Logo + redes sociais */
       + '<div style="flex:1 1 200px;min-width:200px;">'
       +   '<div style="max-width:450px;margin:0 auto;">'
-      +     '<div style="margin-bottom:1rem;">' + FOOTER_LOGO_SVG + '</div>'
+      +     '<div style="margin-bottom:0.75rem;">' + FOOTER_LOGO_SVG + '</div>'
       +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7);">Conectando empresários. Gerando resultados.</p>'
-      +     '<div style="display:flex;gap:14px;margin-top:1rem;align-items:center;">'
+      +     '<div style="display:flex;gap:10px;margin-top:0.75rem;align-items:center;">'
       +       socialBtn('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
       +       socialBtn('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
       +       socialBtn('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
@@ -74,8 +74,8 @@
       /* Coluna 3 — Newsletter */
       + '<div style="flex:1 1 220px;min-width:220px;">'
       +   '<div style="max-width:450px;margin:0 auto;">'
-      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:18px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.5rem;text-align:center;">Inscreva-se</h4>'
-      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8375rem;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:1.2rem;line-height:1.5;">Inscreva-se em nossa newsletter!<br>Seja o primeiro a receber as últimas notícias sobre negócios, design e cultura.</p>'
+      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">Inscreva-se</h4>'
+      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:0.9rem;line-height:1.4;">Inscreva-se em nossa newsletter!<br>Seja o primeiro a receber as últimas notícias sobre negócios, design e cultura.</p>'
       +     '<div style="display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.5);margin-bottom:1rem;">'
       +       '<input type="email" placeholder="SEU E-MAIL" id="footer-newsletter-email" style="flex:1;background:none;border:none;outline:none;font-family:\'Barlow Condensed\',sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:0.6rem 0;text-align:center;" />'
       +       '<button id="footer-newsletter-btn" style="background:none;border:none;cursor:pointer;color:#fff;padding:0.4rem;display:flex;align-items:center;" aria-label="Assinar newsletter"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>'
@@ -90,20 +90,57 @@
       + '</div>' /* fim padding wrapper */
 
       /* Barra inferior de copyright */
-      + '<div class="footer-bar">'
-      +   '<span class="footer-bar-copy">© 2026 — Todos os direitos reservados — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
-      +   '<div class="footer-bar-links">'
-      +     '<a href="https://bnibusiness.com.br/cookies/" class="footer-bar-link">Cookies</a>'
-      +     '<a href="https://bnibusiness.com.br/privacidade/" class="footer-bar-link">Privacidade</a>'
-      +     '<a href="https://bnibusiness.com.br/termos/" class="footer-bar-link">Termos de Uso</a>'
+      + '<div class="footer-bar" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.75rem 2rem;border-top:1px solid rgba(255,255,255,0.15);">'
+      +   '<span class="footer-bar-copy" style="white-space:nowrap;font-size:11px;letter-spacing:0.5px;">© 2026 — Todos os direitos reservados — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
+      +   '<div class="footer-bar-links" style="display:flex;gap:1rem;flex-shrink:0;">'
+      +     '<a href="https://bnibusiness.com.br/cookies/" class="footer-bar-link" style="font-size:11px;">Cookies</a>'
+      +     '<a href="https://bnibusiness.com.br/privacidade/" class="footer-bar-link" style="font-size:11px;">Privacidade</a>'
+      +     '<a href="https://bnibusiness.com.br/termos/" class="footer-bar-link" style="font-size:11px;">Termos de Uso</a>'
       +   '</div>'
       + '</div>';
+  }
+
+  /* ── Estilos mobile via <style> (não afeta desktop) ── */
+  function injectFooterStyles() {
+    if (document.getElementById('bni-footer-styles')) return;
+    var style = document.createElement('style');
+    style.id = 'bni-footer-styles';
+    style.textContent = [
+      '@media (max-width: 768px) {',
+      '  #bni-footer > div:first-child {',           /* wrapper das colunas */
+      '    padding: 1.25rem 1rem 1rem !important;',
+      '    gap: 1rem !important;',
+      '  }',
+      '  #bni-footer .footer-bar {',
+      '    flex-wrap: nowrap !important;',
+      '    padding: 0.6rem 1rem !important;',
+      '    gap: 0.5rem !important;',
+      '  }',
+      '  #bni-footer .footer-bar-copy {',
+      '    white-space: nowrap !important;',
+      '    font-size: 10px !important;',
+      '    letter-spacing: 0.3px !important;',
+      '    overflow: hidden;',
+      '    text-overflow: ellipsis;',
+      '  }',
+      '  #bni-footer .footer-bar-links {',
+      '    flex-shrink: 0 !important;',
+      '    gap: 0.6rem !important;',
+      '  }',
+      '  #bni-footer .footer-bar-links a {',
+      '    font-size: 10px !important;',
+      '  }',
+      '}'
+    ].join('\n');
+    document.head.appendChild(style);
   }
 
   /* ── Injeta o footer no final do <body> ── */
   function injectFooter() {
     /* Evita injeção dupla */
     if (document.getElementById('bni-footer')) return;
+
+    injectFooterStyles();
 
     var footer = document.createElement('footer');
     footer.id = 'bni-footer';
