@@ -20,8 +20,7 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
           server-dir: /public_html/
           local-dir: ./
-                    dangerous-clean-slate: true
-          exclude: |
+                              exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
