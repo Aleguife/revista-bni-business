@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist de Produção — Revista BNI Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vermelho: #8B1A1A;
+    --vermelho-escuro: #5C0F0F;
+    --vermelho-claro: #B22222;
+    --creme: #F5F0E8;
+    --cinza-claro: #E8E3DA;
+    --cinza-medio: #9A9186;
+    --texto: #1A1410;
+    --branco: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--creme);
+    color: var(--texto);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--vermelho-escuro);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--vermelho-claro);
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--branco);
+    letter-spacing: 1px;
+  }
+
+  .logo-text span {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-left: 12px;
+  }
+
+  .header-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--branco);
+    line-height: 1;
+    min-width: 52px;
+    text-align: right;
+  }
+
+  .progress-ring-wrap {
+    position: relative;
+    width: 36px;
+    height: 36px;
+  }
+
+  .progress-ring {
+    transform: rotate(-90deg);
+  }
+
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 3; }
+  .ring-fill { fill: none; stroke: var(--branco); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 0.4s ease; }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* MATÉRIA FIELD */
+  .materia-wrap {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--cinza-claro);
+    padding-bottom: 1.5rem;
+  }
+
+  .materia-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--cinza-medio);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .materia-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .materia-input {
+    flex: 1;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--texto);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--cinza-claro);
+    padding: 4px 0;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .materia-input:focus {
+    border-bottom-color: var(--vermelho);
+  }
+
+  .materia-input::placeholder {
+    color: var(--cinza-claro);
+  }
+
+  .btn-reset {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    background: none;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-reset:hover {
+    border-color: var(--vermelho);
+    color: var(--vermelho);
+  }
+
+  /* PROGRESSO TOTAL */
+  .progress-total {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .stat-box {
+    background: var(--branco);
+    border: 1px solid var(--cinza-claro);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    flex: 1;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--vermelho);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-top: 4px;
+    display: block;
+  }
+
+  .bar-wrap {
+    flex: 3;
+    background: var(--branco);
+    border: 1px solid var(--cinza-claro);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .bar-track {
+    background: var(--cinza-claro);
+    border-radius: 2px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--vermelho-escuro), var(--vermelho-claro));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .bar-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 1rem;
+    background: var(--branco);
+    border: 1px solid var(--cinza-claro);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+    border-bottom: 1px solid transparent;
+  }
+
+  .section-header:hover {
+    background: #FAF7F2;
+  }
+
+  .section-header.open {
+    border-bottom-color: var(--cinza-claro);
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--cinza-medio);
+    min-width: 20px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--texto);
+    flex: 1;
+  }
+
+  .section-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--cinza-medio);
+    background: var(--cinza-claro);
+    border-radius: 20px;
+    padding: 2px 10px;
+    transition: all 0.2s;
+  }
+
+  .section-badge.completo {
+    background: #E8F5E9;
+    color: #2E7D32;
+  }
+
+  .section-arrow {
+    font-size: 10px;
+    color: var(--cinza-medio);
+    transition: transform 0.2s;
+  }
+
+  .section-arrow.open {
+    transform: rotate(90deg);
+  }
+
+  .items {
+    display: none;
+  }
+
+  .items.open {
+    display: block;
+  }
+
+  /* ITEM */
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--cinza-claro);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .item:last-child {
+    border-bottom: none;
+  }
+
+  .item:hover {
+    background: #FAF7F2;
+  }
+
+  .item.done {
+    background: #FAFAFA;
+  }
+
+  .cb {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--cinza-medio);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: var(--branco);
+  }
+
+  .item.done .cb {
+    background: var(--vermelho);
+    border-color: var(--vermelho);
+  }
+
+  .cb-check {
+    display: none;
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translate(0px, -1px);
+  }
+
+  .item.done .cb-check {
+    display: block;
+  }
+
+  .item-body {
+    flex: 1;
+  }
+
+  .item-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--texto);
+    transition: color 0.15s;
+  }
+
+  .item.done .item-text {
+    color: var(--cinza-medio);
+    text-decoration: line-through;
+    text-decoration-color: var(--cinza-claro);
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+
+  .tag-obrig { background: #FAECE7; color: #993C1D; }
+  .tag-seo   { background: #E6F1FB; color: #185FA5; }
+  .tag-cache { background: #FFF8E1; color: #8D6E00; }
+  .tag-mobile{ background: #EDE7F6; color: #512DA8; }
+
+  /* DONE BANNER */
+  .done-banner {
+    display: none;
+    margin-top: 1.5rem;
+    background: var(--vermelho-escuro);
+    color: var(--branco);
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+  }
+
+  .done-banner.show { display: block; }
+
+  .done-banner .titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .done-banner p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    max-width: 860px;
+    margin: 0 auto;
+    border-top: 1px solid var(--cinza-claro);
+  }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    main { padding: 1rem; }
+    .progress-total { flex-direction: column; gap: 0.75rem; }
+    .stat-box { padding: 0.75rem 1rem; }
+    .materia-input { font-size: 20px; }
+    .header-pct { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-text">
+      Revista BNI Business
+      <span>Produção</span>
+    </div>
+    <div class="header-progress">
+      <div class="header-pct" id="hdr-pct">0%</div>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="36" height="36" viewBox="0 0 36 36">
+          <circle class="ring-bg" cx="18" cy="18" r="15"/>
+          <circle class="ring-fill" cx="18" cy="18" r="15" id="ring-fill"
+            stroke-dasharray="94.25"
+            stroke-dashoffset="94.25"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="materia-wrap">
+    <label class="materia-label" for="materia-nome">Matéria</label>
+    <div class="materia-row">
+      <input class="materia-input" id="materia-nome" type="text" placeholder="Nome da matéria..." autocomplete="off" />
+      <button class="btn-reset" onclick="resetAll()">Resetar</button>
+    </div>
+  </div>
+
+  <div class="progress-total">
+    <div class="stat-box">
+      <span class="stat-num" id="stat-done">0</span>
+      <span class="stat-label">Concluídos</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="stat-total" style="color:var(--cinza-medio)">0</span>
+      <span class="stat-label">Total</span>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-track"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+      <div class="bar-label" id="bar-label">0 de 0 itens concluídos — 0%</div>
+    </div>
+  </div>
+
+  <div id="sections-wrap"></div>
+
+  <div class="done-banner" id="done-banner">
+    <div class="titulo">Matéria pronta para publicar!</div>
+    <p>Todos os itens verificados. Bom deploy!</p>
+  </div>
+
+</main>
+
+<footer>© 2026 Revista BNI Business — Checklist de Produção</footer>
+
+<script>
+const SECTIONS = [
+  {
+    id: 'conteudo',
+    title: 'Conteúdo e estrutura',
+    items: [
+      { text: 'Texto da matéria recebido (.txt)', tags: ['obrig'] },
+      { text: 'Arquivo .txt revisado e aprovado', tags: ['obrig'] },
+      { text: 'Imagens recebidas e otimizadas (WebP, <200kb)', tags: ['obrig'] },
+      { text: 'Foto de capa definida', tags: ['obrig'] },
+    ]
+  },
+  {
+    id: 'pagina',
+    title: 'Criação da página',
+    items: [
+      { text: 'HTML criado a partir do template da edição', tags: ['obrig'] },
+      { text: 'Sumário configurado com âncoras corretas', tags: ['obrig'] },
+      { text: 'Temporizador de leitura configurado', tags: ['obrig'] },
+      { text: 'Botões de compartilhamento (share-mobile e share-sidebar)', tags: ['obrig', 'mobile'] },
+      { text: 'Botões de navegação: matéria anterior / próxima', tags: ['obrig'] },
+      { text: 'Botões de CTA configurados (WhatsApp, site)', tags: ['obrig'] },
+      { text: 'Cache busting atualizado (?v=XXXXXXXXXX) em nav.js e footer.js', tags: ['obrig', 'cache'] },
+    ]
+  },
+  {
+    id: 'traducoes',
+    title: 'Traduções',
+    items: [
+      { text: 'Versão EN criada e revisada', tags: ['obrig'] },
+      { text: 'Versão ES criada e revisada', tags: ['obrig'] },
+      { text: 'Alternância PT / EN / ES testada no nav', tags: ['obrig'] },
+      { text: 'URLs das traduções corretas e consistentes', tags: ['obrig'] },
+    ]
+  },
+  {
+    id: 'seo',
+    title: 'SEO e metadados',
+    items: [
+      { text: 'Title tag definida (máx. 60 caracteres)', tags: ['seo'] },
+      { text: 'Meta description escrita (máx. 155 caracteres)', tags: ['seo'] },
+      { text: 'Open Graph: og:title, og:description, og:image', tags: ['seo'] },
+      { text: 'Imagem OG definida (1200×630px)', tags: ['seo'] },
+      { text: 'URL canônica configurada', tags: ['seo'] },
+      { text: 'Alt text em todas as imagens', tags: ['seo'] },
+    ]
+  },
+  {
+    id: 'qa',
+    title: 'QA e testes',
+    items: [
+      { text: 'Testado em mobile — nav, footer e share-mobile sem conflito', tags: ['obrig', 'mobile'] },
+      { text: 'Share-mobile some ao entrar no footer (IntersectionObserver)', tags: ['obrig', 'mobile'] },
+      { text: 'Testado em desktop', tags: ['obrig'] },
+      { text: 'Links internos funcionando', tags: ['obrig'] },
+      { text: 'CTAs testados (WhatsApp abre, site redireciona)', tags: ['obrig'] },
+      { text: 'Footer: copyright em linha única, sem espaço extra', tags: ['obrig', 'mobile'] },
+    ]
+  },
+  {
+    id: 'deploy',
+    title: 'Deploy',
+    items: [
+      { text: 'Commit feito com mensagem descritiva', tags: ['obrig'] },
+      { text: 'Push para branch main', tags: ['obrig'] },
+      { text: 'GitHub Actions com status verde', tags: ['obrig'] },
+      { text: 'Site verificado ao vivo após deploy', tags: ['obrig'] },
+    ]
+  }
+];
+
+const TAG_LABELS = { obrig: 'obrigatório', seo: 'SEO', cache: 'cache', mobile: 'mobile' };
+const TAG_CLASSES = { obrig: 'tag-obrig', seo: 'tag-seo', cache: 'tag-cache', mobile: 'tag-mobile' };
+
+let state = {};
+let openSections = {};
+SECTIONS.forEach(s => {
+  openSections[s.id] = true;
+  s.items.forEach((_, i) => state[s.id + '_' + i] = false);
+});
+
+function totalItems() {
+  return SECTIONS.reduce((a, s) => a + s.items.length, 0);
+}
+
+function doneItems() {
+  return Object.values(state).filter(Boolean).length;
+}
+
+function sectionDone(sec) {
+  return sec.items.filter((_, i) => state[sec.id + '_' + i]).length;
+}
+
+function render() {
+  const total = totalItems();
+  const done = doneItems();
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('bar-fill').style.width = pct + '%';
+  document.getElementById('bar-label').textContent = done + ' de ' + total + ' itens concluídos — ' + pct + '%';
+  document.getElementById('hdr-pct').textContent = pct + '%';
+
+  const circ = 2 * Math.PI * 15;
+  const offset = circ - (pct / 100) * circ;
+  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+
+  document.getElementById('done-banner').classList.toggle('show', done === total && total > 0);
+
+  const wrap = document.getElementById('sections-wrap');
+  wrap.innerHTML = '';
+
+  SECTIONS.forEach((sec, si) => {
+    const secDone = sectionDone(sec);
+    const isOpen = openSections[sec.id];
+    const completo = secDone === sec.items.length;
+
+    const div = document.createElement('div');
+    div.className = 'section';
+
+    div.innerHTML = `
+      <div class="section-header ${isOpen ? 'open' : ''}" onclick="toggleSection('${sec.id}')">
+        <span class="section-num">0${si + 1}</span>
+        <span class="section-title">${sec.title}</span>
+        <span class="section-badge ${completo ? 'completo' : ''}">${secDone}/${sec.items.length}</span>
+        <span class="section-arrow ${isOpen ? 'open' : ''}">&#9658;</span>
+      </div>
+      <div class="items ${isOpen ? 'open' : ''}">
+        ${sec.items.map((it, i) => {
+          const checked = state[sec.id + '_' + i];
+          const tagsHtml = (it.tags || []).map(t =>
+            `<span class="tag ${TAG_CLASSES[t]}">${TAG_LABELS[t]}</span>`
+          ).join('');
+          return `
+            <div class="item ${checked ? 'done' : ''}" onclick="toggle('${sec.id}', ${i})">
+              <div class="cb"><div class="cb-check"></div></div>
+              <div class="item-body">
+                <div class="item-text">${it.text}</div>
+                ${tagsHtml ? `<div class="tags">${tagsHtml}</div>` : ''}
+              </div>
+            </div>`;
+        }).join('')}
+      </div>`;
+
+    wrap.appendChild(div);
+  });
+}
+
+function toggle(secId, idx) {
+  state[secId + '_' + idx] = !state[secId + '_' + idx];
+  render();
+}
+
+function toggleSection(secId) {
+  openSections[secId] = !openSections[secId];
+  render();
+}
+
+function resetAll() {
+  if (!confirm('Resetar todos os itens e limpar o nome da matéria?')) return;
+  Object.keys(state).forEach(k => state[k] = false);
+  document.getElementById('materia-nome').value = '';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
