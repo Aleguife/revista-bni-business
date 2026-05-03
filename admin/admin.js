@@ -6,7 +6,7 @@
 // ── SENHA (hash SHA-256) ──────────────────────
 // Senha padrão: bni@2025 → troque pelo hash da sua senha
 // Para gerar novo hash: https://emn178.github.io/online-tools/sha256.html
-const SENHA_HASH = '06bf25716926ca5a67b6cd8c39fbce0e6b2a510033a7047f6d269472b4050821';
+const SENHA_HASH = 'a7d9e2f1c3b8a4e6d2f9c1b7a3e5d8f2c4b6a9e1d3f7c2b5a8e4d6f1c9b3a7e';
 // ATENÇÃO: hash acima é placeholder — troque antes de colocar no ar
 
 // ── MATÉRIAS EDIÇÃO 2 ─────────────────────────
