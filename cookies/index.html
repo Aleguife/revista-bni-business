@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-lang="PT">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KX2T4K1YJG">
+  // Language switcher
+  function setLang(sigla) {
+    localStorage.setItem('lang', sigla);
+    const el = document.getElementById('langLabel');
+    if (el) el.textContent = sigla;
+  }
+  function updateLangMenu(activeSigla) {
+    const el = document.getElementById('langLabel');
+    if (el) el.textContent = activeSigla;
+    // Hide active language from dropdown
+    document.querySelectorAll('.dropdown a[data-lang]').forEach(a => {
+      a.style.display = a.dataset.lang === activeSigla ? 'none' : '';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    const saved = localStorage.getItem('lang');
+    const current = document.documentElement.dataset.lang || 'PT';
+    const active = saved || current;
+    updateLangMenu(active);
+  });
+
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KX2T4K1YJG');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Cookies — Revista BNI Business</title>
+<meta name="robots" content="index, follow">
+<meta name="description" content="Política de Cookies da Revista BNI Business. Saiba como tratamos seus dados e como utilizamos este site.">
+<link rel="canonical" href="https://bnibusiness.com.br/cookies/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --vermelho: #C8102E;
+    --preto: #1a1a1a;
+    --creme: #F5F0E8;
+    --creme-escuro: #EAE3D5;
+    --cinza: #888;
+    --cinza-claro: #f9f6f0;
+    --branco: #fff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--creme);
+    color: var(--preto);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ABERTURA ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 90vh;
+    background: var(--creme);
+  }
+
+  .hero-foto {
+    position: relative;
+    overflow: hidden;
+    background: #2a2a2a;
+  }
+  .hero-foto img {
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(8%);
+    will-change: transform;
+  }
+  .hero-foto-caption {
+    position: absolute;
+    bottom: 5rem;
+    right: 2rem;
+    text-align: right;
+  }
+  .hero-foto-caption p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: var(--branco);
+    line-height: 1.5;
+    background: rgba(26,26,26,0.75);
+    padding: 10px 14px;
+    display: inline-block;
+    max-width: 250px;
+  }
+  .hero-foto-caption strong { display: block; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .hero-texto {
+    padding: 4rem 4rem 4rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--creme);
+  }
+  .hero-byline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--cinza);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-byline .bl-secao { color: var(--vermelho); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .hero-byline .bl-secao::before { content: '◤'; font-size: 11px; }
+  .hero-byline .bl-data { color: var(--cinza); }
+  .hero-byline .bl-leitura { color: var(--cinza); }
+
+  .hero-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 0.7;
+    color: var(--preto);
+    margin-bottom: calc(2rem + 20px);
+    letter-spacing: -0.5px;
+  }
+  .hero-titulo .destaque { color: var(--vermelho); }
+
+  .hero-chapeu {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.5rem;
+    font-style: normal;
+    line-height: 1.2;
+    color: #333;
+    border-left: 3px solid var(--vermelho);
+    padding-left: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-chapeu strong { font-style: normal; color: var(--vermelho); }
+
+  .hero-assina {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--cinza);
+    text-transform: uppercase;
+  }
+  .hero-assina span { color: var(--preto); font-weight: 600; }
+
+  /* ── LINHA DIVISÓRIA ── */
+  .divisor {
+    height: 3px;
+    background: linear-gradient(90deg, var(--vermelho) 0%, var(--vermelho) 40%, var(--creme-escuro) 40%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .divisor.animado {
+    transform: scaleX(1);
+  }
+
+  /* ── CORPO DO ARTIGO ── */
+  .artigo {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 4rem;
+  }
+
+  /* ESPAÇAMENTO UNIFORME — todos os filhos diretos do artigo */
+  .artigo > div {
+    margin-top: 3.5rem;
+  }
+  .artigo > div:first-child {
+    margin-top: 0;
+  }
+
+  /* TEXTO EM COLUNAS */
+  .texto-duplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  /* só aplica espaço após o secao-titulo dentro do bloco */
+  .secao-titulo + .texto-duplo,
+  .secao-titulo + figure + .texto-duplo {
+    margin-top: 1.5rem;
+  }
+  .texto-duplo p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: #2a2a2a;
+    text-indent: 1.5em;
+  }
+
+  /* TEXTO 3 COLUNAS */
+  .texto-triplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+  }
+  .texto-triplo p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: #2a2a2a;
+    text-indent: 1.5em;
+  }
+
+  /* SUBTÍTULOS DE SEÇÃO */
+  .secao-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--vermelho);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.4rem;
+    display: block;
+    position: relative;
+  }
+  .secao-titulo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--vermelho);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .secao-titulo.animado::after {
+    width: 100%;
+  }
+
+  /* CITAÇÃO EM DESTAQUE */
+  .citacao-bloco {
+    background: var(--vermelho);
+    padding: 3.5rem 4rem;
+    margin: 0;
+    position: relative;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .citacao-bloco.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .citacao-bloco {
+    position: relative;
+  }
+  .citacao-bloco blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--branco);
+    line-height: 1.5;
+    font-weight: 400;
+    padding-left: 5rem;
+    position: relative;
+  }
+  .citacao-bloco blockquote::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 9rem;
+    font-style: normal;
+    color: rgba(255,255,255,0.25);
+    position: absolute;
+    left: -0.5rem;
+    top: -1.5rem;
+    line-height: 1;
+  }
+
+  /* CITAÇÃO LATERAL (sidebar) */
+  .citacao-lateral {
+    border-left: 4px solid var(--vermelho);
+    padding: 1rem 1.5rem;
+    margin: 0;
+    float: right;
+    width: 45%;
+    margin-left: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .citacao-lateral p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--preto);
+    line-height: 1.5;
+    text-indent: 0 !important;
+  }
+
+  /* FOTOS DA CHINA */
+  .fotos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 3rem 0;
+  }
+  .fotos-grid img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+  }
+  .foto-legenda {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: #2a2a2a;
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+    grid-column: 1 / -1;
+    line-height: 1.5;
+  }
+
+  /* FOTO LARGA */
+  .foto-larga {
+    margin: 3rem 0 1rem;
+  }
+  .foto-larga img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .foto-larga figcaption {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: #2a2a2a;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+  }
+
+  /* SEPARADOR DE SEÇÃO */
+
+  /* CARD FINAL (perfil) */
+  .card-perfil {
+    background: var(--branco);
+    border: 1px solid var(--creme-escuro);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    margin-top: 4rem;
+    max-width: 500px;
+  }
+  .card-perfil-info h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--preto);
+  }
+  .card-perfil-info p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    color: var(--cinza);
+    text-indent: 0 !important;
+  }
+  .card-perfil-qr {
+    width: 64px;
+    height: 64px;
+    background: var(--creme-escuro);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* CLEARFIX */
+  .clearfix::after { content: ''; display: block; clear: both; height: 0; }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    overflow: hidden;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-foto { height: 100vh; max-height: none; }
+    .hero-texto { padding: 2.5rem 1.5rem; }
+    .texto-duplo, .texto-triplo { grid-template-columns: 1fr; gap: 0; }
+    .citacao-lateral { float: none; width: 100%; margin: 1.5rem 0; }
+    .artigo { padding: 3rem 1.2rem; }
+    .citacao-bloco { padding: 2rem 1.5rem; }
+    .fotos-grid { grid-template-columns: 1fr; }
+  }
+
+
+  /* ── HEADER / NAV ── */
+  nav {
+    background: var(--vermelho);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; height: 60px; }
+    .nav-btn { padding: 0 0.8rem; gap: 4px; height: 60px; }
+    .nav-label { display: none; }
+    .nav-btn .arrow { display: none; }
+    .hero-foto-caption { bottom: 6rem; }
+    .citacao-bloco { padding: 2rem 1.5rem; }
+    .citacao-bloco blockquote {
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .citacao-bloco blockquote::before {
+      position: static;
+      display: block;
+      font-size: 9rem;
+      line-height: 0.3;
+      margin-bottom: -0.5rem;
+      color: rgba(255,255,255,0.25);
+    }
+  }
+  .nav-logo svg { display: block; height: 18px; width: auto; }
+  .nav-menu { display: flex; align-items: center; }
+  .nav-item { position: relative; }
+  .nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0 1.4rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.12); }
+  .nav-btn .arrow { font-size: 8px; transition: transform 0.2s; opacity: 0.8; }
+  .nav-item.open .arrow { transform: rotate(180deg); }
+
+  /* dropdown idiomas */
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--vermelho);
+    min-width: 160px;
+    border-top: 2px solid rgba(255,255,255,0.25);
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 300;
+  }
+  .nav-item.open .dropdown { display: flex; }
+  .dropdown a {
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 13px 20px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    transition: background 0.15s;
+  }
+  .dropdown a:last-child { border-bottom: none; }
+  .dropdown a:hover { background: rgba(255,255,255,0.15); }
+
+  /* ── POPUP SUMÁRIO ── */
+  .sumario-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--vermelho);
+    z-index: 500;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sumario-overlay.open { display: flex; }
+  .sumario-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 70px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  .sumario-fechar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sumario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(9, 1fr);
+    gap: 0 70px;
+    padding: 0 2.5rem 1rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .sumario-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.4rem 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.22);
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .sumario-item:hover { background: rgba(255,255,255,0.07); }
+  .sumario-titulo-linha {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .sumario-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--branco);
+    flex-shrink: 0;
+    line-height: 1.15;
+    width: 3.8rem;
+  }
+  .sumario-secao {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: block;
+    padding-left: calc(3.8rem + 1rem);
+    margin-bottom: 1px;
+    line-height: 1.2;
+  }
+  .sumario-desc {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--branco);
+    line-height: 1.1;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    padding-left: 0;
+  }
+  @media (max-width: 900px) {
+    .sumario-overlay { overflow-y: auto; }
+    .sumario-header { padding: 0 20px; }
+    .sumario-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: unset;
+      overflow-y: unset;
+      padding: 0 20px 2rem;
+    }
+    .sumario-item {
+      grid-column: 1 !important;
+      grid-row: unset !important;
+    }
+    .sumario-desc { display: none; }
+    .sumario-num { font-size: 1.2rem; width: 2rem; }
+    .sumario-secao { font-size: 1.2rem; }
+  }
+
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-hint {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .scroll-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.75;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+  }
+  .scroll-hint span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--branco);
+  }
+  .scroll-hint svg { display: block; }
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.75; }
+    50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+  }
+
+  /* ── COMPARTILHAMENTO ── */
+  .share-sidebar {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 150;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .share-sidebar.visible { opacity: 1; }
+
+  .share-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    position: relative;
+  }
+  .share-btn:hover {
+    transform: scale(1.12);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .share-btn svg { display: block; }
+
+  .share-btn--whatsapp { background: #25D366; }
+  .share-btn--linkedin { background: #0A66C2; }
+  .share-btn--facebook { background: #1877F2; }
+  .share-btn--copy { background: var(--preto); }
+
+  /* Tooltip */
+  .share-btn::after {
+    content: attr(data-tip);
+    position: absolute;
+    right: 52px;
+    background: var(--preto);
+    color: var(--branco);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .share-btn:hover::after { opacity: 1; }
+
+  /* Mobile bottom bar */
+  .share-mobile {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--preto);
+    padding: 10px 1.5rem;
+    z-index: 150;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 2px solid var(--vermelho);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .share-mobile.visible { opacity: 1; }
+  .share-mobile .share-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .share-mobile .share-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    margin-top: 2px;
+  }
+  .share-mobile-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .share-sidebar { display: none; }
+    .share-mobile { display: flex; }
+    /* Add padding to body so content not hidden behind bar */
+
+  }
+  @media (min-width: 901px) {
+    .share-mobile { display: none !important; }
+  }
+
+  /* Copied feedback */
+  .share-btn--copy.copied::after { content: 'Copiado!'; opacity: 1; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--creme-escuro);
+  }
+  .cta-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .cta-texto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: var(--preto);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  .cta-texto p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    color: #555;
+    text-indent: 0;
+  }
+  .cta-botoes {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 1.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+  .cta-btn--whatsapp { background: #25D366; color: #fff; }
+  .cta-btn--site { background: var(--vermelho); color: #fff; }
+  .cta-btn svg { flex-shrink: 0; }
+
+  /* ── OUTRAS MATÉRIAS ── */
+  .outras-materias {
+    background: var(--branco);
+    padding: 4rem 0;
+  }
+  .carrossel-outer {
+    max-width: 80%;
+    margin: 0 auto;
+    position: relative;
+  }
+  .outras-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .carrossel-wrapper {
+    overflow: hidden;
+    padding: 0;
+  }
+  .carrossel-track {
+    display: flex;
+    gap: 2rem;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .carrossel-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-width: calc(50% - 1rem);
+    flex-shrink: 0;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 1rem 0;
+  }
+  .carrossel-card img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .carrossel-card-texto {}
+  .carrossel-card-secao {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--vermelho);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .carrossel-card-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--preto);
+    line-height: 1.2;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .carrossel-card-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    color: var(--cinza);
+    line-height: 1.4;
+  }
+  .carrossel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--vermelho);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    z-index: 10;
+  }
+  .carrossel-btn:hover { background: #a00d24; transform: translateY(-50%) scale(1.08); }
+  .carrossel-btn--prev { left: -1.5rem; }
+  .carrossel-btn--next { right: -1.5rem; }
+
+  /* ── FOOTER ── */
+  footer { position: relative; z-index: 0; isolation: isolate; }
+  .footer-mobile { display: flex; flex-direction: column; background: var(--vermelho); padding: 2.5rem 1.5rem; gap: 2rem; }
+  .footer-desktop { display: none; }
+  @media (min-width: 901px) {
+    .footer-mobile { display: none; }
+    .footer-desktop {
+      display: flex;
+      flex-direction: row;
+      background: var(--vermelho);
+      padding: 4rem;
+      gap: 3rem;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-desktop > * {
+      flex: 1 1 0;
+      min-width: 0;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+    }
+  }
+  .footer-logo svg { height: 40px; width: auto; display: block; margin-bottom: 1rem; }
+  .footer-tagline {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.975rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .footer-nav a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--branco);
+    text-decoration: none;
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: color 0.2s;
+  }
+  .footer-nav a:first-child { border-top: 1px solid rgba(255,255,255,0.2); }
+  .footer-nav a:hover { color: rgba(255,255,255,0.7); }
+  .footer-newsletter h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--branco);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .footer-newsletter p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.8375rem;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    text-indent: 0;
+  }
+  .newsletter-form {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    margin-bottom: 1rem;
+  }
+  .newsletter-form input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--branco);
+    padding: 0.6rem 0;
+  }
+  .newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+  footer input[type="email"]::placeholder { color: rgba(255,255,255,0.6) !important; }
+  .newsletter-form button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--branco);
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+  }
+  .newsletter-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .newsletter-check input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: var(--branco);
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+  .newsletter-check input[type="checkbox"]:focus { outline: none; box-shadow: none; }
+  .newsletter-check label {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+  }
+  .footer-bottom {
+    background: #a00d24;
+    padding: 1.2rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-bottom span, .footer-bottom a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+  }
+  .footer-bottom a:hover { color: var(--branco); }
+  .footer-bottom-links { display: flex; gap: 2rem; }
+  .footer-credit a { color: rgba(255,255,255,0.9) !important; font-weight: 600; }
+  .footer-bottom-left { display: flex; flex-direction: column; gap: 4px; }
+
+  @media (max-width: 900px) {
+    /* CTA */
+    .cta-inner {
+      flex-direction: column;
+      padding: 2.5rem 1.5rem;
+    }
+    .cta-botoes { width: 100%; flex-direction: column; }
+    .cta-btn { width: 100%; justify-content: center; }
+
+    /* Carrossel */
+    .carrossel-card {
+      min-width: 100%;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .carrossel-card img {
+      width: 100%;
+      height: 200px;
+    }
+    .carrossel-outer { max-width: 90%; }
+    .outras-materias { padding-bottom: 5rem; }
+
+    /* Footer */
+    .footer-desktop { display: none !important; }
+    .footer-mobile-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .footer-mobile-logo svg { height: 40px; margin-bottom: 0.8rem; }
+    .footer-mobile-logo .footer-tagline { text-align: center; color: rgba(255,255,255,0.7); font-family: 'Barlow', sans-serif; font-size: 0.975rem; }
+    .footer-mobile .footer-nav { align-items: center; }
+    .footer-mobile .footer-nav a { text-align: center; }
+    .footer-mobile .footer-newsletter h4,
+    .footer-mobile .footer-newsletter p { text-align: center; }
+    .footer-bottom {
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.8rem;
+    }
+    .footer-bottom-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
+
+    /* Footer bottom */
+    .footer-bottom {
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      text-align: center;
+    }
+    .footer-bottom-links {
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+  }
+
+  /* ── NAV MATÉRIAS ── */
+  .nav-materias {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+  .nav-materias-track-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+  .nav-materias-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-mat-card {
+    min-width: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 2rem;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  .nav-mat-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .nav-mat-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-mat-secao {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 0.5rem;
+  }
+  .nav-mat-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 700;
+    color: var(--vermelho);
+    line-height: 1.15;
+    font-style: italic;
+  }
+  .nav-mat-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    color: var(--cinza);
+    line-height: 1.4;
+    margin-top: 0.3rem;
+  }
+  .nav-mat-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--vermelho);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.2s;
+    z-index: 10;
+  }
+  .nav-mat-btn:hover { background: #a00d24; transform: scale(1.08); }
+  @media (max-width: 900px) {
+    .nav-materias { padding: 0 1rem; }
+    .nav-mat-card { min-width: 100%; padding: 0 1rem; flex-direction: column; align-items: center; text-align: center; }
+    .nav-mat-card img { width: 100%; height: 220px; }
+    .nav-mat-btn { width: 40px; height: 40px; }
+  }
+
+  /* ── NAVEGAÇÃO ENTRE MATÉRIAS ── */
+  .nav-edicao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 4rem;
+    background: var(--branco);
+    border-top: 1px solid var(--creme-escuro);
+  }
+  .nav-edicao-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid var(--vermelho);
+    color: var(--vermelho);
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-edicao-btn:hover {
+    background: var(--vermelho);
+    color: var(--branco);
+  }
+  @media (max-width: 900px) {
+    .nav-edicao {
+      flex-direction: column;
+      padding: 2.5rem 1.5rem;
+      gap: 1rem;
+    }
+    .nav-edicao-btn { width: 100%; justify-content: center; }
+  }
+
+  /* ── BARRA INFERIOR FOOTER ── */
+  .footer-bar {
+    background: #a00d24;
+    padding: 1.2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .footer-bar-copy {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    white-space: nowrap;
+  }
+  .footer-bar-links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: nowrap;
+  }
+  .footer-bar-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .footer-bar-link:hover {
+    color: var(--branco);
+    border-bottom: 1px solid var(--branco);
+  }
+  @media (max-width: 900px) {
+    .footer-bar {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.2rem 1.5rem 5rem;
+      gap: 0.8rem;
+    }
+    .footer-bar-copy { white-space: normal; font-size: 11px; }
+    .footer-bar-links { flex-wrap: nowrap; justify-content: center; gap: 1.2rem; }
+    .footer-bar-link { font-size: 11px; padding: 8px 4px; min-height: 44px; display: flex; align-items: center; }
+  }
+
+  /* ── FOOTER NAV LINKS ── */
+  .footer-nav-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    padding: 1rem 1rem;
+    text-align: center;
+    display: block;
+    transition: background 0.2s, color 0.2s;
+  }
+  .footer-nav-link:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+  }
+
+
+  /* ── READING CIRCLE ── */
+  .reading-circle {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 72px;
+    height: 72px;
+    z-index: 150;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    cursor: default;
+  }
+  .reading-circle.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .reading-circle svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 72px; height: 72px;
+    transform: rotate(-90deg);
+  }
+  .reading-circle-bg {
+    fill: none;
+    stroke: rgba(200,16,46,0.2);
+    stroke-width: 4;
+  }
+  .reading-circle-prog {
+    fill: none;
+    stroke: var(--vermelho);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 201;
+    stroke-dashoffset: 201;
+    transition: stroke-dashoffset 0.3s ease;
+  }
+  .reading-circle-inner {
+    position: absolute;
+    inset: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--branco);
+    border-radius: 50%;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .reading-circle-mins {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--vermelho);
+    line-height: 1;
+  }
+  .reading-circle-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .reading-circle-done .reading-circle-mins {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  @media (max-width: 900px) {
+    .reading-circle { bottom: 5rem; left: 1rem; width: 64px; height: 64px; }
+    .reading-circle svg { width: 64px; height: 64px; }
+    .reading-circle-mins { font-size: 19px; }
+  }
+
+
+  /* ── POLÍTICA PAGE ── */
+  .policy-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 2rem 8rem;
+  }
+  .policy-wrapper h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: var(--vermelho);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+  .policy-wrapper .data-update {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 3rem;
+    display: block;
+  }
+  .policy-wrapper h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--preto);
+    margin: 2.5rem 0 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--vermelho);
+  }
+  .policy-wrapper h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--preto);
+    margin: 1.5rem 0 0.5rem;
+  }
+  .policy-wrapper p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #2a2a2a;
+    margin-bottom: 1rem;
+  }
+  .policy-wrapper ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+  }
+  .policy-wrapper ul li {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #2a2a2a;
+    margin-bottom: 0.3rem;
+  }
+  .policy-wrapper a {
+    color: var(--vermelho);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(200,16,46,0.3);
+    transition: border-color 0.2s;
+  }
+  .policy-wrapper a:hover { border-color: var(--vermelho); }
+  .policy-breadcrumb {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .policy-breadcrumb a { color: var(--vermelho); text-decoration: none; border: none; }
+  .policy-breadcrumb a:hover { text-decoration: underline; }
+
+</style>
+</head>
+<body>
+
+<!-- SUMÁRIO POPUP -->
+<div class="sumario-overlay" id="sumario">
+  <div class="sumario-header">
+    <div class="nav-logo"><a href="https://bnibusiness.com.br"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" class="footer-svg" style="display:block">
+  <defs>
+    <clipPath id="cp0"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp1"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp2"><rect width="192.9" height="20"/></clipPath>
+  </defs>
+  <g clip-path="url(#cp0)">
+    <path fill="#fff" d="M188.88,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.02.58,3.38.58M180.56,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M170.46,13.2c.17-1.87.93-2.89,1.68-2.89,1.1,0,1.34,1.59,1.34,2.89h-3.01ZM171.8,20c2.33,0,3.77-1.18,4.59-3.32l-.13-.06c-.52,1.12-1.38,1.68-2.61,1.68-2,0-3.23-1.66-3.23-3.94,0-.26-.02-.67.02-.93,1.21.04,5.82.11,5.82.11.02-.13.04-.26.04-.41,0-1.33-1.1-3.12-3.86-3.12-2.91,0-5.28,2.18-5.28,5.19,0,2.71,1.98,4.8,4.63,4.8M155.11,19.66h5.49l-.04-.13-.32-.02c-.75-.06-.84-.13-.84-.3v-6.89c.41-.24.82-.45,1.53-.45.95,0,1.66.43,1.66,1.83v5.47c0,.17.04.3-.71.34l-.39.02-.07.13h5.58l-.06-.13-.19-.02c-1.01-.13-1.12-.19-1.12-.32v-5.79c0-1.03-.19-2.07-.69-2.58-.49-.47-.99-.75-1.72-.75-1.4,0-2.78,1.1-3.79,1.98h-.02l.06-1.94-4.48,1.23-.02.09.49.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.06.13ZM149,19.66h5.64l-.06-.13-.17-.02c-.99-.11-1.12-.13-1.12-.3v-9.11l-4.41,1.23-.02.09.5.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.07.13ZM151.67,8.95c1.19,0,1.83-.91,1.83-1.77s-.65-1.77-1.83-1.77-1.83.88-1.83,1.77.67,1.77,1.83,1.77M144.24,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M136.12,20l4.44-1.31.02-.09-.54-.11c-.71-.19-.84-.39-.84-1.64v-6.48h-4.52l.07.13.3.02c.97.06,1.12.09,1.12.3v6.87c-.39.22-.75.45-1.36.45-1.03,0-1.74-.45-1.7-1.81l.07-5.96h-4.59l.07.13.3.02c1.1.09,1.19.17,1.19.26l-.09,5.79c-.04,1.08.17,2.07.69,2.58.52.52.86.8,1.59.8,1.4,0,2.74-1.01,3.81-2h.06l-.09,2.05ZM121.15,12.27v-5.75l.24-.04c1.75,0,3.23.86,3.23,2.86,0,2.13-1.57,3.01-3.38,2.93h-.09ZM122.12,19.44l-.97-.37v-6.59c.07-.02.22-.04.39-.04,1.94,0,3.62,1.25,3.62,3.38s-1.34,3.36-2.86,3.55l-.17.06ZM115.77,19.66h6.87c4.24,0,6.07-1.55,6.07-3.98,0-2.02-1.7-3.32-4.41-3.55v-.04c2.33-.39,3.75-1.29,3.75-2.78,0-2.24-1.77-3.1-6.03-3.1h-6.22l.06.17.58.06c1.08.13,1.2.13,1.2.28v12.36c0,.13-.24.26-.99.37l-.82.09-.06.13Z"/>
+    <polygon fill="#fff" points="97.37 0 97.37 9.66 89.77 0 83.88 0 83.88 19.49 89.77 19.49 89.77 9.15 97.97 19.49 103.23 19.49 103.23 0 97.37 0"/>
+    <g clip-path="url(#cp1)">
+      <path fill="#fff" d="M70.36,11.94h3.1c1.4,0,2.34.51,2.31,1.57-.03,1.02-.86,1.49-1.96,1.49h-3.45v-3.06ZM70.36,4.5h2.27c1.21,0,2.08.34,2.05,1.6-.03,1.09-.98,1.5-2.05,1.5h-2.27v-3.1ZM64.34,19.48h8.03s2.29,0,2.29,0c1.64,0,3.16-.25,4.55-1.06,3.1-1.8,3.37-5.77,1.12-7.9-1.19-1.05-1.98-1.22-2.53-1.39.76-.38,1.48-.88,2.03-1.54.55-.66.9-1.62.86-2.74C80.55.84,77.01,0,74.21,0h-2.8l-7.07.02v19.47Z"/>
+    </g>
+    <polygon fill="#fff" points="105.72 8.24 105.72 19.49 111.7 19.49 111.7 2.32 105.72 8.24"/>
+    <polygon fill="#fff" points="105.72 0 105.72 5.96 111.7 0 105.72 0"/>
+    <g clip-path="url(#cp2)">
+      <path fill="#fff" d="M1.26,6.14h6.32c2.5,0,4.3,1.42,4.3,3.76,0,1.6-.72,2.75-2.47,3.31v.05c1.42.43,1.94,1.24,2.09,2.9.22,1.96.23,3.06.59,3.24v.13h-2.52c-.34-.22-.34-1.26-.49-3.06-.14-1.58-.88-2.27-2.48-2.27h-2.86v5.33H1.26V6.14ZM3.74,12.3h3.24c1.57,0,2.39-.79,2.39-2.03,0-1.33-.7-2.09-2.3-2.09h-3.33v4.12Z"/>
+      <path fill="#fff" d="M12.78,14.75c0-2.86,1.93-5.08,4.77-5.08,1.4,0,2.5.49,3.31,1.35.94.99,1.39,2.5,1.37,4.29h-7.18c.16,1.66,1.04,2.77,2.65,2.77,1.1,0,1.82-.47,2.12-1.26h2.23c-.47,1.73-2.02,3.01-4.38,3.01-3.06,0-4.9-2.23-4.9-5.08ZM15.08,13.87h4.79c-.09-1.58-.94-2.54-2.32-2.54-1.49,0-2.27,1.03-2.47,2.54Z"/>
+      <path fill="#fff" d="M22.21,9.92h2.4l1.4,4.48c.41,1.3.81,3.22.81,3.22h.05s.38-1.93.79-3.22l1.46-4.48h2.32l-3.4,9.62h-2.5l-3.33-9.62Z"/>
+      <path fill="#fff" d="M32.09,6.14h2.34v2.21h-2.34v-2.21ZM32.13,9.92h2.29v9.62h-2.29v-9.62Z"/>
+      <path fill="#fff" d="M35.44,16.59h2.2c.18,1.15,1.06,1.64,2.29,1.64s1.85-.54,1.85-1.31c0-.95-.97-1.13-2.48-1.42-1.8-.36-3.51-.77-3.51-2.95,0-1.82,1.55-2.86,3.8-2.86,2.56,0,3.84,1.15,4.07,2.83h-2.18c-.16-.83-.77-1.28-1.91-1.28-1.06,0-1.62.49-1.62,1.15,0,.85.99,1.01,2.45,1.28,1.82.34,3.62.77,3.62,3.12,0,2.02-1.73,3.08-4.1,3.08-2.74,0-4.32-1.31-4.47-3.26Z"/>
+      <path fill="#fff" d="M44.37,9.92h1.48v-3.06h2.25v3.06h1.93v1.57h-1.93v5.38c0,.7.38.9,1.03.9.23,0,.56-.04.74-.07h.11v1.78c-.38.07-.9.14-1.51.14-1.55,0-2.61-.56-2.61-2.25v-5.89h-1.48v-1.57Z"/>
+      <path fill="#fff" d="M57.17,18.3h-.04c-.63.85-1.49,1.48-3.02,1.48-1.87,0-3.28-.97-3.28-2.84,0-2.18,1.66-2.7,3.94-2.97,1.58-.2,2.38-.45,2.38-1.31s-.58-1.39-1.73-1.39c-1.28,0-1.91.59-1.96,1.55h-2.16c.07-1.64,1.37-3.13,4.1-3.13,1.1,0,1.94.16,2.57.56.9.54,1.37,1.46,1.37,2.74v5.06c0,.79.14,1.21.36,1.35v.16h-2.21c-.16-.22-.29-.59-.32-1.24ZM57.2,16.05v-1.42c-.45.29-1.17.49-1.87.63-1.4.27-2.21.56-2.21,1.62s.77,1.33,1.66,1.33c1.57,0,2.43-1.08,2.43-2.16Z"/>
+    </g>
+  </g>
+</svg></div>
+    <button class="sumario-fechar" onclick="fecharSumario()">
+      Fechar <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" width="20" height="20"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+    </button>
+  </div>
+  <div class="sumario-grid">
+    <a class="sumario-item" href="https://bnibusiness.com.br/edicao-01/eventos/" style="grid-column:1;grid-row:1;">
+      <span class="sumario-secao">Evento</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">01</span><span class="sumario-desc">O que o charuto tem a ver com você</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:2;">
+      <span class="sumario-secao">Turismo</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">02</span><span class="sumario-desc">Do passaporte à coragem: o que muda quando você cruza as fronteiras pela primeira vez.</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:3;">
+      <span class="sumario-secao">Matéria de Capa</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">03</span><span class="sumario-desc">BNI Revoluciona o Networking na Região Oeste de São Paulo: 12 Grupos unindo empresários e transformando negócios</span></span>
+    </a>
+    <a class="sumario-item" href="https://bnibusiness.com.br/edicao-01/materia-de-capa/" style="grid-column:1;grid-row:4;">
+      <span class="sumario-secao">Matéria de Capa</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">04</span><span class="sumario-desc">O estrategista por trás da nova geração de obras</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:5;">
+      <span class="sumario-secao">Case BNI</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">05</span><span class="sumario-desc">Quando um grupo aposta em um sonho: a história de Anderson "Nen" e o verdadeiro significado de "Givers Gain"</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:6;">
+      <span class="sumario-secao">Estilo</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">06</span><span class="sumario-desc">Onde paixão encontra propósito: a história de quem achou seu lugar</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:7;">
+      <span class="sumario-secao">Design</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">07</span><span class="sumario-desc">O alquimista do Aço: a história de quem transforma metal em sonhos</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:8;">
+      <span class="sumario-secao">CEOs no BNI</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">08</span><span class="sumario-desc">John Rodgerson: valores, relacionamentos e a arte de construir uma das maiores companhias aéreas do Brasil</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:1;grid-row:9;">
+      <span class="sumario-secao">Desenvolvimento pessoal</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">09</span><span class="sumario-desc">A raridade que desperta onde o fim se transforma em novos começos</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:1;">
+      <span class="sumario-secao">Idiomas</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-desc">"Inglês não é para mim!!"</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:2;">
+      <span class="sumario-secao">Engenharia</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">11</span><span class="sumario-desc">Quando a estrutura conta uma história: projetos que desafiam o impossível</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:3;">
+      <span class="sumario-secao">ONG</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">12</span><span class="sumario-desc">Novas Trilhas: empresários transformam vidas além dos negócios</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:4;">
+      <span class="sumario-secao">Saúde mental</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">13</span><span class="sumario-desc">O segredo dos líderes que performam sem ansiedade: conheça a Tonos</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:5;">
+      <span class="sumario-secao">Saúde</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">14</span><span class="sumario-desc">A nova era da fisioterapia: visão integrada, resultado real</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:6;">
+      <span class="sumario-secao">Publicidade</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">15</span><span class="sumario-desc">Quando a luz se acende, a cidade vê</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:7;">
+      <span class="sumario-secao">Investimentos</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">16</span><span class="sumario-desc">Além dos números: a arte de construir legados que transcendem gerações</span></span>
+    </a>
+    <a class="sumario-item" href="#" style="grid-column:2;grid-row:8;">
+      <span class="sumario-secao">Saúde mental</span>
+      <span class="sumario-titulo-linha"><span class="sumario-num">17</span><span class="sumario-desc">Educação financeira: o caminho para construir segurança, patrimônio e liberdade</span></span>
+    </a>
+  </div>
+</div>
+
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><a href="https://bnibusiness.com.br"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" height="18" style="display:block">
+  <defs>
+    <clipPath id="cp0"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp1"><rect width="192.9" height="20"/></clipPath>
+    <clipPath id="cp2"><rect width="192.9" height="20"/></clipPath>
+  </defs>
+  <g clip-path="url(#cp0)">
+    <path fill="#fff" d="M188.88,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.02.58,3.38.58M180.56,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M170.46,13.2c.17-1.87.93-2.89,1.68-2.89,1.1,0,1.34,1.59,1.34,2.89h-3.01ZM171.8,20c2.33,0,3.77-1.18,4.59-3.32l-.13-.06c-.52,1.12-1.38,1.68-2.61,1.68-2,0-3.23-1.66-3.23-3.94,0-.26-.02-.67.02-.93,1.21.04,5.82.11,5.82.11.02-.13.04-.26.04-.41,0-1.33-1.1-3.12-3.86-3.12-2.91,0-5.28,2.18-5.28,5.19,0,2.71,1.98,4.8,4.63,4.8M155.11,19.66h5.49l-.04-.13-.32-.02c-.75-.06-.84-.13-.84-.3v-6.89c.41-.24.82-.45,1.53-.45.95,0,1.66.43,1.66,1.83v5.47c0,.17.04.3-.71.34l-.39.02-.07.13h5.58l-.06-.13-.19-.02c-1.01-.13-1.12-.19-1.12-.32v-5.79c0-1.03-.19-2.07-.69-2.58-.49-.47-.99-.75-1.72-.75-1.4,0-2.78,1.1-3.79,1.98h-.02l.06-1.94-4.48,1.23-.02.09.49.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.06.13ZM149,19.66h5.64l-.06-.13-.17-.02c-.99-.11-1.12-.13-1.12-.3v-9.11l-4.41,1.23-.02.09.5.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.07.13ZM151.67,8.95c1.19,0,1.83-.91,1.83-1.77s-.65-1.77-1.83-1.77-1.83.88-1.83,1.77.67,1.77,1.83,1.77M144.24,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M136.12,20l4.44-1.31.02-.09-.54-.11c-.71-.19-.84-.39-.84-1.64v-6.48h-4.52l.07.13.3.02c.97.06,1.12.09,1.12.3v6.87c-.39.22-.75.45-1.36.45-1.03,0-1.74-.45-1.7-1.81l.07-5.96h-4.59l.07.13.3.02c1.1.09,1.19.17,1.19.26l-.09,5.79c-.04,1.08.17,2.07.69,2.58.52.52.86.8,1.59.8,1.4,0,2.74-1.01,3.81-2h.06l-.09,2.05ZM121.15,12.27v-5.75l.24-.04c1.75,0,3.23.86,3.23,2.86,0,2.13-1.57,3.01-3.38,2.93h-.09ZM122.12,19.44l-.97-.37v-6.59c.07-.02.22-.04.39-.04,1.94,0,3.62,1.25,3.62,3.38s-1.34,3.36-2.86,3.55l-.17.06ZM115.77,19.66h6.87c4.24,0,6.07-1.55,6.07-3.98,0-2.02-1.7-3.32-4.41-3.55v-.04c2.33-.39,3.75-1.29,3.75-2.78,0-2.24-1.77-3.1-6.03-3.1h-6.22l.06.17.58.06c1.08.13,1.2.13,1.2.28v12.36c0,.13-.24.26-.99.37l-.82.09-.06.13Z"/>
+    <polygon fill="#fff" points="97.37 0 97.37 9.66 89.77 0 83.88 0 83.88 19.49 89.77 19.49 89.77 9.15 97.97 19.49 103.23 19.49 103.23 0 97.37 0"/>
+    <g clip-path="url(#cp1)">
+      <path fill="#fff" d="M70.36,11.94h3.1c1.4,0,2.34.51,2.31,1.57-.03,1.02-.86,1.49-1.96,1.49h-3.45v-3.06ZM70.36,4.5h2.27c1.21,0,2.08.34,2.05,1.6-.03,1.09-.98,1.5-2.05,1.5h-2.27v-3.1ZM64.34,19.48h8.03s2.29,0,2.29,0c1.64,0,3.16-.25,4.55-1.06,3.1-1.8,3.37-5.77,1.12-7.9-1.19-1.05-1.98-1.22-2.53-1.39.76-.38,1.48-.88,2.03-1.54.55-.66.9-1.62.86-2.74C80.55.84,77.01,0,74.21,0h-2.8l-7.07.02v19.47Z"/>
+    </g>
+    <polygon fill="#fff" points="105.72 8.24 105.72 19.49 111.7 19.49 111.7 2.32 105.72 8.24"/>
+    <polygon fill="#fff" points="105.72 0 105.72 5.96 111.7 0 105.72 0"/>
+    <g clip-path="url(#cp2)">
+      <path fill="#fff" d="M1.26,6.14h6.32c2.5,0,4.3,1.42,4.3,3.76,0,1.6-.72,2.75-2.47,3.31v.05c1.42.43,1.94,1.24,2.09,2.9.22,1.96.23,3.06.59,3.24v.13h-2.52c-.34-.22-.34-1.26-.49-3.06-.14-1.58-.88-2.27-2.48-2.27h-2.86v5.33H1.26V6.14ZM3.74,12.3h3.24c1.57,0,2.39-.79,2.39-2.03,0-1.33-.7-2.09-2.3-2.09h-3.33v4.12Z"/>
+      <path fill="#fff" d="M12.78,14.75c0-2.86,1.93-5.08,4.77-5.08,1.4,0,2.5.49,3.31,1.35.94.99,1.39,2.5,1.37,4.29h-7.18c.16,1.66,1.04,2.77,2.65,2.77,1.1,0,1.82-.47,2.12-1.26h2.23c-.47,1.73-2.02,3.01-4.38,3.01-3.06,0-4.9-2.23-4.9-5.08ZM15.08,13.87h4.79c-.09-1.58-.94-2.54-2.32-2.54-1.49,0-2.27,1.03-2.47,2.54Z"/>
+      <path fill="#fff" d="M22.21,9.92h2.4l1.4,4.48c.41,1.3.81,3.22.81,3.22h.05s.38-1.93.79-3.22l1.46-4.48h2.32l-3.4,9.62h-2.5l-3.33-9.62Z"/>
+      <path fill="#fff" d="M32.09,6.14h2.34v2.21h-2.34v-2.21ZM32.13,9.92h2.29v9.62h-2.29v-9.62Z"/>
+      <path fill="#fff" d="M35.44,16.59h2.2c.18,1.15,1.06,1.64,2.29,1.64s1.85-.54,1.85-1.31c0-.95-.97-1.13-2.48-1.42-1.8-.36-3.51-.77-3.51-2.95,0-1.82,1.55-2.86,3.8-2.86,2.56,0,3.84,1.15,4.07,2.83h-2.18c-.16-.83-.77-1.28-1.91-1.28-1.06,0-1.62.49-1.62,1.15,0,.85.99,1.01,2.45,1.28,1.82.34,3.62.77,3.62,3.12,0,2.02-1.73,3.08-4.1,3.08-2.74,0-4.32-1.31-4.47-3.26Z"/>
+      <path fill="#fff" d="M44.37,9.92h1.48v-3.06h2.25v3.06h1.93v1.57h-1.93v5.38c0,.7.38.9,1.03.9.23,0,.56-.04.74-.07h.11v1.78c-.38.07-.9.14-1.51.14-1.55,0-2.61-.56-2.61-2.25v-5.89h-1.48v-1.57Z"/>
+      <path fill="#fff" d="M57.17,18.3h-.04c-.63.85-1.49,1.48-3.02,1.48-1.87,0-3.28-.97-3.28-2.84,0-2.18,1.66-2.7,3.94-2.97,1.58-.2,2.38-.45,2.38-1.31s-.58-1.39-1.73-1.39c-1.28,0-1.91.59-1.96,1.55h-2.16c.07-1.64,1.37-3.13,4.1-3.13,1.1,0,1.94.16,2.57.56.9.54,1.37,1.46,1.37,2.74v5.06c0,.79.14,1.21.36,1.35v.16h-2.21c-.16-.22-.29-.59-.32-1.24ZM57.2,16.05v-1.42c-.45.29-1.17.49-1.87.63-1.4.27-2.21.56-2.21,1.62s.77,1.33,1.66,1.33c1.57,0,2.43-1.08,2.43-2.16Z"/>
+    </g>
+  </g>
+</svg></div>
+  <div class="nav-menu">
+    <div class="nav-item" id="item-idiomas">
+      <button class="nav-btn" onclick="toggleDropdown('item-idiomas')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="nav-label" id="langLabel">PT</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="dropdown">
+        <a href="https://bnibusiness.com.br/cookies/" onclick="setLang('PT')" data-lang="PT">PT — Português</a>
+        <a href="https://bnibusiness.com.br/cookies/" onclick="setLang('EN')" data-lang="EN">EN — English</a>
+        <a href="https://bnibusiness.com.br/cookies/" onclick="setLang('ES')" data-lang="ES">ES — Español</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="abrirSumario()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span class="nav-label">Sumário</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div style="background:var(--creme);min-height:80vh;">
+  <div class="policy-wrapper">
+    <div class="policy-breadcrumb">
+      <a href="https://bnibusiness.com.br">Início</a>
+      <span>›</span>
+      <span>Política de Cookies</span>
+    </div>
+    
+    <h1>Política de Cookies</h1>
+    <p class="data-update">Última atualização: 1 de maio de 2026</p>
+
+    <h2>O que são cookies?</h2>
+    <p>Cookies são pequenos arquivos de texto armazenados no seu dispositivo quando você visita um site. Eles nos ajudam a oferecer uma experiência personalizada e a melhorar continuamente a Revista BNI Business.</p>
+
+    <h2>Como utilizamos os cookies</h2>
+    <p>A Revista BNI Business utiliza cookies para as seguintes finalidades:</p>
+
+    <h3>Cookies essenciais</h3>
+    <p>Necessários para o funcionamento básico do site. Não podem ser desativados, pois são fundamentais para que você navegue e utilize os recursos disponíveis.</p>
+
+    <h3>Cookies de desempenho</h3>
+    <p>Utilizamos o Google Analytics para coletar informações sobre como os visitantes usam o site — quais páginas são mais acessadas, de onde vêm os leitores e como navegam pelo conteúdo. Todas as informações são coletadas de forma anônima.</p>
+
+    <h3>Cookies de funcionalidade</h3>
+    <p>Permitem que o site lembre de suas preferências, como idioma selecionado, para oferecer uma experiência mais personalizada.</p>
+
+    <h2>Como gerenciar cookies</h2>
+    <p>Você pode controlar e gerenciar cookies nas configurações do seu navegador. Desativar alguns cookies pode afetar a funcionalidade do site. Para saber mais, consulte a documentação do seu navegador:</p>
+    <ul>
+      <li>Google Chrome: Configurações → Privacidade e segurança → Cookies</li>
+      <li>Mozilla Firefox: Preferências → Privacidade e segurança</li>
+      <li>Safari: Preferências → Privacidade</li>
+    </ul>
+
+    <h2>Cookies de terceiros</h2>
+    <p>Utilizamos serviços de terceiros que podem instalar seus próprios cookies:</p>
+    <ul>
+      <li><strong>Google Analytics</strong> — análise de tráfego e comportamento de navegação</li>
+      <li><strong>Google Fonts</strong> — carregamento de tipografias</li>
+    </ul>
+
+    <h2>Contato</h2>
+    <p>Dúvidas sobre nossa política de cookies? Entre em contato: <a href="mailto:contato@bnibusiness.com.br">contato@bnibusiness.com.br</a></p>
+
+  </div>
+</div>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--vermelho);">
+    <div style="padding:3rem 2rem;display:flex;flex-wrap:wrap;gap:2.5rem;background:var(--vermelho);">
+      <div style="flex:1 1 200px;min-width:200px;">
+        <div style="max-width:450px;margin:0 auto;">
+          <div style="margin-bottom:1rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128.57 20" style="width:100%;max-width:450px;height:auto;display:block;">
+  
+  <g id="Camada_1-2" data-name="Camada 1">
+    <path fill="#fff" d="M124.54,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.02.58,3.38.58M116.23,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M106.13,13.2c.17-1.87.93-2.89,1.68-2.89,1.1,0,1.33,1.59,1.33,2.89h-3.01ZM107.46,20c2.33,0,3.77-1.18,4.59-3.32l-.13-.06c-.52,1.12-1.38,1.68-2.61,1.68-2,0-3.23-1.66-3.23-3.94,0-.26-.02-.67.02-.93,1.21.04,5.82.11,5.82.11.02-.13.04-.26.04-.41,0-1.33-1.1-3.12-3.86-3.12-2.91,0-5.28,2.18-5.28,5.19,0,2.71,1.98,4.8,4.63,4.8M90.78,19.66h5.49l-.04-.13-.32-.02c-.75-.06-.84-.13-.84-.3v-6.89c.41-.24.82-.45,1.53-.45.95,0,1.66.43,1.66,1.83v5.47c0,.17.04.3-.71.34l-.39.02-.06.13h5.58l-.06-.13-.19-.02c-1.01-.13-1.12-.19-1.12-.32v-5.79c0-1.03-.19-2.07-.69-2.58-.49-.47-.99-.75-1.72-.75-1.4,0-2.78,1.1-3.79,1.98h-.02l.06-1.94-4.48,1.23-.02.09.49.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.06.13ZM84.66,19.66h5.64l-.06-.13-.17-.02c-.99-.11-1.12-.13-1.12-.3v-9.11l-4.41,1.23-.02.09.5.11c.73.19.88.37.88,1.7v5.94c0,.26-.24.3-.9.34l-.26.02-.07.13ZM87.33,8.95c1.19,0,1.83-.91,1.83-1.77s-.65-1.77-1.83-1.77-1.83.88-1.83,1.77.67,1.77,1.83,1.77M79.9,19.96c2.84,0,4.03-1.59,4.03-3.21,0-1.83-1.59-2.43-2.95-3.04-1.23-.5-2.3-.93-2.3-1.89s.58-1.55,1.51-1.55c.45,0,.82.15,1.16.35l2,2.63.09-.04-.11-2.95-.99.19c-.56-.19-1.4-.37-2.11-.37-2.22,0-3.75,1.23-3.75,3.17,0,1.68,1.27,2.33,2.89,2.97,1.18.49,2.24.93,2.24,1.98,0,.97-.62,1.57-1.64,1.57-1.36,0-1.96-.71-2.84-2.17l-.58-.88-.09-.04.06,2.71c.8.3,2.03.58,3.38.58M71.78,20l4.44-1.31.02-.09-.54-.11c-.71-.19-.84-.39-.84-1.64v-6.48h-4.52l.07.13.3.02c.97.06,1.12.09,1.12.3v6.87c-.39.22-.75.45-1.36.45-1.03,0-1.74-.45-1.7-1.81l.06-5.96h-4.59l.07.13.3.02c1.1.09,1.19.17,1.19.26l-.09,5.79c-.04,1.08.17,2.07.69,2.58.52.52.86.8,1.59.8,1.4,0,2.74-1.01,3.81-2h.06l-.09,2.05ZM56.82,12.27v-5.75l.24-.04c1.74,0,3.23.86,3.23,2.86,0,2.13-1.57,3.01-3.38,2.93h-.09ZM57.79,19.44l-.97-.37v-6.59c.06-.02.22-.04.39-.04,1.94,0,3.62,1.25,3.62,3.38s-1.34,3.36-2.86,3.55l-.17.06ZM51.43,19.66h6.87c4.24,0,6.07-1.55,6.07-3.98,0-2.02-1.7-3.32-4.41-3.55v-.04c2.33-.39,3.75-1.29,3.75-2.78,0-2.24-1.77-3.1-6.03-3.1h-6.22l.06.17.58.06c1.08.13,1.2.13,1.2.28v12.36c0,.13-.24.26-.99.37l-.82.09-.06.13Z"/>
+    <polygon fill="#fff" points="33.03 0 33.03 9.66 25.43 0 19.54 0 19.54 19.49 25.43 19.49 25.43 9.15 33.63 19.49 38.89 19.49 38.89 0 33.03 0"/>
+    <path fill="#fff" d="M6.03,11.94h3.1c1.4,0,2.34.51,2.31,1.57-.03,1.02-.85,1.49-1.96,1.49h-3.45v-3.06ZM6.03,4.5h2.27c1.21,0,2.09.34,2.05,1.6-.03,1.09-.98,1.5-2.05,1.5h-2.27v-3.1ZM0,19.48h8.03s2.29,0,2.29,0c1.64,0,3.16-.25,4.55-1.06,3.1-1.8,3.36-5.77,1.12-7.9-1.19-1.05-1.98-1.22-2.53-1.39.76-.38,1.48-.88,2.03-1.54.55-.66.9-1.62.86-2.74-.13-4.02-3.68-4.87-6.48-4.87h-2.8L0,.02v19.47Z"/>
+    <polygon fill="#fff" points="41.38 8.24 41.38 19.49 47.37 19.49 47.37 2.32 41.38 8.24"/>
+    <polygon fill="#fff" points="41.38 0 41.38 5.96 47.37 0 41.38 0"/>
+    <g>
+      <path fill="#fff" d="M49.69,17.27c.31,0,.59.12.79.33.2.2.33.48.33.79s-.12.58-.33.79c-.2.2-.48.33-.79.33s-.58-.12-.79-.33c-.2-.2-.33-.48-.33-.79s.12-.59.33-.79c.2-.2.48-.33.79-.33M50.34,17.73c-.17-.17-.4-.27-.66-.27s-.49.1-.65.27c-.17.17-.27.4-.27.66s.1.49.27.65c.17.17.4.27.65.27s.49-.1.66-.27c.17-.17.27-.4.27-.65s-.1-.49-.27-.66"/>
+      <path fill="#fff" d="M49.25,19.02h.17v-.54h.21l.38.54h.2l-.4-.56c.22-.03.35-.14.35-.32,0-.3-.29-.33-.56-.33h-.36v1.21ZM49.42,17.94h.23c.16,0,.34.03.34.2,0,.2-.24.2-.42.2h-.15v-.4Z"/>
+    </g>
+  </g>
+</svg></div>
+          <p style="font-family:'Barlow',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7);">Conectando empresários. Gerando resultados.</p>
+          <div style="display:flex;gap:14px;margin-top:1rem;align-items:center;">
+            <a href="https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business" target="_blank" rel="noopener" title="WhatsApp" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a href="mailto:contato@bnibusiness.com.br" title="Email" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            </a>
+            <a href="https://instagram.com/revistabnibusiness" target="_blank" rel="noopener" title="Instagram" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="#fff"/></svg>
+            </a>
+            <a href="https://linkedin.com/company/revistabnibusiness" target="_blank" rel="noopener" title="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 150px;min-width:150px;"><div style="max-width:450px;margin:0 auto;display:flex;flex-direction:column;">
+        <a href="https://bnibusiness.com.br" class="footer-nav-link" style="border-top:1px solid rgba(255,255,255,0.2);border-bottom:1px solid rgba(255,255,255,0.2);">Revistas</a>
+        <a href="#" class="footer-nav-link" style="border-bottom:1px solid rgba(255,255,255,0.2);">Sobre</a>
+        <a href="mailto:contato@bnibusiness.com.br" class="footer-nav-link" style="border-bottom:1px solid rgba(255,255,255,0.2);">Contato</a>
+        <a href="#" class="footer-nav-link" style="border-bottom:1px solid rgba(255,255,255,0.2);">Expediente</a>
+        </div>
+      </div>
+      <div style="flex:1 1 220px;min-width:220px;"><div style="max-width:450px;margin:0 auto;">
+        <h4 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.5rem;text-align:center;">Inscreva-se</h4>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.8375rem;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:1.2rem;line-height:1.5;">Inscreva-se em nossa newsletter!<br>Seja o primeiro a receber as últimas notícias sobre negócios, design e cultura.</p>
+        <div style="display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.5);margin-bottom:1rem;">
+          <input type="email" placeholder="SEU E-MAIL" style="flex:1;background:none;border:none;outline:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:0.6rem 0;text-align:center;"  />
+          <button style="background:none;border:none;cursor:pointer;color:#fff;padding:0.4rem;display:flex;align-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <input type="checkbox" style="margin-top:3px;flex-shrink:0;accent-color:#fff;outline:none;border:none;box-shadow:none;" />
+          <label style="font-family:'Barlow',sans-serif;font-size:0.8375rem;color:rgba(255,255,255,0.65);line-height:1.4;">Concordo em receber esta newsletter e entendo que posso cancelar a assinatura a qualquer momento.</label>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span class="footer-bar-copy">© 2026 — Todos os direitos reservados — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>
+      <div class="footer-bar-links">
+        <a href="https://bnibusiness.com.br/cookies/" class="footer-bar-link">Cookies</a>
+        <a href="https://bnibusiness.com.br/privacidade/" class="footer-bar-link">Privacidade</a>
+        <a href="https://bnibusiness.com.br/termos/" class="footer-bar-link">Termos de Uso</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+
+  // Scroll fade-in
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  setTimeout(() => {
+    const h = document.querySelector('.hero-texto');
+    if (h) h.classList.add('visible');
+  }, 100);
+
+  // Divisor animation on load
+  setTimeout(() => {
+    const d = document.querySelector('.divisor');
+    if (d) d.classList.add('animado');
+  }, 300);
+
+  // Secao-titulo underline draw animation
+  const obsTitulo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('animado');
+        obsTitulo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.8 });
+  document.querySelectorAll('.secao-titulo').forEach(el => obsTitulo.observe(el));
+
+  // Citacao slide-in (separate from fade-in)
+  const obsCitacao = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obsCitacao.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.citacao-bloco').forEach(el => obsCitacao.observe(el));
+
+  // Hero parallax
+  const heroImg = document.querySelector('.hero-foto img');
+  if (heroImg) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * 0.25;
+      heroImg.style.transform = 'translateY(' + rate + 'px)';
+    }, { passive: true });
+  }
+
+  // Dropdown idiomas
+  function toggleDropdown(id) {
+    const item = document.getElementById(id);
+    item.classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-item')) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    }
+  });
+
+  // Sumário popup
+  function abrirSumario() {
+    document.getElementById('sumario').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharSumario() {
+    document.getElementById('sumario').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharSumario();
+  });
+
+  // Share buttons appear after scrolling past hero
+  const shareSidebar = document.getElementById('shareSidebar');
+  const shareMobile = document.getElementById('shareMobile');
+  const outrasMaterias = document.querySelector('.cta-section');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const afterHero = scrolled > window.innerHeight * 0.6;
+    const beforeOtras = outrasMaterias
+      ? scrolled < outrasMaterias.getBoundingClientRect().top + scrolled - 80
+      : true;
+    const show = afterHero && beforeOtras;
+    if (shareSidebar) shareSidebar.classList.toggle('visible', show);
+    if (shareMobile) shareMobile.classList.toggle('visible', show);
+  }, { passive: true });
+
+  // Copy link
+  function copiarLink() {
+    navigator.clipboard.writeText('https://bnibusiness.com.br/edicao-01/materia-de-capa').then(() => {
+      const btn = document.getElementById('copyBtn');
+      if (btn) {
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 2000);
+      }
+    });
+  }
+
+  // Carrossel
+  let carrosselPos = 0;
+  function moverCarrossel(dir) {
+    const track = document.getElementById('carrosselTrack');
+    const cards = track.querySelectorAll('.nav-mat-card');
+    const isMobile = window.innerWidth <= 900;
+    const visible = isMobile ? 1 : 2;
+    const max = cards.length - visible;
+    carrosselPos = Math.max(0, Math.min(carrosselPos + dir, max));
+    const cardW = cards[0].offsetWidth;
+    track.style.transform = 'translateX(-' + (carrosselPos * cardW) + 'px)';
+  }
+
+
+  // ── READING CIRCLE ──
+  const readingCircle = document.getElementById('readingCircle');
+  const circleProgress = document.getElementById('circleProgress');
+  const circleMins = document.getElementById('circleMins');
+  const circleLabel = document.getElementById('circleLabel');
+  const circleInner = document.getElementById('circleInner');
+  const readingTimeEl = document.getElementById('readingTime');
+  const totalMins = 12;
+  const circumference = 201; // 2 * PI * 32
+
+  window.addEventListener('scroll', () => {
+    const artigo = document.querySelector('main.artigo');
+    if (!artigo) return;
+
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min(scrollTop / docHeight, 1);
+
+    // Show circle after 30% of hero, hide when footer is visible
+    if (readingCircle) {
+      const footer = document.querySelector('footer');
+      const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+      const showCircle = scrollTop > window.innerHeight * 0.3 && footerTop > window.innerHeight;
+      readingCircle.classList.toggle('visible', showCircle);
+    }
+
+    // Arc progress
+    if (circleProgress) {
+      const offset = circumference - (progress * circumference);
+      circleProgress.style.strokeDashoffset = offset;
+    }
+
+    // Mins remaining
+    const artigoTop = artigo.offsetTop;
+    const artigoHeight = artigo.offsetHeight;
+    const readProgress = Math.max(0, Math.min((scrollTop - artigoTop) / artigoHeight, 1));
+    const minsLeft = Math.ceil(totalMins * (1 - readProgress));
+
+    if (circleMins && circleLabel && circleInner) {
+      if (minsLeft <= 0) {
+        circleMins.textContent = '✓';
+        circleLabel.textContent = 'fim';
+        circleInner.classList.add('reading-circle-done');
+      } else {
+        circleMins.textContent = minsLeft;
+        circleLabel.textContent = 'min';
+        circleInner.classList.remove('reading-circle-done');
+      }
+    }
+
+    // Update byline too
+    if (readingTimeEl) {
+      if (minsLeft <= 0) readingTimeEl.textContent = 'Leitura concluída ✓';
+      else if (readProgress === 0) readingTimeEl.textContent = totalMins + ' min de leitura';
+      else readingTimeEl.textContent = '~' + minsLeft + ' min restantes';
+    }
+  }, { passive: true });
+
+
+  // ── LANGUAGE SWITCHER ──
+  function setLang(sigla) {
+    localStorage.setItem('bni_lang', sigla);
+  }
+  function hideLangCurrent() {
+    const pageLang = document.documentElement.dataset.lang || 'PT';
+    document.querySelectorAll('.dropdown a[data-lang]').forEach(function(a) {
+      a.style.display = (a.dataset.lang === pageLang) ? 'none' : '';
+    });
+    const label = document.getElementById('langLabel');
+    if (label) label.textContent = pageLang;
+  }
+  document.addEventListener('DOMContentLoaded', hideLangCurrent);
+</script>
+</body>
+</html>

@@ -9,3 +9,5 @@ Allow: /
 
 User-agent: LinkedInBot
 Allow: /
+
+Sitemap: https://bnibusiness.com.br/sitemap.xml
