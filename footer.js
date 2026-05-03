@@ -91,7 +91,7 @@
 
       /* Barra inferior de copyright */
       + '<div class="footer-bar" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.75rem 2rem;border-top:1px solid rgba(255,255,255,0.15);">'
-      +   '<span class="footer-bar-copy" style="white-space:nowrap;font-size:11px;letter-spacing:0.5px;">© 2026 — Todos os direitos reservados — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
+      +   '<span class="footer-bar-copy" style="white-space:nowrap;font-size:11px;letter-spacing:0.5px;">© 2026 — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
       +   '<div class="footer-bar-links" style="display:flex;gap:1rem;flex-shrink:0;">'
       +     '<a href="https://bnibusiness.com.br/cookies/" class="footer-bar-link" style="font-size:11px;">Cookies</a>'
       +     '<a href="https://bnibusiness.com.br/privacidade/" class="footer-bar-link" style="font-size:11px;">Privacidade</a>'
@@ -107,21 +107,18 @@
     style.id = 'bni-footer-styles';
     style.textContent = [
       '@media (max-width: 768px) {',
-      '  #bni-footer > div:first-child {',           /* wrapper das colunas */
-      '    padding: 1.25rem 1rem 1rem !important;',
-      '    gap: 1rem !important;',
-      '  }',
       '  #bni-footer .footer-bar {',
+      '    flex-direction: row !important;',
       '    flex-wrap: nowrap !important;',
-      '    padding: 0.6rem 1rem !important;',
+      '    align-items: center !important;',
+      '    justify-content: space-between !important;',
+      '    padding: 0.5rem 1rem !important;',
       '    gap: 0.5rem !important;',
       '  }',
       '  #bni-footer .footer-bar-copy {',
       '    white-space: nowrap !important;',
       '    font-size: 10px !important;',
-      '    letter-spacing: 0.3px !important;',
-      '    overflow: hidden;',
-      '    text-overflow: ellipsis;',
+      '    flex-shrink: 0 !important;',
       '  }',
       '  #bni-footer .footer-bar-links {',
       '    flex-shrink: 0 !important;',
