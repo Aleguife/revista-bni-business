@@ -1419,8 +1419,8 @@
   }
 
 </style>
-<script src="../../../nav.js?v=2026050302" defer></script>
-  <script src="../../../footer.js?v=2026050302" defer></script>
+<script src="../../../nav.js?v=2026050303" defer></script>
+  <script src="../../../footer.js?v=2026050303" defer></script>
   </head>
 <body>
 <div class="reading-circle" id="readingCircle">
@@ -1791,15 +1791,6 @@
     if (shareSidebar) shareSidebar.classList.toggle('visible', show);
     if (shareMobile) shareMobile.classList.toggle('visible', show);
   }, { passive: true });
-
-  // Oculta share-mobile quando o footer estiver visível
-  const footerEl = document.querySelector('#bni-footer');
-  if (shareMobile && footerEl) {
-    const footerObserver = new IntersectionObserver(([entry]) => {
-      shareMobile.style.display = entry.isIntersecting ? 'none' : '';
-    }, { threshold: 0.1 });
-    footerObserver.observe(footerEl);
-  }
 
   // Copy link
   function copiarLink() {

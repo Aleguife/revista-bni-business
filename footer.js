@@ -130,9 +130,6 @@
       '  #bni-footer .footer-bar-links a {',
       '    font-size: 10px !important;',
       '  }',
-      '  #bni-footer {',
-      '    padding-bottom: 90px !important;',
-      '  }',
       '}'
     ].join('\n');
     document.head.appendChild(style);
@@ -152,6 +149,18 @@
     footer.innerHTML = buildFooter();
 
     document.body.appendChild(footer);
+
+    /* ── Ocultar .share-mobile quando o footer estiver visível ── */
+    var _shareMobile = document.querySelector('.share-mobile');
+    var _footerEl = document.getElementById('bni-footer');
+    if (_shareMobile && _footerEl) {
+      var _obs = new IntersectionObserver(function(entries) {
+        var entry = entries[0];
+        _shareMobile.style.visibility = entry.isIntersecting ? 'hidden' : '';
+        _shareMobile.style.pointerEvents = entry.isIntersecting ? 'none' : '';
+      }, { threshold: 0.05 });
+      _obs.observe(_footerEl);
+    }
   }
 
   /* ── Aguarda o DOM estar pronto ── */
