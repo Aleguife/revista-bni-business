@@ -1809,6 +1809,15 @@
     if (shareMobile) shareMobile.classList.toggle('visible', show);
   }, { passive: true });
 
+  // Oculta share-mobile quando o footer estiver visível
+  const footerEl = document.querySelector('#bni-footer');
+  if (shareMobile && footerEl) {
+    const footerObserver = new IntersectionObserver(([entry]) => {
+      shareMobile.style.display = entry.isIntersecting ? 'none' : '';
+    }, { threshold: 0.1 });
+    footerObserver.observe(footerEl);
+  }
+
   // Copy link
   function copiarLink() {
     navigator.clipboard.writeText('https://bnibusiness.com.br/edicao-01/eventos').then(() => {

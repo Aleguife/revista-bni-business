@@ -130,6 +130,9 @@
       '  #bni-footer .footer-bar-links a {',
       '    font-size: 10px !important;',
       '  }',
+      '  #bni-footer {',
+      '    padding-bottom: 90px !important;',
+      '  }',
       '}'
     ].join('\n');
     document.head.appendChild(style);
