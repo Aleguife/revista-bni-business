@@ -14,6 +14,9 @@ Site estático em HTML/CSS/JS puro, hospedado na Locaweb, deploy automático via
 - - **Domínio:** `bnibusiness.com.br`
   - - **Branch principal:** `main` (deploy automático ao commitar)
     - - **Stack:** HTML5 semântico, CSS3, JS vanilla — sem frameworks, sem build tools
+      - - **Deploy:** SSH/rsync via GitHub Actions (`.github/workflows/deploy.yml`)
+          - Host: `ftp.bnibusiness.com.br` | Usuário: `bnibusiness1` | Porta: `22`
+          - Secret necessário no GitHub: `SSH_PASS`
      
       - ---
 
