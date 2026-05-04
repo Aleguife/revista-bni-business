@@ -48,6 +48,20 @@ const MATERIAS = [
   { num:16, secao:'BNI São Francisco',       titulo:'BNI São Francisco',                      slug:'bni-sao-francisco',      status:'pendente'  },
 ];
 
+const RASCUNHO_KEY   = 'bni-rascunho';
+const CAMPOS_SIMPLES = [
+  ['f-secao',        'secao'],
+  ['f-titulo',       'titulo'],
+  ['f-olho',         'olho'],
+  ['f-slug',         'slug'],
+  ['f-empresa',      'empresa'],
+  ['f-profissional', 'profissional'],
+  ['f-autor',        'autor'],
+  ['f-data',         'data'],
+  ['f-imagem-url',   'imagemUrl'],
+  ['f-imagem-alt',   'imagemAlt'],
+];
+
 // ── HELPERS ───────────────────────────────────
 function toKebab(str) {
   return str.toLowerCase()
@@ -67,6 +81,7 @@ function incrementoDaSecao(secaoKey) {
 let quill;
 document.addEventListener('DOMContentLoaded', function () {
   if (!document.getElementById('f-texto-editor')) return;
+
   quill = new Quill('#f-texto-editor', {
     theme: 'snow',
     modules: {
@@ -80,7 +95,95 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     placeholder: 'Cole aqui o texto completo. Bold, italic, listas e subtítulos são preservados automaticamente ao colar do InDesign ou Word.',
   });
+
+  // Restaura rascunho do localStorage
+  restaurarRascunho();
+
+  // Auto-save no Quill
+  quill.on('text-change', agendarSalvamento);
+
+  // Auto-save nos campos simples (exclui credenciais)
+  document.querySelectorAll('#aba-nova-materia input, #aba-nova-materia select, #aba-nova-materia textarea')
+    .forEach(function (el) {
+      if (el.id === 'f-api-key' || el.id === 'f-github-token') return;
+      el.addEventListener('input',  agendarSalvamento);
+      el.addEventListener('change', agendarSalvamento);
+    });
+
+  // Auto-save nos campos dinâmicos (frases e CTAs) via event delegation
+  document.getElementById('frases-container').addEventListener('input',  agendarSalvamento);
+  document.getElementById('ctas-container').addEventListener('input',    agendarSalvamento);
+  document.getElementById('ctas-container').addEventListener('change',   agendarSalvamento);
 });
+
+// ── RASCUNHO (AUTO-SAVE) ──────────────────────
+let _saveTimer = null;
+
+function agendarSalvamento() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(salvarRascunho, 500);
+}
+
+function salvarRascunho() {
+  const r = {
+    texto:  quill ? quill.root.innerHTML : '',
+    frases: getFrases(),
+    ctas:   getCTAs(),
+  };
+  CAMPOS_SIMPLES.forEach(function ([id, key]) { r[key] = val(id); });
+  localStorage.setItem(RASCUNHO_KEY, JSON.stringify(r));
+}
+
+function restaurarRascunho() {
+  const raw = localStorage.getItem(RASCUNHO_KEY);
+  if (!raw) return;
+  let r;
+  try { r = JSON.parse(raw); } catch (e) { return; }
+
+  // Campos simples
+  CAMPOS_SIMPLES.forEach(function ([id, key]) {
+    const el = document.getElementById(id);
+    if (el && r[key] != null) el.value = r[key];
+  });
+
+  // Editor Quill
+  if (quill && r.texto) quill.root.innerHTML = r.texto;
+
+  // Frases de destaque
+  if (Array.isArray(r.frases) && r.frases.length) {
+    const c = document.getElementById('frases-container');
+    c.innerHTML = '';
+    r.frases.forEach(function (f) {
+      const div = document.createElement('div');
+      div.className = 'frase-item';
+      div.innerHTML =
+        '<input type="text" class="frase-input" value="' + f.replace(/"/g, '&quot;') + '">' +
+        '<button type="button" class="btn-remove" onclick="removerFrase(this)" title="Remover">✕</button>';
+      c.appendChild(div);
+    });
+  }
+
+  // Botões de CTA
+  if (Array.isArray(r.ctas) && r.ctas.length) {
+    document.getElementById('cta-vazio').style.display = 'none';
+    const c = document.getElementById('ctas-container');
+    c.innerHTML = '';
+    r.ctas.forEach(function (cta) {
+      const div = document.createElement('div');
+      div.className = 'cta-item';
+      div.innerHTML =
+        '<select class="cta-tipo">' +
+          CTA_TIPOS.map(function (t) {
+            return '<option' + (t === cta.tipo ? ' selected' : '') + '>' + t + '</option>';
+          }).join('') +
+        '</select>' +
+        '<input type="text" class="cta-texto" placeholder="Texto do botão" value="' + (cta.texto || '').replace(/"/g, '&quot;') + '">' +
+        '<input type="text" class="cta-link"  placeholder="Link"            value="' + (cta.link  || '').replace(/"/g, '&quot;') + '">' +
+        '<button type="button" class="btn-remove" onclick="removerCTA(this)">✕</button>';
+      c.appendChild(div);
+    });
+  }
+}
 
 // ── LOGIN ─────────────────────────────────────
 async function fazerLogin() {
@@ -237,6 +340,7 @@ function limparForm() {
   document.getElementById('slug-hint').textContent = '';
   document.getElementById('card-status').style.display  = 'none';
   document.getElementById('card-preview').style.display = 'none';
+  localStorage.removeItem(RASCUNHO_KEY);
 }
 
 function val(id) { return (document.getElementById(id)?.value || '').trim(); }
