@@ -283,12 +283,12 @@ async function gerarMateria() {
 }
 
 async function chamarClaudeAPI(apiKey, dados) {
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  // Chama o proxy local para evitar bloqueio de CORS
+  const response = await fetch('/painel/proxy.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
