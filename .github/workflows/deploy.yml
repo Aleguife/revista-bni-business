@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy via rsync sobre SSH
         env:
-          SSH_PASS: ${{ secrets.SSH_PASS }}
+          SSHPASS: ${{ secrets.SSH_PASS }}
         run: |
           sshpass -e rsync -az --delete \
             --exclude='.git/' \
