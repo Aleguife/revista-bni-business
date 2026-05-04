@@ -15,7 +15,7 @@
   /* ── Resolve URLs de idioma a partir da URL atual ── */
   function getLangUrls() {
     var base = 'https://bnibusiness.com.br';
-    var path = window.location.pathname; // ex: /edicao-01/materia-de-capa/ ou /en/edicao-01/materia-de-capa/
+    var path = window.location.pathname; // ex: /edicao-02/materia-de-capa/ ou /en/edicao-02/materia-de-capa/
 
     var ptPath, enPath, esPath;
 

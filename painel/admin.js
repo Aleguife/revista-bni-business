@@ -73,10 +73,34 @@ function mostrarAba(id, el) {
   if (el) el.classList.add('active');
 }
 
+// ── INIT — popula o select de matérias ────────
+
+document.addEventListener('DOMContentLoaded', function () {
+  const sel = document.getElementById('f-materia');
+  if (!sel) return;
+  MATERIAS.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.num;
+    const badge = m.status === 'publicada' ? ' ✓' : '';
+    opt.textContent = `${m.num}. ${m.secao} — ${m.titulo}${badge}`;
+    sel.appendChild(opt);
+  });
+});
+
 // ── FORMULÁRIO ────────────────────────────────
 
+function preencherDaMateria() {
+  const num = parseInt(document.getElementById('f-materia').value);
+  if (!num) return;
+  const m = MATERIAS.find(m => m.num === num);
+  if (!m) return;
+  document.getElementById('f-secao').value = m.secao;
+  document.getElementById('f-slug').value  = m.slug;
+  document.getElementById('f-titulo').value = m.titulo;
+}
+
 function limparForm() {
-  ['f-secao','f-titulo','f-slug','f-empresa','f-profissional','f-texto','f-frase','f-cta-texto','f-cta-link'].forEach(id => {
+  ['f-materia','f-secao','f-titulo','f-olho','f-slug','f-empresa','f-profissional','f-texto','f-frase','f-cta-texto','f-cta-link'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -95,15 +119,16 @@ async function gerarMateria() {
   if (!apiKey) { alert('Informe a chave da API Claude antes de gerar.'); return; }
 
   const dados = {
-    secao:       val('f-secao'),
-    titulo:      val('f-titulo'),
-    slug:        val('f-slug'),
-    empresa:     val('f-empresa'),
+    secao:        val('f-secao'),
+    titulo:       val('f-titulo'),
+    olho:         val('f-olho'),
+    slug:         val('f-slug'),
+    empresa:      val('f-empresa'),
     profissional: val('f-profissional'),
-    texto:       val('f-texto'),
-    frase:       val('f-frase'),
-    ctaTexto:    val('f-cta-texto'),
-    ctaLink:     val('f-cta-link'),
+    texto:        val('f-texto'),
+    frase:        val('f-frase'),
+    ctaTexto:     val('f-cta-texto'),
+    ctaLink:      val('f-cta-link'),
   };
 
   if (!dados.titulo || !dados.slug || !dados.texto) {
@@ -161,6 +186,7 @@ Gere uma página HTML completa para a seguinte matéria. Siga EXATAMENTE as inst
 ═══ DADOS DA MATÉRIA ═══
 Seção: ${d.secao}
 Título: ${d.titulo}
+Olho/Subtítulo: ${d.olho || '(gere um subtítulo descritivo de uma frase que amplie o título)'}
 Empresa/Anunciante: ${d.empresa}
 Profissional: ${d.profissional}
 Texto base: ${d.texto}
@@ -177,7 +203,7 @@ Tom: editorial premium, profissional, inspirador
 ═══ ESTRUTURA HTML OBRIGATÓRIA ═══
 1. DOCTYPE + head completo com meta tags SEO (title, description, og:tags)
 2. Incluir: <link rel="stylesheet" href="/assets/css/materia.css"> e <script src="/assets/js/nav.js?v=1"></script>
-3. Hero section: retranca da seção em vermelho, título grande em Playfair Display, nome da empresa
+3. Hero section: retranca da seção em vermelho (#CC0000), título grande em Playfair Display, IMEDIATAMENTE abaixo do título o olho/subtítulo em DM Sans (font-size ~1.1rem, cor #ddd, max-width legível), depois nome da empresa
 4. Introdução: lead em corpo maior (18px), tom de abertura impactante
 5. Corpo principal: 3 parágrafos bem desenvolvidos a partir do texto base
 6. Bloco de destaque: frase de destaque em vermelho com fundo escuro (#111), typography grande

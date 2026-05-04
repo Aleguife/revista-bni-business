@@ -4,7 +4,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <url>
-    <loc>https://bnibusiness.com.br/edicao-01/materia-de-capa/</loc>
+    <loc>https://bnibusiness.com.br/edicao-02/materia-de-capa/</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
@@ -17,7 +17,7 @@
       <news:title>O estrategista por trás da nova geração de obras</news:title>
     </news:news>
     <image:image>
-      <image:loc>https://bnibusiness.com.br/edicao-01/materia-de-capa/img/og-cover.webp</image:loc>
+      <image:loc>https://bnibusiness.com.br/edicao-02/materia-de-capa/img/og-cover.webp</image:loc>
       <image:title>Felipe Antonio Xavier Andrade — Redax Engenharia</image:title>
     </image:image>
   </url>

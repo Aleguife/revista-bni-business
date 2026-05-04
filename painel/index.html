@@ -1,25 +1,202 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel — BNI Business</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
 
-  <url>
-    <loc>https://bnibusiness.com.br/edicao-01/materia-de-capa/</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-    <news:news>
-      <news:publication>
-        <news:name>Revista BNI Business</news:name>
-        <news:language>pt</news:language>
-      </news:publication>
-      <news:publication_date>2026-04-29</news:publication_date>
-      <news:title>O estrategista por trás da nova geração de obras</news:title>
-    </news:news>
-    <image:image>
-      <image:loc>https://bnibusiness.com.br/edicao-01/materia-de-capa/img/og-cover.webp</image:loc>
-      <image:title>Felipe Antonio Xavier Andrade — Redax Engenharia</image:title>
-    </image:image>
-  </url>
+<!-- TELA DE LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="logo-bni">BNI</span>
+      <span class="logo-business">Business</span>
+      <span class="logo-admin">/ painel</span>
+    </div>
+    <p class="login-subtitle">Painel de criação de matérias</p>
+    <div class="login-field">
+      <label>Senha de acesso</label>
+      <input type="password" id="senha-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')fazerLogin()">
+      <p class="login-error" id="login-error">Senha incorreta. Tente novamente.</p>
+    </div>
+    <button class="btn-primary" onclick="fazerLogin()">Entrar</button>
+  </div>
+</div>
 
-</urlset>
+<!-- PAINEL PRINCIPAL -->
+<div id="painel" class="hidden">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-bni">BNI</span>
+      <span class="logo-business">Business</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" onclick="mostrarAba('nova-materia', this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Nova matéria
+      </a>
+      <a class="nav-item" onclick="mostrarAba('checklist', this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Checklist Edição 2
+      </a>
+    </nav>
+    <button class="btn-sair" onclick="sair()">↩ Sair</button>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- ABA: NOVA MATÉRIA -->
+    <section id="aba-nova-materia" class="aba">
+      <div class="page-header">
+        <h1>Nova matéria</h1>
+        <p>Preencha os dados e gere o HTML com IA</p>
+      </div>
+
+      <div class="form-grid">
+
+        <div class="form-col">
+          <div class="card">
+            <h2 class="card-title">Dados da matéria</h2>
+
+            <!-- Seletor de matéria — preenche seção + slug automaticamente -->
+            <div class="field-group">
+              <label>Matéria da Edição 2</label>
+              <select id="f-materia" onchange="preencherDaMateria()">
+                <option value="">Selecione a matéria do sumário...</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label>Seção</label>
+                <input type="text" id="f-secao" placeholder="Auto-preenchida ao selecionar" readonly>
+              </div>
+              <div class="field-group">
+                <label>Slug (URL)</label>
+                <div class="slug-preview">
+                  <span class="slug-base">/edicao-02/</span>
+                  <input type="text" id="f-slug" placeholder="ex: felipe-xavier">
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>Título da matéria</label>
+              <input type="text" id="f-titulo" placeholder="Ex: O estrategista por trás da nova geração de obras">
+            </div>
+
+            <div class="field-group">
+              <label>Olho / Subtítulo</label>
+              <textarea id="f-olho" rows="2" placeholder="Texto descritivo exibido abaixo do título. Ex: Como a Redax Engenharia transformou a gestão de obras em vantagem competitiva."></textarea>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label>Empresa / anunciante</label>
+                <input type="text" id="f-empresa" placeholder="Ex: Redax Engenharia">
+              </div>
+              <div class="field-group">
+                <label>Profissional / nome</label>
+                <input type="text" id="f-profissional" placeholder="Ex: Felipe Xavier">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>Texto base da matéria</label>
+              <textarea id="f-texto" rows="7" placeholder="Cole aqui o texto da revista impressa ou um resumo. A IA vai expandir, formatar e adaptar para o digital."></textarea>
+            </div>
+
+            <div class="field-group">
+              <label>Frase de destaque <span class="label-opcional">(opcional)</span></label>
+              <input type="text" id="f-frase" placeholder='"Conexões que transformam negócios em legados"'>
+            </div>
+
+            <div class="field-group">
+              <label>Botão de contato (CTA)</label>
+              <div class="field-row">
+                <input type="text" id="f-cta-texto" placeholder="Texto do botão">
+                <input type="text" id="f-cta-link" placeholder="Link (WhatsApp, site...)">
+              </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="field-group">
+              <label>Chave da API Claude</label>
+              <input type="password" id="f-api-key" placeholder="sk-ant-...">
+              <small class="field-hint">Nunca salva no servidor — fica só nesta sessão.</small>
+            </div>
+
+            <div class="field-group">
+              <label>Token GitHub</label>
+              <input type="password" id="f-github-token" placeholder="ghp_...">
+              <small class="field-hint">Nunca salva no servidor — fica só nesta sessão.</small>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn-primary" onclick="gerarMateria()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Gerar com IA
+              </button>
+              <button class="btn-secondary" onclick="limparForm()">Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-col">
+          <div class="card" id="card-status" style="display:none;">
+            <h2 class="card-title">Status</h2>
+            <div id="log-container"></div>
+          </div>
+
+          <div class="card" id="card-preview" style="display:none;">
+            <div class="preview-header">
+              <h2 class="card-title">HTML gerado</h2>
+              <div class="preview-actions">
+                <button class="btn-secondary btn-sm" onclick="copiarHTML()">Copiar</button>
+                <button class="btn-publicar" onclick="publicar()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                  Publicar no GitHub
+                </button>
+              </div>
+            </div>
+            <textarea id="html-gerado" rows="22" readonly></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA: CHECKLIST -->
+    <section id="aba-checklist" class="aba hidden">
+      <div class="page-header">
+        <h1>Checklist — Edição 2</h1>
+        <p>Progresso das 16 matérias</p>
+      </div>
+      <div class="card">
+        <div class="checklist-progress">
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+          <span id="progress-texto">0 / 16 publicadas</span>
+        </div>
+        <table class="checklist-table">
+          <thead>
+            <tr><th>#</th><th>Seção</th><th>Matéria</th><th>Slug</th><th>Status</th></tr>
+          </thead>
+          <tbody id="checklist-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

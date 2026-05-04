@@ -2,29 +2,7 @@
 <html lang="pt-BR" data-lang="PT">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KX2T4K1YJG">
-  // Language switcher
-  function setLang(sigla) {
-    localStorage.setItem('lang', sigla);
-    const el = document.getElementById('langLabel');
-    if (el) el.textContent = sigla;
-  }
-  function updateLangMenu(activeSigla) {
-    const el = document.getElementById('langLabel');
-    if (el) el.textContent = activeSigla;
-    // Hide active language from dropdown
-    document.querySelectorAll('.dropdown a[data-lang]').forEach(a => {
-      a.style.display = a.dataset.lang === activeSigla ? 'none' : '';
-    });
-  }
-  document.addEventListener('DOMContentLoaded', function() {
-    const saved = localStorage.getItem('lang');
-    const current = document.documentElement.dataset.lang || 'PT';
-    const active = saved || current;
-    updateLangMenu(active);
-  });
-
-</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KX2T4K1YJG"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -33,15 +11,40 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Política de Privacidade — Revista BNI Business</title>
-<meta name="robots" content="index, follow">
-<meta name="description" content="Política de Privacidade da Revista BNI Business. Saiba como tratamos seus dados e como utilizamos este site.">
-<link rel="canonical" href="https://bnibusiness.com.br/privacidade/">
+<title>O estrategista por trás da nova geração de obras — BNI Business</title>
+<meta name="description" content="Felipe Xavier transformou oito anos de experiência regulatória em uma engenharia que reescreve as regras das licitações públicas no Brasil.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Revista BNI Business">
+<meta property="og:title" content="O estrategista por trás da nova geração de obras | BNI">
+<meta property="og:description" content="Felipe Xavier transformou oito anos de experiência regulatória em uma engenharia que reescreve as regras das licitações públicas no Brasil.">
+<meta property="og:image" content="https://bnibusiness.com.br/edicao-02/materia-de-capa/img/og-cover.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://bnibusiness.com.br/edicao-02/materia-de-capa">
+<meta property="og:locale" content="pt_BR">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Fernanda Sodré">
+<meta name="keywords" content="engenharia, licitações públicas, Redax Engenharia, Felipe Xavier, obras públicas, BNI Business, Nova Lei de Licitações">
+<meta property="article:section" content="Matéria de Capa">
+<meta property="article:tag" content="engenharia">
+<meta property="article:tag" content="licitações">
+<meta property="article:tag" content="BNI">
+<meta property="article:author" content="Fernanda Sodré">
+<meta property="article:published_time" content="2026-04-29">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="O estrategista por trás da nova geração de obras | BNI">
+<meta name="twitter:description" content="Felipe Xavier transformou oito anos de experiência regulatória em uma engenharia que reescreve as regras das licitações públicas no Brasil.">
+<meta name="twitter:image" content="https://bnibusiness.com.br/edicao-02/materia-de-capa/img/og-cover.webp">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="https://bnibusiness.com.br/sitemap.xml">
+<link rel="canonical" href="https://bnibusiness.com.br/edicao-02/materia-de-capa/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -137,6 +140,9 @@
     color: var(--preto);
     margin-bottom: calc(2rem + 20px);
     letter-spacing: -0.5px;
+  }
+  @media (max-width: 900px) {
+    .hero-titulo { font-size: 4.05rem; }
   }
   .hero-titulo .destaque { color: var(--vermelho); }
 
@@ -1361,100 +1367,125 @@
     .reading-circle svg { width: 64px; height: 64px; }
     .reading-circle-mins { font-size: 19px; }
   }
-
-
-  /* ── POLÍTICA PAGE ── */
-  .policy-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 6rem 2rem 8rem;
-  }
-  .policy-wrapper h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 900;
-    color: var(--vermelho);
-    margin-bottom: 0.5rem;
-    line-height: 1.1;
-  }
-  .policy-wrapper .data-update {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--cinza);
-    margin-bottom: 3rem;
-    display: block;
-  }
-  .policy-wrapper h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--preto);
-    margin: 2.5rem 0 0.8rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--vermelho);
-  }
-  .policy-wrapper h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--preto);
-    margin: 1.5rem 0 0.5rem;
-  }
-  .policy-wrapper p {
-    font-family: 'Barlow', sans-serif;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.8;
-    color: #2a2a2a;
-    margin-bottom: 1rem;
-  }
-  .policy-wrapper ul {
-    margin: 0.5rem 0 1rem 1.5rem;
-  }
-  .policy-wrapper ul li {
-    font-family: 'Barlow', sans-serif;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.8;
-    color: #2a2a2a;
-    margin-bottom: 0.3rem;
-  }
-  .policy-wrapper a {
-    color: var(--vermelho);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(200,16,46,0.3);
-    transition: border-color 0.2s;
-  }
-  .policy-wrapper a:hover { border-color: var(--vermelho); }
-  .policy-breadcrumb {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--cinza);
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .policy-breadcrumb a { color: var(--vermelho); text-decoration: none; border: none; }
-  .policy-breadcrumb a:hover { text-decoration: underline; }
-
 </style>
-<script src="../nav.js?v=2026050303" defer></script>
-  <script src="../footer.js?v=2026050303" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://bnibusiness.com.br/edicao-02/materia-de-capa/",
+      "headline": "O estrategista por trás da nova geração de obras",
+      "description": "Felipe Xavier transformou oito anos de experiência regulatória em uma engenharia que reescreve as regras das licitações públicas no Brasil.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://bnibusiness.com.br/edicao-02/materia-de-capa/img/og-cover.webp",
+        "width": 1200,
+        "height": 630
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Fernanda Sodré"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Revista BNI Business",
+        "url": "https://bnibusiness.com.br",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://bnibusiness.com.br/edicao-02/materia-de-capa/img/og-cover.webp"
+        }
+      },
+      "datePublished": "2026-04-29",
+      "dateModified": "2026-04-29",
+      "mainEntityOfPage": "https://bnibusiness.com.br/edicao-02/materia-de-capa/",
+      "articleSection": "Matéria de Capa",
+      "inLanguage": "pt-BR",
+      "wordCount": 1800,
+      "timeRequired": "PT9M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://bnibusiness.com.br"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Edição 01",
+          "item": "https://bnibusiness.com.br/edicao-02/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "O estrategista por trás da nova geração de obras",
+          "item": "https://bnibusiness.com.br/edicao-02/materia-de-capa/"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "Revista BNI Business",
+      "url": "https://bnibusiness.com.br",
+      "sameAs": [
+        "https://www.linkedin.com/company/bni-business",
+        "https://www.facebook.com/bnibusiness"
+      ]
+    }
+  ]
+}
+</script>
+<script src="../../nav.js?v=2026050303" defer></script>
+  <script src="../../footer.js?v=2026050303" defer></script>
   </head>
 <body>
+<div class="reading-circle" id="readingCircle">
+  <svg viewBox="0 0 72 72">
+    <circle class="reading-circle-bg" cx="36" cy="36" r="32"/>
+    <circle class="reading-circle-prog" id="circleProgress" cx="36" cy="36" r="32"/>
+  </svg>
+  <div class="reading-circle-inner" id="circleInner">
+    <span class="reading-circle-mins" id="circleMins">12</span>
+    <span class="reading-circle-label" id="circleLabel">min</span>
+  </div>
+</div>
+
+<!-- COMPARTILHAMENTO LATERAL (desktop) -->
+<div class="share-sidebar" id="shareSidebar">
+  <a class="share-btn share-btn--whatsapp" href="https://wa.me/?text=O estrategista por trás da nova geração de obras — BNI Business%20https://bnibusiness.com.br/edicao-02/materia-de-capa" target="_blank" rel="noopener" data-tip="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+  <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://bnibusiness.com.br/edicao-02/materia-de-capa" target="_blank" rel="noopener" data-tip="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+  <a class="share-btn share-btn--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://bnibusiness.com.br/edicao-02/materia-de-capa" target="_blank" rel="noopener" data-tip="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+  <button class="share-btn share-btn--copy" onclick="copiarLink()" data-tip="Copiar link" id="copyBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+</div>
+
+<!-- COMPARTILHAMENTO INFERIOR (mobile) -->
+<div class="share-mobile" id="shareMobile">
+  <div class="share-mobile-item">
+    <a class="share-btn share-btn--whatsapp" href="https://wa.me/?text=O estrategista por trás da nova geração de obras — BNI Business%20https://bnibusiness.com.br/edicao-02/materia-de-capa" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+    <span class="share-label">WhatsApp</span>
+  </div>
+  <div class="share-mobile-item">
+    <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://bnibusiness.com.br/edicao-02/materia-de-capa" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+    <span class="share-label">LinkedIn</span>
+  </div>
+  <div class="share-mobile-item">
+    <a class="share-btn share-btn--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://bnibusiness.com.br/edicao-02/materia-de-capa" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <span class="share-label">Facebook</span>
+  </div>
+  <div class="share-mobile-item">
+    <button class="share-btn share-btn--copy" onclick="copiarLink()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+    <span class="share-label">Copiar</span>
+  </div>
+</div>
 
 <!-- SUMÁRIO POPUP -->
 <div class="sumario-overlay" id="sumario">
   <div class="sumario-header">
-    <div class="nav-logo"><a href="https://bnibusiness.com.br"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" class="footer-svg" style="display:block">
+    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" class="footer-svg" style="display:block">
   <defs>
     <clipPath id="cp0"><rect width="192.9" height="20"/></clipPath>
     <clipPath id="cp1"><rect width="192.9" height="20"/></clipPath>
@@ -1555,72 +1586,240 @@
   </div>
 </div>
 
-
 <!-- NAV -->
 
 
-<div style="background:var(--creme);min-height:80vh;">
-  <div class="policy-wrapper">
-    <div class="policy-breadcrumb">
-      <a href="https://bnibusiness.com.br">Início</a>
-      <span>›</span>
-      <span>Política de Privacidade</span>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-foto">
+    <!-- Placeholder: substituir pela foto real do Felipe -->
+    <img src="img/felipe-xavier.webp" alt="Felipe Antonio Xavier Andrade, engenheiro e sócio-proprietário da Redax Engenharia" loading="eager" fetchpriority="high" />
+    <div class="hero-foto-caption">
+      <p><strong>Felipe Xavier</strong>de servidor público ao empreendedor — a trajetória de quem aprendeu as regras do jogo de dentro para fora</p>
     </div>
-    
-    <h1>Política de Privacidade</h1>
-    <p class="data-update">Última atualização: 1 de maio de 2026</p>
-
-    <p>A Revista BNI Business respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
-
-    <h2>Quem somos</h2>
-    <p>A Revista BNI Business é uma publicação editorial digital dedicada a conectar empresários e gerar resultados através de conteúdo de qualidade sobre negócios, networking e desenvolvimento profissional.</p>
-
-    <h2>Dados que coletamos</h2>
-    <p>Podemos coletar as seguintes informações:</p>
-    <ul>
-      <li><strong>Dados de navegação:</strong> páginas visitadas, tempo de leitura, dispositivo utilizado — coletados anonimamente pelo Google Analytics</li>
-      <li><strong>E-mail:</strong> quando você se inscreve em nossa newsletter, de forma voluntária</li>
-      <li><strong>Dados de contato:</strong> quando você nos envia mensagens ou solicita informações</li>
-    </ul>
-
-    <h2>Como utilizamos seus dados</h2>
-    <p>Seus dados são utilizados para:</p>
-    <ul>
-      <li>Enviar nossa newsletter (apenas com seu consentimento)</li>
-      <li>Melhorar o conteúdo e a experiência de navegação</li>
-      <li>Responder suas mensagens e solicitações</li>
-      <li>Cumprir obrigações legais</li>
-    </ul>
-
-    <h2>Base legal</h2>
-    <p>O tratamento dos seus dados é fundamentado em:</p>
-    <ul>
-      <li><strong>Consentimento:</strong> para envio de newsletter e comunicações</li>
-      <li><strong>Legítimo interesse:</strong> para análise de navegação e melhoria do site</li>
-      <li><strong>Cumprimento de obrigação legal:</strong> quando exigido por lei</li>
-    </ul>
-
-    <h2>Compartilhamento de dados</h2>
-    <p>Não vendemos seus dados pessoais. Podemos compartilhá-los apenas com fornecedores de serviços essenciais (como Google Analytics), sempre dentro dos limites estabelecidos pela LGPD.</p>
-
-    <h2>Seus direitos</h2>
-    <p>Como titular dos dados, você tem direito a:</p>
-    <ul>
-      <li>Confirmar a existência de tratamento dos seus dados</li>
-      <li>Acessar seus dados</li>
-      <li>Corrigir dados incompletos ou desatualizados</li>
-      <li>Solicitar a exclusão dos seus dados</li>
-      <li>Revogar o consentimento a qualquer momento</li>
-    </ul>
-
-    <h2>Retenção de dados</h2>
-    <p>Mantemos seus dados pelo tempo necessário para cumprir as finalidades descritas nesta política ou conforme exigido por lei.</p>
-
-    <h2>Contato e DPO</h2>
-    <p>Para exercer seus direitos ou esclarecer dúvidas sobre privacidade: <a href="mailto:privacidade@bnibusiness.com.br">privacidade@bnibusiness.com.br</a></p>
-
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
   </div>
-</div>
+
+  <div class="hero-texto fade-in">
+    <div class="hero-byline">
+      <span class="bl-secao">Matéria de Capa</span>
+      <span class="bl-data">29 de abril de 2026</span>
+      <span class="bl-leitura" id="readingTime">12 min de leitura</span>
+    </div>
+
+    <h1 class="hero-titulo">
+      <span style="color:var(--vermelho);">O estrategista</span><br>
+      <span style="color:#b3b2b2;">por trás da nova</span><br>
+      <span style="color:var(--vermelho);">geração de obras</span>
+    </h1>
+
+    <p class="hero-chapeu">
+      <strong>Felipe Antonio Xavier Andrade</strong> transformou oito anos de experiência regulatória em uma engenharia que não aceita obra sem planejamento — e está reescrevendo as regras das licitações públicas
+    </p>
+
+    <div class="hero-assina">Por <span>Fernanda Sodré</span></div>
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<!-- ARTIGO PRINCIPAL -->
+<main class="artigo">
+
+  <!-- ABERTURA -->
+  <div class="texto-duplo fade-in">
+    <p>Uma empresa com menos de três anos de mercado. Do outro lado, uma concorrente com três décadas de estrada. O argumento da mais velha era simples — e, em outros tempos, teria funcionado: "Eles são novos demais. Não têm experiência para isso." A comissão de licitação leu os documentos, avaliou o acervo técnico, analisou a proposta. E deu o contrato para a empresa nova.</p>
+    <div>
+      <p>Essa empresa nova é a Redax Engenharia. E o homem por trás dela, Felipe Antonio Xavier Andrade, não pareceu surpreso com o resultado. Havia calculado cada movimento antes de entrar — como faz sempre. "Me considero um enxadrista", diz, sem alarme na voz. "Antes de participar de qualquer licitação, leio o edital do início ao fim, mapeio cada cláusula como uma peça no tabuleiro, e só entro quando sei que posso vencer. Não tentar. Vencer."</p>
+      <p>É difícil não querer entender de onde vem essa segurança. Ela não é postura — é trajetória.</p>
+    </div>
+  </div>
+
+  <!-- OITO ANOS DO LADO DE DENTRO -->
+  <div class="fade-in">
+    <span class="secao-titulo">Oito anos do lado de dentro</span>
+    <div class="texto-duplo">
+      <p>Antes da Redax, havia o CREA. O Conselho Regional de Engenharia e Agronomia de São Paulo, onde atuou como servidor público na área de fiscalização por oito anos. Não é pouco tempo — é tempo suficiente para entender, de dentro do sistema, como as normas técnicas são construídas, onde elas são respeitadas e onde são ignoradas. Para perceber quais empresas entregam o que prometem e quais apenas assinam papéis.</p>
+      <p>Felipe passou pela diretoria do CREA. Absorveu uma visão sistêmica que vai muito além do canteiro de obras: governança, acervo técnico, conformidade com normas, os critérios que separam uma empresa habilitada de uma desclassificada em uma licitação. "Essa experiência me deu algo que nenhum curso substitui", diz. "Eu vi o sistema por dentro. Sei onde estão as oportunidades e sei onde estão as armadilhas." Quando decidiu empreender, carregou esse conhecimento como ativo.</p>
+    </div>
+  </div>
+
+  <!-- O ENXADRISTA E O EDITAL -->
+  <div class="fade-in">
+    <span class="secao-titulo">O enxadrista e o edital</span>
+    <div class="texto-duplo">
+      <div>
+        <p>Existe um tipo de mercado que assusta a maioria das empresas pequenas: as licitações públicas. Processos longos, documentação densa, linguagem jurídica que parece projetada para excluir quem não tem um departamento inteiro dedicado ao assunto. Durante décadas, esse mercado foi de grupos estabelecidos que dominavam o jogo por caminhos que a antiga Lei 8.666/93 deixava em aberto. Cartas convite, regimes diferenciados, conversas de corredor que decidiam contratos antes do edital ser publicado.</p>
+        <p>Em 2021, chegou a Lei 14.133 — a Nova Lei de Licitações. E com ela, as regras mudaram de forma estrutural. O pregão online tornou-se a modalidade preferencial. Um portal nacional centralizou os editais. As exigências técnicas ficaram mais rigorosas — e mais transparentes. Quem domina a documentação, entende as cláusulas e tem o acervo técnico organizado ganhou uma vantagem real sobre quem dependia de atalhos. "O jogo mudou", resume Felipe. "E eu estava preparado para o novo jogo."</p>
+      </div>
+      <div>
+        <p>É assim que ele se define: um enxadrista. Não porque goste do jogo em si, mas porque a metáfora captura exatamente o que faz antes de assinar qualquer proposta. Lê o edital do início ao fim. Mapeia cada cláusula como uma peça no tabuleiro. Avalia o alcance da documentação da empresa naquele momento específico. E só entra quando calcula que pode vencer — não tentar.</p>
+        <p>Esse método foi testado de forma contundente quando a Redax — empresa com menos de três anos no mercado — venceu uma licitação na área de combate e prevenção de incêndio contra uma concorrente com 30 anos de estrada. A empresa mais antiga usou como argumento a inexperiência da rival. A comissão técnica olhou para os documentos. E decidiu pelo mérito.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 1 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      Me considero um enxadrista das obras públicas. Cada cláusula do edital é uma peça no tabuleiro. Não entro num processo licitatório para disputar — entro para vencer. Esse espaço não se herda. Se conquista.
+    </blockquote>
+  </div>
+
+  <!-- A OBRA QUE EXISTE ANTES DA OBRA -->
+  <div class="fade-in">
+    <span class="secao-titulo">A obra que existe antes da obra</span>
+    <div class="texto-duplo">
+      <div>
+        <p>A Redax opera obras em municípios distantes do escritório central, coordenando equipes locais que dependem de orientação técnica precisa para saber o que podem ou não podem executar. Em um projeto recente, a obra estava em Marília. Felipe estava na Região Oeste de São Paulo. O empreiteiro no canteiro — competente na execução, mas sem o respaldo técnico de um engenheiro — precisava saber exatamente quais paredes poderia demolir, quais tubulações podiam ser tocadas, qual era o valor autorizado para aquela etapa. Sem esse ponto focal, qualquer decisão tomada no canteiro vira improviso. E improviso em obra tem nome: problema.</p>
+        <p>"É o que eu chamo de organização do desorganizado", diz Felipe, com humor. "O cliente muitas vezes chega sem projeto executivo completo, sem planilha de quantitativos, às vezes mandando planta no dia anterior ao início da obra. A Redax entra para estruturar isso — e a partir da estrutura, a obra acontece com segurança técnica e jurídica." É esse modelo de gestão que permite à empresa atender tanto clientes privados quanto contratos públicos sem perder consistência na entrega.</p>
+      </div>
+      <div>
+        <p>O maior case de sucesso até hoje tem endereço certo: o IFSP, Instituto Federal de São Paulo, Campus Osasco. Em parceria com a JD, empresa vencedora da maior ata do Estado de São Paulo em obras públicas, a Redax foi contratada como empreiteira para executar reformas nos institutos federais. Campus Osasco, Cotia, São Vicente, Carapicuíba — uma rota de obras que foi construindo o nome da empresa no terreno mais disputado do setor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- O DIA QUE DISSE NÃO -->
+  <div class="fade-in">
+    <span class="secao-titulo">O dia em que disse não</span>
+    <div class="texto-duplo">
+      <div>
+        <p>Existe uma decisão que Felipe menciona com a serenidade de quem sabe que fez a escolha certa — mas também com a consciência de quanto ela custou no curto prazo. Uma incorporadora em São Caetano do Sul havia entregado um edifício com diversas patologias. Vícios construtivos visíveis, itens fora de conformidade, estrutura que exigia intervenção de engenharia real. Felipe foi chamado para "resolver".</p>
+        <p>Quando chegou ao local, o quadro era claro: a incorporadora não queria engenharia. Queria cobertura. Queria um nome assinado nos documentos para que os problemas parecessem resolvidos sem que a responsabilidade chegasse a quem a gerou. "Tocar naquela estrutura significava assumir a responsabilidade técnica por intervenções que eu não poderia garantir. Meu nome e minha ART não servem para cobrir o que os outros construíram mal", diz. A resposta foi não. Sem drama, sem negociação — não.</p>
+      </div>
+      <div>
+        <p>No mundo das reformas e construções, saber recusar uma obra é tão importante quanto saber executá-la. O acervo técnico de uma empresa de engenharia — o conjunto de ARTs registradas que comprovam a experiência em determinados tipos de obra — é um ativo que leva anos para construir e pode ser comprometido em uma única decisão equivocada. "Cada obra entregue dentro do escopo correto é um passo que me habilita para a próxima licitação. Cada obra mal assinada pode me tirar do jogo."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 2 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      A ART não é um papel. É uma reputação comprovada. E reputação não se recupera com desconto no próximo orçamento.
+    </blockquote>
+  </div>
+
+  <!-- DA CHINA PARA CÁ -->
+  <div class="fade-in">
+    <span class="secao-titulo">Da China para cá: o futuro que chega antes do esperado</span>
+
+    <figure class="foto-larga">
+      <img src="img/felipe-china-1.webp" alt="Felipe Xavier na frente da estatal de energia elétrica na China durante certificação técnica internacional" loading="lazy" decoding="async" />
+      <figcaption>Felipe Xavier na China: a visita técnica que transformou uma certificação internacional em visão de futuro para a Redax Engenharia</figcaption>
+    </figure>
+
+    <div class="texto-duplo">
+      <div>
+        <p>No final de 2025, Felipe embarcou para a China. Não como turista — como profissional. A missão era participar de um processo de certificação de uma das maiores estatais de transmissão e distribuição de energia elétrica do mundo, com operações em Campinas e Paulínia. O que encontrou transformou sua percepção sobre o futuro do setor de uma forma que nenhum congresso ou curso havia conseguido antes.</p>
+        <p>"Eu tinha uma imagem da China que não correspondia à realidade. Fui e me deparei com um país que respira tecnologia." Uma das cenas que ficaram gravadas na memória: drones industriais — robustos, autônomos, precisos — realizando limpeza e pintura de fachadas de edifícios inteiros. No Brasil, esse mesmo serviço é feito com rapel, andaimes e plataformas elevatórias. A diferença não é só de produtividade. É de segurança. Queda em altura ainda é uma das principais causas de morte na construção civil brasileira. O drone elimina o trabalhador da equação de risco.</p>
+      </div>
+      <div>
+        <p>Voltou com a certeza de que essa tecnologia chegará ao Brasil — e com a disposição de estar entre os primeiros a trazê-la. "Não penso em expansão para o Paraguai, que é onde muita gente está indo agora. Penso em trazer tecnologia da China para aplicar aqui. O mercado vai chegar lá. A questão é quem chega primeiro." A nova lei de licitações já prevê preferência pelo BIM — o Building Information Modelling — em obras públicas. A onda de digitalização e automação está chegando. Para quem já construiu a base técnica e regulatória, surfar essa onda é questão de posicionamento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- O CHURRASCO QUE MUDOU O RUMO -->
+  <div class="fade-in">
+    <span class="secao-titulo">O churrasco que mudou o rumo da empresa</span>
+    <div class="texto-duplo">
+      <div>
+        <p>A história de sua entrada no BNI começa com um churrasco e um vizinho chamado Danilo Marques, da Royal Prestige. Foi esperando uma tarde descompromissada. Saiu com um convite para conhecer uma reunião de prospecção do BNI — às 6h30 da manhã, num grupo em Osasco — e teve na recepção um balde de água fria que quase foi embora do conceito por completo. "A cadeira de Reformas e Construções já estava ocupada."</p>
+        <p>Outro teria desistido, mas tentou mais uma vez — o grupo Conectus, reuniões às 10h da manhã num restaurante de costela em Alphaville. A diferença foi imediata. "Era meu grupo. A energia era completamente diferente. As pessoas se ajudavam de verdade." Em três meses, as indicações recebidas já tinham coberto o valor da anuidade anual.</p>
+      </div>
+      <div>
+        <p>Para Felipe, o BNI não é apenas uma rede de indicações. É uma estrutura de posicionamento de mercado. "A construção civil é fundamentalmente um negócio de confiança. Ninguém contrata uma construtora porque viu um anúncio. Contrata porque alguém em quem confia indicou." A cadeira de Reformas e Construções dentro do grupo é o ponto de contato com arquitetos, engenheiros elétricistas, fornecedores de materiais, síndicos e gestores — pessoas que, quando alguém da sua rede precisar de uma obra, vão lembrar de um nome. O objetivo é que esse nome seja a Redax.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 4 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      O relacionamento constrói o negócio antes que o negócio apareça. Quando a necessidade surge, o nome já precisa estar na cabeça de alguém.
+    </blockquote>
+  </div>
+
+  <!-- A CADEIA QUE NINGUÉM VÊ -->
+  <div class="fade-in">
+    <span class="secao-titulo">A cadeia que ninguém vê — mas que move tudo</span>
+    <div class="texto-duplo">
+      <div>
+        <p>Existe uma cena que se repete com frequência dentro do BNI e que Felipe Xavier aprendeu a enxergar com clareza de quem já entendeu o jogo: um arquiteto fecha um projeto com um cliente. O cliente precisa de quem execute. O arquiteto indica a Redax. A Redax entra na obra — e no processo, referencia o marmorista, o vidraceiro, o designer de interiores, o fornecedor de esquadrias. Uma única indicação que entrou pela porta da arquitetura saiu por cinco ou seis outras portas.</p>
+        <p>"É assim que a construção civil funciona dentro do BNI quando as pessoas entendem o potencial da cadeira", diz Felipe. "Reformas e Construções não é uma cadeira isolada. É um ponto de convergência. Quase toda obra privada passa por aqui em algum momento — e quando passa, ela conecta uma série de outros profissionais que estão na mesma mesa."</p>
+      </div>
+      <div>
+        <p>Essa visão de cadeia produtiva dentro da rede não é óbvia para quem olha de fora. A tendência natural é enxergar cada cadeira como um fornecedor autônomo — o engenheiro faz a obra, o arquiteto faz o projeto, o marmorista faz o piso, cada um no seu quadrado. O que Felipe descreve é outra coisa: uma teia onde quem está no centro da execução tem visibilidade sobre todas as outras pontas. E quem está no centro da execução, na construção civil, é quem constrói.</p>
+        <p>"O arquiteto projeta o que eu vou construir. Quando ele me referencia para o cliente, está colocando o nome dele junto com o meu. Então a confiança já vem embutida — não preciso me vender do zero." Essa lógica inverte o processo comercial tradicional. Em vez de prospectar clientes frios, a Redax entra em contatos que já chegam aquecidos pela credibilidade de quem indicou. Em três meses de grupo, as indicações recebidas já cobriam o investimento da anuidade anual. Não por acaso — por posicionamento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITAÇÃO 4 -->
+  <div class="citacao-bloco fade-in">
+    <blockquote>
+      Reformas e Construções não é uma cadeira isolada dentro do BNI. É um ponto de convergência. Quase toda obra privada passa por aqui — e quando passa, conecta uma série inteira de outros profissionais.
+    </blockquote>
+  </div>
+
+  <!-- FOTO UMA NOVA GERAÇÃO -->
+  <figure class="foto-larga fade-in">
+    <img src="img/nova-geracao.webp" alt="Vista aérea do IFSP Campus Osasco, um dos projetos executados pela Redax Engenharia" loading="lazy" decoding="async" />
+    <figcaption>No mercado que não para de crescer, vence quem planeja antes de construir</figcaption>
+  </figure>
+
+  <!-- UMA NOVA GERAÇÃO -->
+  <div class="fade-in">
+    <span class="secao-titulo">Uma nova geração — de mentalidade, não de idade</span>
+    <div class="texto-duplo">
+      <div>
+        <p>O setor de construção civil vive um momento de dupla pressão. De um lado, os números são positivos: crescimento de 4,1% em 2024, mercado imobiliário aquecido, investimentos públicos em infraestrutura que seguem pautados para 2026 e além. De outro, os custos sobem — o Índice Nacional de Custo da Construção (INCC) registrou alta de 6,34% nos últimos 12 meses, acima da inflação oficial — e a escassez de mão de obra qualificada é um gargalo que a CBIC aponta como um dos maiores desafios do setor. O mercado cresce, mas a exigência cresce junto.</p>
+      </div>
+      <div>
+        <p>É nesse contexto que Felipe encerra a conversa com uma frase que resume não apenas a Redax, mas uma visão de mundo sobre o que significa ser uma empresa nova em um mercado que costuma valorizar o tempo de estrada acima de tudo: "A nova geração de obras públicas não é definida pela idade da empresa. É definida pela mentalidade. Uma empresa de 30 anos que depende de acordos informais está para trás. Uma empresa de três anos que domina o edital, tem o acervo técnico em dia e entende o ambiente regulatório — essa está na frente."</p>
+        <p>A Redax ainda está no começo do caminho que desenhou. Daqui a cinco anos, Felipe enxerga a empresa como referência consolidada na rede metropolitana oeste de São Paulo. Com processos estruturados. Com parcerias que mapeiam oportunidades licitatórias por município antes que os concorrentes as enxerguem. Com tecnologias que ainda não chegaram ao Brasil, mas que ele já foi buscar. O tabuleiro está montado. As peças estão posicionadas. Felipe Xavier já deu sua abertura — e está jogando para vencer.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <div class="cta-texto">
+        <h3>Gostou da matéria?<br>Entre em contato com a Redax</h3>
+        <p>Obras públicas e privadas com planejamento, segurança técnica e jurídica.</p>
+      </div>
+      <div class="cta-botoes">
+        <a class="cta-btn cta-btn--whatsapp" href="https://wa.me/5511991703802" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Falar no WhatsApp
+        </a>
+        <a class="cta-btn cta-btn--site" href="https://www.redaxengenharia.com.br/" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg> Visitar o site
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVEGAÇÃO ENTRE MATÉRIAS -->
+  <section class="nav-edicao">
+    <a class="nav-edicao-btn nav-edicao-prev" href="#">
+      <svg width="28" height="12" viewBox="0 0 28 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="27" y1="6" x2="1" y2="6"/><polyline points="7 1 1 6 7 11"/></svg>
+      Matéria Anterior
+    </a>
+    <a class="nav-edicao-btn nav-edicao-next" href="#">
+      Próxima Matéria
+      <svg width="28" height="12" viewBox="0 0 28 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="6" x2="27" y2="6"/><polyline points="21 1 27 6 21 11"/></svg>
+    </a>
+  </section>
 
   <!-- FOOTER -->
   
