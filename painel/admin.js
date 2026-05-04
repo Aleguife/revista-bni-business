@@ -419,91 +419,288 @@ function montarPrompt(d) {
 
   const ctasStr = d.ctas.length
     ? d.ctas.map(c => `- ${c.tipo}: texto "${c.texto}" → link: ${c.link}`).join('\n')
-    : '(sem CTA — não inclua botão de contato)';
+    : '(sem CTA — omita a section.cta-section completamente)';
 
   const dataFormatada = d.data
     ? new Date(d.data + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })
     : '';
 
-  return `Você é o sistema de geração de matérias da Revista BNI Business, publicação empresarial premium do BNI São Paulo.
+  const dataISO = d.data || '';
+  const slug = d.slug || 'materia';
 
-Gere uma página HTML COMPLETA para a matéria abaixo. Siga exatamente as instruções.
+  return `Você é o sistema de geração de matérias da Revista BNI Business.
 
-═══ DADOS ═══
+Gere uma página HTML COMPLETA seguindo EXATAMENTE o template abaixo.
+NÃO invente estrutura nova. NÃO use classes diferentes das mostradas no template.
+NÃO use /assets/css/materia.css — todo CSS está inline no <style>.
+Substitua apenas os conteúdos marcados com [COLCHETES].
+
+═══ DADOS DA MATÉRIA ═══
 Seção: ${d.secao}
 Título: ${d.titulo}
-Olho/Subtítulo: ${d.olho || '(gere um subtítulo de uma frase que amplie o título)'}
+Olho/Subtítulo: ${d.olho || '(gere um subtítulo de uma frase)'}
 Empresa: ${d.empresa}
 Profissional: ${d.profissional}
-Autor (byline): ${d.autor || '(omitir byline)'}
-Data de publicação: ${dataFormatada || '(omitir)'}
+Autor: ${d.autor || ''}
+Data formatada: ${dataFormatada || ''}
+Data ISO: ${dataISO}
+Slug: ${slug}
 Imagem hero: src="${d.imagemUrl}" alt="${d.imagemAlt || d.titulo}"
 
-Texto base (IMPORTANTE: o texto pode conter tags HTML como <b>, <i>, <u>, <h2>, <h3>, <ul>, <ol>, <li>, <p> — preserve e respeite toda a formatação original, não remova nem altere as tags presentes):
+Texto base da matéria (preserve TODA formatação HTML — bold, italic, listas, h2, h3 etc.):
 ${d.texto}
 
-Frases de destaque:
+Frases de destaque (cada uma vira um .citacao-bloco intercalado no artigo):
 ${frasesStr}
 
 CTAs:
 ${ctasStr}
 
-═══ ESTILO VISUAL ═══
-Paleta: vermelho #CC0000 | preto #111111 | branco #fff | bege #f5f4f2
-Fontes: Playfair Display (títulos e destaques) | DM Sans (corpo e UI)
-Tom: editorial premium, inspirador, profissional
+═══ TEMPLATE HTML — COPIE E PREENCHA ═══
 
-═══ ESTRUTURA HTML OBRIGATÓRIA ═══
+\`\`\`html
+<!DOCTYPE html>
+<html lang="pt-BR" data-lang="PT">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KX2T4K1YJG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KX2T4K1YJG');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${d.titulo} — BNI Business</title>
+<meta name="description" content="[DESCRIÇÃO SEO de 150 caracteres baseada no texto]">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Revista BNI Business">
+<meta property="og:title" content="${d.titulo} | BNI Business">
+<meta property="og:description" content="[DESCRIÇÃO]">
+<meta property="og:image" content="https://bnibusiness.com.br/edicao-02/${slug}/img/og-cover.webp">
+<meta property="og:url" content="https://bnibusiness.com.br/edicao-02/${slug}">
+<meta property="og:locale" content="pt_BR">
+<meta name="robots" content="index, follow, max-image-preview:large">
+${d.autor ? `<meta name="author" content="${d.autor}">` : ''}
+<meta property="article:section" content="${d.secao}">
+${dataISO ? `<meta property="article:published_time" content="${dataISO}">` : ''}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${d.titulo} | BNI Business">
+<meta name="twitter:description" content="[DESCRIÇÃO]">
+<meta name="twitter:image" content="https://bnibusiness.com.br/edicao-02/${slug}/img/og-cover.webp">
+<link rel="canonical" href="https://bnibusiness.com.br/edicao-02/${slug}/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="../../nav.js?v=2026050303" defer></script>
+<script src="../../footer.js?v=2026050303" defer></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --vermelho: #C8102E; --preto: #1a1a1a; --creme: #F5F0E8; --creme-escuro: #EAE3D5; --cinza: #888; --branco: #fff; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--creme); color: var(--preto); font-family: 'Barlow', sans-serif; font-weight: 400; line-height: 1.7; overflow-x: hidden; }
 
-1. DOCTYPE + <head> completo:
-   - charset UTF-8, viewport
-   - <title>${d.titulo} | BNI Business</title>
-   - meta description (gere com base no texto)
-   - og:title, og:description, og:image
-   - <link rel="stylesheet" href="/assets/css/materia.css">
-   - <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  /* HERO */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 90vh; background: var(--creme); }
+  .hero-foto { position: relative; overflow: hidden; background: #2a2a2a; }
+  .hero-foto img { width: 100%; height: 110%; object-fit: cover; object-position: center top; display: block; filter: grayscale(8%); will-change: transform; }
+  .hero-foto-caption { position: absolute; bottom: 5rem; right: 2rem; text-align: right; }
+  .hero-foto-caption p { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--branco); line-height: 1.5; background: rgba(26,26,26,0.75); padding: 10px 14px; display: inline-block; max-width: 250px; }
+  .hero-foto-caption strong { display: block; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+  .hero-texto { padding: 4rem 4rem 4rem 5rem; display: flex; flex-direction: column; justify-content: center; background: var(--creme); }
+  .hero-byline { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 2px; color: var(--cinza); text-transform: uppercase; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 4px; }
+  .hero-byline .bl-secao { color: var(--vermelho); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .hero-byline .bl-secao::before { content: '◤'; font-size: 11px; }
+  .hero-titulo { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; line-height: 1.05; color: var(--preto); margin-bottom: 2rem; letter-spacing: -0.5px; }
+  .hero-chapeu { font-family: 'Barlow', sans-serif; font-size: 1.2rem; line-height: 1.5; color: #333; border-left: 3px solid var(--vermelho); padding-left: 1.5rem; margin-bottom: 2.5rem; }
+  .hero-assina { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: var(--cinza); text-transform: uppercase; }
+  .hero-assina span { color: var(--preto); font-weight: 600; }
 
-2. Body:
-   - <script src="/assets/js/nav.js?v=1" defer></script> (primeiro filho do body)
-   
-3. <article class="materia">:
+  /* DIVISOR */
+  .divisor { height: 3px; background: linear-gradient(90deg, var(--vermelho) 0%, var(--vermelho) 40%, var(--creme-escuro) 40%); transform: scaleX(0); transform-origin: left; transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+  .divisor.animado { transform: scaleX(1); }
 
-   a) <header class="materia-hero">
-      - <img src="${d.imagemUrl}" alt="${d.imagemAlt || d.titulo}" class="hero-img">
-      - <div class="hero-overlay">
-        - <span class="retranca">${d.secao}</span>  ← vermelho #CC0000
-        - <h1 class="titulo-principal">${d.titulo}</h1>
-        - <p class="olho">${d.olho}</p>  ← imediatamente abaixo do h1, DM Sans ~1.1rem, cor #ddd
-        ${d.empresa ? `- <p class="empresa-destaque">${d.empresa}</p>` : ''}
-      </div>
+  /* ARTIGO */
+  .artigo { max-width: 1100px; margin: 0 auto; padding: 4rem; }
+  .artigo > div { margin-top: 3.5rem; }
+  .artigo > div:first-child { margin-top: 0; }
+  .texto-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .texto-duplo p { font-family: 'Barlow', sans-serif; font-size: 1.125rem; font-weight: 300; line-height: 1.7; color: #2a2a2a; text-indent: 1.5em; }
+  .texto-triplo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; }
+  .texto-triplo p { font-family: 'Barlow', sans-serif; font-size: 1.125rem; font-weight: 300; line-height: 1.7; color: #2a2a2a; text-indent: 1.5em; }
+  .secao-titulo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--vermelho); margin-bottom: 1.5rem; padding-bottom: 0.4rem; display: block; position: relative; }
+  .secao-titulo::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background: var(--vermelho); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .secao-titulo.animado::after { width: 100%; }
 
-   b) <div class="materia-meta"> (se houver autor ou data)
-      - <span class="byline">Por ${d.autor}</span>
-      - <span class="data-pub">${dataFormatada}</span>
+  /* CITAÇÕES */
+  .citacao-bloco { background: var(--vermelho); padding: 3.5rem 4rem; position: relative; opacity: 0; transform: translateX(-30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+  .citacao-bloco.visible { opacity: 1; transform: translateX(0); }
+  .citacao-bloco blockquote { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem,2.5vw,1.8rem); font-style: italic; color: var(--branco); line-height: 1.5; font-weight: 400; padding-left: 5rem; position: relative; }
+  .citacao-bloco blockquote::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 9rem; font-style: normal; color: rgba(255,255,255,0.25); position: absolute; left: -0.5rem; top: -1.5rem; line-height: 1; }
+  .citacao-lateral { border-left: 4px solid var(--vermelho); padding: 1rem 1.5rem; float: right; width: 45%; margin-left: 2.5rem; margin-bottom: 1rem; }
+  .citacao-lateral p { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: var(--preto); line-height: 1.5; text-indent: 0 !important; }
 
-   c) <div class="materia-corpo">
-      - Lead: primeiro parágrafo em destaque (classe "lead"), tom de abertura forte
-      - Corpo: desenvolva o texto base em 3-5 blocos, PRESERVANDO toda formatação HTML original
-      - Para cada frase de destaque: <blockquote class="frase-destaque"><p>"frase"</p></blockquote>
-      - Distribua as frases ao longo do texto, não todas juntas
+  /* FOTO */
+  .foto-larga { margin: 3rem 0 1rem; }
+  .foto-larga img { width: 100%; height: auto; display: block; }
+  .foto-larga figcaption { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: #2a2a2a; margin-top: 0.5rem; line-height: 1.5; }
+  .clearfix::after { content: ''; display: block; clear: both; height: 0; }
 
-   d) Se houver CTAs:
-      <div class="cta-section">
-        <p class="cta-intro">Entre em contato com ${d.empresa || d.profissional}</p>
-        Para cada CTA: <a href="LINK" class="btn-cta btn-TIPO" target="_blank" rel="noopener">TEXTO</a>
-        Tipos de classe: btn-whatsapp (fundo #25D366), btn-instagram (fundo #E1306C), btn-linkedin (fundo #0077B5), btn-site (fundo #CC0000), btn-email (fundo #555), btn-outro (fundo #333)
-      </div>
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; overflow: hidden; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-   e) <div id="mais-materias" class="mais-materias-placeholder"></div>
+  /* CTA */
+  .cta-section { background: var(--creme-escuro); }
+  .cta-inner { max-width: 1100px; margin: 0 auto; padding: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .cta-texto h3 { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem,2.5vw,2rem); font-weight: 700; color: var(--preto); margin-bottom: 0.5rem; line-height: 1.2; }
+  .cta-texto p { font-family: 'Barlow', sans-serif; font-size: 1rem; color: #555; }
+  .cta-botoes { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 10px; padding: 0.9rem 1.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+  .cta-btn--whatsapp { background: #25D366; color: #fff; }
+  .cta-btn--instagram { background: #E1306C; color: #fff; }
+  .cta-btn--linkedin { background: #0077B5; color: #fff; }
+  .cta-btn--site { background: var(--vermelho); color: #fff; }
+  .cta-btn--email { background: #555; color: #fff; }
+  .cta-btn--youtube { background: #FF0000; color: #fff; }
+  .cta-btn--outro { background: #333; color: #fff; }
+  .cta-btn svg { flex-shrink: 0; }
 
-4. <script src="/assets/js/footer.js?v=1" defer></script>
+  /* NAV ENTRE MATÉRIAS */
+  .nav-edicao { display: flex; align-items: center; justify-content: center; gap: 1.5rem; padding: 4rem; background: var(--branco); border-top: 1px solid var(--creme-escuro); }
+  .nav-edicao-btn { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1rem 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 2px solid var(--vermelho); color: var(--vermelho); background: transparent; transition: background 0.2s, color 0.2s; }
+  .nav-edicao-btn:hover { background: var(--vermelho); color: var(--branco); }
 
-═══ REGRAS ═══
-- HTML semântico e acessível
-- Não inclua <style> com reset ou layout geral — apenas estilos específicos desta matéria em <style> no <head> se necessário
-- Preserve TODA formatação HTML do texto base (bold, italic, listas, subtítulos etc.)
-- NÃO reescreva o texto base, apenas organize-o em blocos HTML adequados
-- Responsive (o CSS global já cuida disso, mas não quebre layouts)
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-foto { height: 100vh; }
+    .hero-texto { padding: 2.5rem 1.5rem; }
+    .texto-duplo, .texto-triplo { grid-template-columns: 1fr; gap: 0; }
+    .citacao-lateral { float: none; width: 100%; margin: 1.5rem 0; }
+    .artigo { padding: 3rem 1.2rem; }
+    .citacao-bloco { padding: 2rem 1.5rem; }
+    .citacao-bloco blockquote { padding-left: 0; }
+    .citacao-bloco blockquote::before { position: static; display: block; font-size: 6rem; line-height: 0.5; margin-bottom: 0.5rem; }
+    .cta-inner { flex-direction: column; padding: 2.5rem 1.5rem; }
+    .cta-botoes { width: 100%; flex-direction: column; }
+    .cta-btn { width: 100%; justify-content: center; }
+    .nav-edicao { flex-direction: column; padding: 2.5rem 1.5rem; gap: 1rem; }
+    .nav-edicao-btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-foto">
+    <img src="${d.imagemUrl}" alt="${d.imagemAlt || d.titulo}" loading="eager" fetchpriority="high" />
+    <div class="hero-foto-caption">
+      <p><strong>${d.profissional || d.empresa}</strong> — [CARGO OU DESCRIÇÃO BREVE DO PROFISSIONAL]</p>
+    </div>
+  </div>
+  <div class="hero-texto fade-in">
+    <div class="hero-byline">
+      <span class="bl-secao">${d.secao}</span>
+      ${dataFormatada ? `<span class="bl-data">${dataFormatada}</span>` : ''}
+    </div>
+    <h1 class="hero-titulo">
+      [QUEBRE O TÍTULO EM 2-3 LINHAS COM &lt;br&gt; — use &lt;span style="color:var(--vermelho);"&gt; para palavras-chave em vermelho]
+    </h1>
+    <p class="hero-chapeu">${d.olho || '[OLHO/SUBTÍTULO]'}</p>
+    ${d.autor ? `<div class="hero-assina">Por <span>${d.autor}</span></div>` : ''}
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<!-- ARTIGO -->
+<main class="artigo">
+
+  <div class="texto-duplo fade-in">
+    <p>[LEAD — primeiro parágrafo em tom de abertura forte]</p>
+    <p>[SEGUNDO PARÁGRAFO]</p>
+  </div>
+
+  <div class="fade-in">
+    <span class="secao-titulo">[SUBTÍTULO DA PRIMEIRA SEÇÃO]</span>
+    <div class="texto-duplo">
+      <div><p>[PARÁGRAFO]</p><p>[PARÁGRAFO]</p></div>
+      <div><p>[PARÁGRAFO]</p><p>[PARÁGRAFO]</p></div>
+    </div>
+  </div>
+
+  <div class="citacao-bloco fade-in">
+    <blockquote>[PRIMEIRA FRASE DE DESTAQUE]</blockquote>
+  </div>
+
+  <div class="fade-in">
+    <span class="secao-titulo">[SUBTÍTULO DA SEGUNDA SEÇÃO]</span>
+    <div class="texto-duplo">
+      <div><p>[PARÁGRAFO]</p></div>
+      <div><p>[PARÁGRAFO]</p></div>
+    </div>
+  </div>
+
+  <!-- Continue com mais blocos conforme necessário -->
+
+</main>
+
+${d.ctas.length ? `<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-texto">
+      <h3>[CHAMADA PARA AÇÃO — ${d.empresa || d.profissional}]</h3>
+      <p>[SUBTEXTO DO CTA]</p>
+    </div>
+    <div class="cta-botoes">
+      [GERE UM &lt;a class="cta-btn cta-btn--TIPO" href="LINK" target="_blank" rel="noopener"&gt;TEXTO&lt;/a&gt; POR CTA INFORMADO]
+    </div>
+  </div>
+</section>` : ''}
+
+<section class="nav-edicao">
+  <a class="nav-edicao-btn" href="/edicao-02/">
+    &larr; Voltar à Edição 2
+  </a>
+</section>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  setTimeout(() => { const h = document.querySelector('.hero-texto'); if (h) h.classList.add('visible'); }, 100);
+  setTimeout(() => { const d = document.querySelector('.divisor'); if (d) d.classList.add('animado'); }, 300);
+  const obsTitulo = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animado'); obsTitulo.unobserve(e.target); } });
+  }, { threshold: 0.8 });
+  document.querySelectorAll('.secao-titulo').forEach(el => obsTitulo.observe(el));
+  const obsCitacao = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obsCitacao.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.citacao-bloco').forEach(el => obsCitacao.observe(el));
+  const heroImg = document.querySelector('.hero-foto img');
+  if (heroImg) {
+    window.addEventListener('scroll', () => {
+      heroImg.style.transform = 'translateY(' + (window.pageYOffset * 0.25) + 'px)';
+    }, { passive: true });
+  }
+</script>
+</body>
+</html>
+\`\`\`
+
+═══ REGRAS FINAIS ═══
+- Use EXATAMENTE as classes CSS do template — não invente classes novas nem adicione <style> extra
+- nav.js e footer.js (no <head>) injetam navbar e footer — NÃO os recrie manualmente no body
+- Distribua o texto base em múltiplos blocos .texto-duplo ou .texto-triplo
+- Cada subtítulo vira um .secao-titulo antes de um bloco .texto-duplo
+- Intercale .citacao-bloco com as frases de destaque ao longo do artigo
+- PRESERVE toda formatação HTML do texto base (b, i, u, ul, ol, li, h2, h3 etc.)
+- NÃO reescreva nem resuma o texto base — apenas organize em blocos
+- No hero-titulo, quebre em 2-3 linhas com <br> e use <span style="color:var(--vermelho);"> para destaque
 
 Retorne APENAS o HTML completo entre \`\`\`html e \`\`\`. Nada mais.`;
 }
