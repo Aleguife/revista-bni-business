@@ -502,3 +502,18 @@ function marcarPublicada(slug) {
   localStorage.setItem('bni-status', JSON.stringify(s));
   renderChecklist();
 }
+
+// ── EXPOSIÇÃO GLOBAL (chamadas via onclick no HTML) ───
+window.onSecaoChange  = onSecaoChange;
+window.onTituloInput  = onTituloInput;
+window.adicionarFrase = adicionarFrase;
+window.removerFrase   = removerFrase;
+window.adicionarCTA   = adicionarCTA;
+window.removerCTA     = removerCTA;
+window.fazerLogin     = fazerLogin;
+window.sair           = sair;
+window.mostrarAba     = mostrarAba;
+window.gerarMateria   = gerarMateria;
+window.limparForm     = limparForm;
+window.copiarHTML     = copiarHTML;
+window.publicar       = publicar;
