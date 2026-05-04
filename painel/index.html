@@ -67,38 +67,37 @@
           <div class="card">
             <h2 class="card-title">Identificação</h2>
 
-            <div class="field-row">
-              <div class="field-group">
-                <label>Seção</label>
-                <select id="f-secao" onchange="onSecaoChange()">
-                  <option value="">Selecione a seção...</option>
-                  <option value="eventos-1">Eventos</option>
-                  <option value="case-1">Case de sucesso</option>
-                  <option value="capa">Matéria de Capa</option>
-                  <option value="editorial">Editorial</option>
-                  <option value="negocios-1">Negócios</option>
-                  <option value="saude-mental">Saúde mental</option>
-                  <option value="direito">Direito</option>
-                  <option value="estilo">Estilo</option>
-                  <option value="bni-mundi">BNI Mundi</option>
-                  <option value="reconhecimento">Reconhecimento</option>
-                  <option value="dev-pessoal">Desenvolvimento pessoal</option>
-                  <option value="turismo">Turismo</option>
-                  <option value="bni-sao-francisco">BNI São Francisco</option>
-                  <option value="eventos-2">Eventos (2ª matéria)</option>
-                  <option value="case-2">Case de sucesso (2ª matéria)</option>
-                  <option value="negocios-2">Negócios (2ª matéria)</option>
-                </select>
-              </div>
-              <div class="field-group">
-                <label>Chapéu <span class="label-opcional">(linha acima do título)</span></label>
-                <input type="text" id="f-chapeu" placeholder="Ex: Engenharia & Inovação">
-              </div>
+            <div class="field-group">
+              <label>Seção</label>
+              <select id="f-secao" onchange="onSecaoChange()">
+                <option value="">Selecione a seção...</option>
+                <option value="eventos-1">Eventos</option>
+                <option value="case-1">Case de sucesso</option>
+                <option value="capa">Matéria de Capa</option>
+                <option value="editorial">Editorial</option>
+                <option value="negocios-1">Negócios</option>
+                <option value="saude-mental">Saúde mental</option>
+                <option value="direito">Direito</option>
+                <option value="estilo">Estilo</option>
+                <option value="bni-mundi">BNI Mundi</option>
+                <option value="reconhecimento">Reconhecimento</option>
+                <option value="dev-pessoal">Desenvolvimento pessoal</option>
+                <option value="turismo">Turismo</option>
+                <option value="bni-sao-francisco">BNI São Francisco</option>
+                <option value="eventos-2">Eventos (2ª matéria)</option>
+                <option value="case-2">Case de sucesso (2ª matéria)</option>
+                <option value="negocios-2">Negócios (2ª matéria)</option>
+              </select>
             </div>
 
             <div class="field-group">
               <label>Título da matéria</label>
               <input type="text" id="f-titulo" placeholder="Ex: O estrategista por trás da nova geração de obras">
+            </div>
+
+            <div class="field-group">
+              <label>Olho / Subtítulo <span class="label-opcional">(exibido abaixo do título na matéria)</span></label>
+              <textarea id="f-olho" rows="2" placeholder="Ex: Como a Redax Engenharia transformou a gestão de obras em vantagem competitiva para seus clientes."></textarea>
             </div>
 
             <div class="field-group">

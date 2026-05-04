@@ -165,7 +165,7 @@ function getCTAs() {
 
 // ── FORMULÁRIO ────────────────────────────────
 function limparForm() {
-  ['f-secao','f-titulo','f-slug','f-chapeu','f-empresa','f-profissional',
+  ['f-secao','f-titulo','f-olho','f-slug','f-empresa','f-profissional',
    'f-autor','f-texto','f-imagem-url','f-imagem-alt'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -193,7 +193,7 @@ async function gerarMateria() {
 
   const dados = {
     secao:       secaoLabel,
-    chapeu:      val('f-chapeu'),
+    olho:        val('f-olho'),
     titulo:      val('f-titulo'),
     slug:        val('f-slug'),
     empresa:     val('f-empresa'),
@@ -269,8 +269,8 @@ Gere uma página HTML COMPLETA para a matéria abaixo. Siga exatamente as instru
 
 ═══ DADOS ═══
 Seção: ${d.secao}
-Chapéu: ${d.chapeu || '(omitir)'}
 Título: ${d.titulo}
+Olho/Subtítulo: ${d.olho || '(gere um subtítulo de uma frase que amplie o título)'}
 Empresa: ${d.empresa}
 Profissional: ${d.profissional}
 Autor (byline): ${d.autor || '(omitir byline)'}
@@ -310,8 +310,8 @@ Tom: editorial premium, inspirador, profissional
       - <img src="${d.imagemUrl}" alt="${d.imagemAlt || d.titulo}" class="hero-img">
       - <div class="hero-overlay">
         - <span class="retranca">${d.secao}</span>  ← vermelho #CC0000
-        ${d.chapeu ? `- <span class="chapeu">${d.chapeu}</span>` : ''}
         - <h1 class="titulo-principal">${d.titulo}</h1>
+        - <p class="olho">${d.olho}</p>  ← imediatamente abaixo do h1, DM Sans ~1.1rem, cor #ddd
         ${d.empresa ? `- <p class="empresa-destaque">${d.empresa}</p>` : ''}
       </div>
 
