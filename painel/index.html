@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel — BNI Business</title>
+<title>Admin — BNI Business</title>
 <link rel="stylesheet" href="admin.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <div class="login-logo">
       <span class="logo-bni">BNI</span>
       <span class="logo-business">Business</span>
-      <span class="logo-admin">/ painel</span>
+      <span class="logo-admin">/ admin</span>
     </div>
     <p class="login-subtitle">Painel de criação de matérias</p>
     <div class="login-field">
@@ -60,29 +60,39 @@
 
       <div class="form-grid">
 
+        <!-- COLUNA ESQUERDA -->
         <div class="form-col">
-          <div class="card">
-            <h2 class="card-title">Dados da matéria</h2>
 
-            <!-- Seletor de matéria — preenche seção + slug automaticamente -->
-            <div class="field-group">
-              <label>Matéria da Edição 2</label>
-              <select id="f-materia" onchange="preencherDaMateria()">
-                <option value="">Selecione a matéria do sumário...</option>
-              </select>
-            </div>
+          <!-- BLOCO: IDENTIFICAÇÃO -->
+          <div class="card">
+            <h2 class="card-title">Identificação</h2>
 
             <div class="field-row">
               <div class="field-group">
                 <label>Seção</label>
-                <input type="text" id="f-secao" placeholder="Auto-preenchida ao selecionar" readonly>
+                <select id="f-secao" onchange="onSecaoChange()">
+                  <option value="">Selecione a seção...</option>
+                  <option value="eventos-1">Eventos</option>
+                  <option value="case-1">Case de sucesso</option>
+                  <option value="capa">Matéria de Capa</option>
+                  <option value="editorial">Editorial</option>
+                  <option value="negocios-1">Negócios</option>
+                  <option value="saude-mental">Saúde mental</option>
+                  <option value="direito">Direito</option>
+                  <option value="estilo">Estilo</option>
+                  <option value="bni-mundi">BNI Mundi</option>
+                  <option value="reconhecimento">Reconhecimento</option>
+                  <option value="dev-pessoal">Desenvolvimento pessoal</option>
+                  <option value="turismo">Turismo</option>
+                  <option value="bni-sao-francisco">BNI São Francisco</option>
+                  <option value="eventos-2">Eventos (2ª matéria)</option>
+                  <option value="case-2">Case de sucesso (2ª matéria)</option>
+                  <option value="negocios-2">Negócios (2ª matéria)</option>
+                </select>
               </div>
               <div class="field-group">
-                <label>Slug (URL)</label>
-                <div class="slug-preview">
-                  <span class="slug-base">/edicao-02/</span>
-                  <input type="text" id="f-slug" placeholder="ex: felipe-xavier">
-                </div>
+                <label>Chapéu <span class="label-opcional">(linha acima do título)</span></label>
+                <input type="text" id="f-chapeu" placeholder="Ex: Engenharia & Inovação">
               </div>
             </div>
 
@@ -92,8 +102,12 @@
             </div>
 
             <div class="field-group">
-              <label>Olho / Subtítulo</label>
-              <textarea id="f-olho" rows="2" placeholder="Texto descritivo exibido abaixo do título. Ex: Como a Redax Engenharia transformou a gestão de obras em vantagem competitiva."></textarea>
+              <label>Slug (URL da página)</label>
+              <div class="slug-preview">
+                <span class="slug-base">bnibusiness.com.br/edicao-02/</span>
+                <input type="text" id="f-slug" placeholder="ex: felipe-xavier">
+              </div>
+              <small class="field-hint slug-hint" id="slug-hint"></small>
             </div>
 
             <div class="field-row">
@@ -107,48 +121,106 @@
               </div>
             </div>
 
-            <div class="field-group">
-              <label>Texto base da matéria</label>
-              <textarea id="f-texto" rows="7" placeholder="Cole aqui o texto da revista impressa ou um resumo. A IA vai expandir, formatar e adaptar para o digital."></textarea>
-            </div>
-
-            <div class="field-group">
-              <label>Frase de destaque <span class="label-opcional">(opcional)</span></label>
-              <input type="text" id="f-frase" placeholder='"Conexões que transformam negócios em legados"'>
-            </div>
-
-            <div class="field-group">
-              <label>Botão de contato (CTA)</label>
-              <div class="field-row">
-                <input type="text" id="f-cta-texto" placeholder="Texto do botão">
-                <input type="text" id="f-cta-link" placeholder="Link (WhatsApp, site...)">
+            <div class="field-row">
+              <div class="field-group">
+                <label>Autor <span class="label-opcional">(byline)</span></label>
+                <input type="text" id="f-autor" placeholder="Ex: Fernanda Sodré">
+              </div>
+              <div class="field-group">
+                <label>Publicada em</label>
+                <input type="date" id="f-data">
               </div>
             </div>
+          </div>
 
-            <hr class="divider">
+          <!-- BLOCO: IMAGEM HERO -->
+          <div class="card">
+            <h2 class="card-title">Imagem Hero</h2>
+            <div class="field-group">
+              <label>URL da imagem <span class="label-opcional">(ou deixe em branco para adicionar depois)</span></label>
+              <input type="text" id="f-imagem-url" placeholder="https://... ou caminho relativo /edicao-02/felipe-xavier/hero.jpg">
+            </div>
+            <div class="field-group">
+              <label>Alt text da imagem</label>
+              <input type="text" id="f-imagem-alt" placeholder="Ex: Felipe Xavier na obra da Redax Engenharia em São Paulo">
+            </div>
+          </div>
+
+          <!-- BLOCO: CONTEÚDO -->
+          <div class="card">
+            <h2 class="card-title">Conteúdo</h2>
 
             <div class="field-group">
-              <label>Chave da API Claude</label>
-              <input type="password" id="f-api-key" placeholder="sk-ant-...">
-              <small class="field-hint">Nunca salva no servidor — fica só nesta sessão.</small>
+              <label>Texto base da matéria</label>
+              <div class="textarea-hint">
+                <span>Cole o texto da revista — HTML, bold, listas, subtítulos são reconhecidos automaticamente</span>
+                <div class="format-badges">
+                  <span class="fbadge">&#60;b&#62; bold</span>
+                  <span class="fbadge">&#60;i&#62; italic</span>
+                  <span class="fbadge">&#60;u&#62; underline</span>
+                  <span class="fbadge">&#60;h2&#62; subtítulo</span>
+                  <span class="fbadge">&#60;ul&#62; lista</span>
+                  <span class="fbadge">&#60;ol&#62; numerada</span>
+                </div>
+              </div>
+              <textarea id="f-texto" rows="10" placeholder="Cole aqui o texto completo. Pode incluir subtítulos, parágrafos, listas, bold, italic etc. A IA irá respeitar toda a formatação existente."></textarea>
             </div>
 
+            <!-- FRASES DE DESTAQUE -->
             <div class="field-group">
-              <label>Token GitHub</label>
-              <input type="password" id="f-github-token" placeholder="ghp_...">
-              <small class="field-hint">Nunca salva no servidor — fica só nesta sessão.</small>
+              <div class="dynamic-header">
+                <label>Frases de destaque</label>
+                <button class="btn-add" onclick="adicionarFrase()">+ Adicionar frase</button>
+              </div>
+              <div id="frases-container">
+                <div class="frase-item" data-index="0">
+                  <input type="text" class="frase-input" placeholder='"Conexões que transformam negócios em legados"'>
+                  <button class="btn-remove" onclick="removerFrase(this)" title="Remover">✕</button>
+                </div>
+              </div>
+              <small class="field-hint">Você pode adicionar quantas frases quiser — cada uma vira um bloco de destaque na matéria</small>
             </div>
+          </div>
 
-            <div class="btn-row">
-              <button class="btn-primary" onclick="gerarMateria()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Gerar com IA
-              </button>
-              <button class="btn-secondary" onclick="limparForm()">Limpar</button>
+          <!-- BLOCO: CTAs -->
+          <div class="card">
+            <h2 class="card-title">Botões de contato (CTA)</h2>
+            <div class="dynamic-header" style="margin-bottom:12px;">
+              <span class="field-hint" style="margin:0;">Adicione quantos botões precisar, ou nenhum</span>
+              <button class="btn-add" onclick="adicionarCTA()">+ Adicionar botão</button>
             </div>
+            <div id="ctas-container">
+              <!-- CTAs adicionados dinamicamente -->
+            </div>
+            <p class="cta-vazio" id="cta-vazio">Nenhum botão adicionado — a matéria será publicada sem CTA.</p>
+          </div>
+
+          <!-- BLOCO: CREDENCIAIS -->
+          <div class="card">
+            <h2 class="card-title">Credenciais <span class="label-opcional">(ficam só nesta sessão)</span></h2>
+            <div class="field-row">
+              <div class="field-group">
+                <label>Chave da API Claude</label>
+                <input type="password" id="f-api-key" placeholder="sk-ant-...">
+              </div>
+              <div class="field-group">
+                <label>Token GitHub</label>
+                <input type="password" id="f-github-token" placeholder="ghp_...">
+              </div>
+            </div>
+            <small class="field-hint">Nunca salvas no servidor — apenas nesta sessão do browser.</small>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" onclick="gerarMateria()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Gerar com IA
+            </button>
+            <button class="btn-secondary" onclick="limparForm()">Limpar formulário</button>
           </div>
         </div>
 
+        <!-- COLUNA DIREITA: PREVIEW -->
         <div class="preview-col">
           <div class="card" id="card-status" style="display:none;">
             <h2 class="card-title">Status</h2>
@@ -166,7 +238,7 @@
                 </button>
               </div>
             </div>
-            <textarea id="html-gerado" rows="22" readonly></textarea>
+            <textarea id="html-gerado" rows="30" readonly></textarea>
           </div>
         </div>
       </div>
