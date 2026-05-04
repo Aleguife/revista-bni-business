@@ -48,6 +48,40 @@ const MATERIAS = [
   { num:16, secao:'BNI São Francisco',       titulo:'BNI São Francisco',                      slug:'bni-sao-francisco',      status:'pendente'  },
 ];
 
+// ── HELPERS ───────────────────────────────────
+function toKebab(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+// Extrai o incremento numérico do valor do select (ex: "eventos-2" → 2)
+function incrementoDaSecao(secaoKey) {
+  const partes = secaoKey.split('-');
+  const ultimo = partes[partes.length - 1];
+  return /^\d+$/.test(ultimo) ? parseInt(ultimo, 10) : 1;
+}
+
+// ── QUILL EDITOR ──────────────────────────────
+let quill;
+document.addEventListener('DOMContentLoaded', function () {
+  if (!document.getElementById('f-texto-editor')) return;
+  quill = new Quill('#f-texto-editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ header: 2 }, { header: 3 }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['clean'],
+      ],
+      clipboard: { matchVisual: false },
+    },
+    placeholder: 'Cole aqui o texto completo. Bold, italic, listas e subtítulos são preservados automaticamente ao colar do InDesign ou Word.',
+  });
+});
+
 // ── LOGIN ─────────────────────────────────────
 async function fazerLogin() {
   const input = document.getElementById('senha-input').value;
@@ -85,23 +119,46 @@ function mostrarAba(id, el) {
   if (id === 'checklist') renderChecklist();
 }
 
-// ── SLUG AUTOMÁTICO ───────────────────────────
+// ── SLUG + IMAGEM + ALT AUTOMÁTICOS ──────────
 function onSecaoChange() {
-  const val  = document.getElementById('f-secao').value;
+  const key  = document.getElementById('f-secao').value;
   const hint = document.getElementById('slug-hint');
-  if (!val || !SECAO_MAP[val]) { hint.textContent = ''; return; }
+  if (!key || !SECAO_MAP[key]) { hint.textContent = ''; return; }
 
-  const { slug, label } = SECAO_MAP[val];
+  const { slug, label } = SECAO_MAP[key];
   const statusSalvo = JSON.parse(localStorage.getItem('bni-status') || '{}');
-  const materia = MATERIAS.find(m => m.slug === slug);
-  
-  document.getElementById('f-slug').value = slug;
+  const materia     = MATERIAS.find(m => m.slug === slug);
 
-  if (materia && (statusSalvo[slug] === 'publicada' || materia.status === 'publicada')) {
-    hint.textContent = '⚠ Esta matéria já está publicada. Publicar novamente irá sobrescrever.';
-  } else {
-    hint.textContent = '';
-  }
+  // 1. Slug
+  document.getElementById('f-slug').value = slug;
+  hint.textContent = (materia && (statusSalvo[slug] === 'publicada' || materia.status === 'publicada'))
+    ? '⚠ Esta matéria já está publicada. Publicar novamente irá sobrescrever.'
+    : '';
+
+  // 2. Imagem Hero — img/<secao-kebab><incremento>.webp
+  const inc       = incrementoDaSecao(key);
+  const secaoKebab = toKebab(label);
+  document.getElementById('f-imagem-url').value = `img/${secaoKebab}${inc}.webp`;
+
+  // 3. Alt text
+  atualizarAlt(label);
+}
+
+function onTituloInput() {
+  const key   = document.getElementById('f-secao').value;
+  const label = (key && SECAO_MAP[key]) ? SECAO_MAP[key].label : '';
+  atualizarAlt(label);
+}
+
+function atualizarAlt(secaoLabel) {
+  const titulo  = (document.getElementById('f-titulo').value  || '').trim();
+  const empresa = (document.getElementById('f-empresa').value || '').trim();
+  if (!titulo) return;
+  const partes = [titulo];
+  if (empresa)    partes.push(empresa);
+  if (secaoLabel) partes.push(secaoLabel);
+  partes.push('Revista BNI Business');
+  document.getElementById('f-imagem-alt').value = partes.join(' — ');
 }
 
 // ── FRASES DINÂMICAS ──────────────────────────
@@ -110,7 +167,7 @@ function adicionarFrase() {
   const div = document.createElement('div');
   div.className = 'frase-item';
   div.innerHTML = `<input type="text" class="frase-input" placeholder="Digite a frase de destaque...">
-    <button class="btn-remove" onclick="removerFrase(this)" title="Remover">✕</button>`;
+    <button type="button" class="btn-remove" onclick="removerFrase(this)" title="Remover">✕</button>`;
   container.appendChild(div);
   div.querySelector('input').focus();
 }
@@ -144,7 +201,7 @@ function adicionarCTA() {
     </select>
     <input type="text" class="cta-texto" placeholder="Texto do botão (Ex: Fale conosco)">
     <input type="text" class="cta-link" placeholder="Link">
-    <button class="btn-remove" onclick="removerCTA(this)">✕</button>`;
+    <button type="button" class="btn-remove" onclick="removerCTA(this)">✕</button>`;
   container.appendChild(div);
 }
 
@@ -166,10 +223,11 @@ function getCTAs() {
 // ── FORMULÁRIO ────────────────────────────────
 function limparForm() {
   ['f-secao','f-titulo','f-olho','f-slug','f-empresa','f-profissional',
-   'f-autor','f-texto','f-imagem-url','f-imagem-alt'].forEach(id => {
+   'f-autor','f-imagem-url','f-imagem-alt'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  if (quill) quill.setContents([]);
   document.getElementById('f-data').valueAsDate = new Date();
   document.getElementById('frases-container').innerHTML =
     `<div class="frase-item"><input type="text" class="frase-input" placeholder='"Conexões que transformam negócios em legados"'>
@@ -202,7 +260,7 @@ async function gerarMateria() {
     data:        val('f-data'),
     imagemUrl:   val('f-imagem-url') || `/edicao-02/${val('f-slug')}/hero.jpg`,
     imagemAlt:   val('f-imagem-alt'),
-    texto:       val('f-texto'),
+    texto:       quill ? quill.root.innerHTML : '',
     frases:      getFrases(),
     ctas:        getCTAs(),
   };
