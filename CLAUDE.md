@@ -10,6 +10,19 @@ Leia este arquivo inteiro antes de qualquer ação.
 **Revista BNI Business** é uma publicação editorial premium do BNI São Paulo.
 Site estático em HTML/CSS/JS puro, hospedado na Locaweb, deploy automático via GitHub Actions.
 
+## ⚠ REGRA CRÍTICA DE DEPLOY
+
+O deploy deste projeto é **SEMPRE via SSH/rsync**. **NUNCA use FTP-Deploy-Action**.
+
+- Workflow: `.github/workflows/deploy.yml`
+- Mecanismo: `sshpass -e rsync` sobre SSH na porta 22
+- Host: `ftp.bnibusiness.com.br` | Usuário: `bnibusiness1`
+- Secret: `SSH_PASS` (configurado no GitHub → Settings → Secrets → Actions)
+
+Não altere o workflow para FTP sob nenhuma circunstância.
+
+---
+
 - **Repositório:** `Aleguife/revista-bni-business`
 - - **Domínio:** `bnibusiness.com.br`
   - - **Branch principal:** `main` (deploy automático ao commitar)
