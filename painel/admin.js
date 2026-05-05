@@ -367,127 +367,121 @@ async function gerarMateria() {
 // legendas: { 'img/arquivo.webp': 'caption text', ... }
 function montarCorpoArtigo(d, legendas) {
   legendas = legendas || {};
-  const tmp = document.createElement('div');
+  var tmp = document.createElement('div');
   tmp.innerHTML = d.texto || '';
 
   // ── Tokenização ────────────────────────────────────────────
-  const tokens = [];
-  Array.from(tmp.children).forEach(function (el) {
-    const tag  = el.tagName ? el.tagName.toLowerCase() : '';
-    if (!tag) return;
-    const text = el.textContent.trim();
-    const imgMatch = text.match(/^\[IMG:\s*([^\]]+)\]$/);
+  // Cada filho direto do Quill vira um token com type explícito:
+  //   'h2' | 'h3' | 'quote' | 'img' | 'para'
+  var tokens = [];
+  var children = tmp.children;
+  for (var c = 0; c < children.length; c++) {
+    var el   = children[c];
+    var tag  = el.tagName ? el.tagName.toLowerCase() : '';
+    if (!tag) continue;
+    var text = el.textContent.trim();
+    var imgMatch = text.match(/^\[IMG:\s*([^\]]+)\]$/);
     if (imgMatch) {
-      tokens.push({ tag: 'img-placeholder', file: imgMatch[1].trim() });
-      return;
+      tokens.push({ type: 'img', file: imgMatch[1].trim() });
+      continue;
     }
-    if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !text) return;
-    tokens.push({ tag: tag, html: el.outerHTML, inner: el.innerHTML });
-  });
-
-  // Quebra de seção: apenas h2/h3 e img-placeholder.
-  // blockquote NÃO quebra — é coletado junto com os parágrafos
-  // e renderizado em largura total após o .texto-duplo da seção.
-  function isSectionBreak(tag) {
-    return tag === 'h2' || tag === 'h3' || tag === 'img-placeholder';
+    if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !text) continue;
+    if      (tag === 'h2')         tokens.push({ type: 'h2',    inner: el.innerHTML });
+    else if (tag === 'h3')         tokens.push({ type: 'h3',    inner: el.innerHTML });
+    else if (tag === 'blockquote') tokens.push({ type: 'quote', inner: el.innerHTML });
+    else                           tokens.push({ type: 'para',  html:  el.outerHTML });
   }
 
-  // Coluna esquerda = tokens[0 .. ceil(n/2)-1] (primeira metade)
-  // Coluna direita  = tokens[ceil(n/2) .. n-1]  (segunda metade)
-  // Uma única chamada por seção — nunca pares.
-  function buildTextoDuplo(paras, extraClass) {
+  // ── textoDuplo ─────────────────────────────────────────────
+  // Recebe TODOS os parágrafos da seção de uma vez.
+  // Esquerda = primeiros ceil(n/2), direita = restantes floor(n/2).
+  // Chamada UMA ÚNICA vez por seção — nunca em pares.
+  function textoDuplo(paras, extraCls) {
     var n   = paras.length;
     var mid = Math.ceil(n / 2);
-    var left = '', right = '';
-    for (var k = 0; k < mid; k++) left  += paras[k].html + '\n      ';
-    for (var k = mid; k < n; k++) right += paras[k].html + '\n      ';
-    var cls = extraClass ? ' ' + extraClass : '';
-    return (
-      '<div class="texto-duplo' + cls + '">\n' +
-      '  <div>\n      ' + left.trim()  + '\n  </div>\n' +
-      '  <div>\n      ' + right.trim() + '\n  </div>\n' +
-      '</div>'
-    );
+    var L = '', R = '';
+    for (var k = 0; k < mid; k++) L += paras[k].html;
+    for (var k = mid; k < n; k++) R += paras[k].html;
+    var cls = 'texto-duplo' + (extraCls ? ' ' + extraCls : '');
+    return '<div class="' + cls + '"><div>' + L + '</div><div>' + R + '</div></div>';
   }
 
-  function renderImg(t) {
-    var file    = t.file;
-    var caption = legendas[file] || '';
-    var src     = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
-    var fig = '<figure class="foto-larga fade-in">\n  <img src="' + src +
-              '" alt="' + caption + '" loading="lazy">\n';
-    if (caption) fig += '  <figcaption>' + caption + '</figcaption>\n';
-    return fig + '</figure>';
+  function imgHtml(tk) {
+    var cap = legendas[tk.file] || '';
+    var src = '/edicao-02/' + (d.slug || 'materia') + '/' + tk.file;
+    return '<figure class="foto-larga fade-in"><img src="' + src +
+           '" alt="' + cap + '" loading="lazy">' +
+           (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
+  }
+
+  // Predicado: inicia nova seção (interrompe coleta de parágrafos)
+  function isBreak(type) {
+    return type === 'h2' || type === 'h3' || type === 'img';
   }
 
   // ── Loop principal ──────────────────────────────────────────
-  var output = [];
-  var i = 0;
+  var out = [];
+  var i   = 0;
+  var n   = tokens.length;
 
-  while (i < tokens.length) {
-    var t = tokens[i];
+  while (i < n) {
+    var tk = tokens[i];
 
     // — Imagem standalone —
-    if (t.tag === 'img-placeholder') {
-      output.push(renderImg(t));
+    if (tk.type === 'img') {
+      out.push(imgHtml(tk));
       i++;
+      continue;
+    }
 
-    // — Subtítulo de seção (h2 / h3) —
-    // Coleta TUDO até o próximo h2/h3/img (blockquotes inclusos).
-    // Parágrafos → único .texto-duplo. Blockquotes → largura total após.
-    } else if (t.tag === 'h2' || t.tag === 'h3') {
-      var cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
+    // — Citação avulsa (antes do primeiro subtítulo) —
+    if (tk.type === 'quote') {
+      out.push('<div class="citacao-bloco fade-in"><blockquote>' + tk.inner + '</blockquote></div>');
       i++;
+      continue;
+    }
 
+    // — Subtítulo h2 / h3 —
+    // Coleta TODOS os tokens da seção (até o próximo h2/h3/img).
+    // 'quote' vai para quotes[], tudo mais vai para paras[].
+    // Gera UM ÚNICO textoDuplo com todos os paras, depois os quotes.
+    if (tk.type === 'h2' || tk.type === 'h3') {
+      var spanCls = tk.type === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
+      i++;
       var paras  = [];
       var quotes = [];
-      while (i < tokens.length && !isSectionBreak(tokens[i].tag)) {
-        if (tokens[i].tag === 'blockquote') {
-          quotes.push(tokens[i]);
-        } else {
-          paras.push(tokens[i]);
-        }
+      while (i < n && !isBreak(tokens[i].type)) {
+        if (tokens[i].type === 'quote') { quotes.push(tokens[i]); }
+        else                            { paras.push(tokens[i]);  }
         i++;
       }
-
-      var block = '<div class="fade-in">\n<span class="' + cls + '">' + t.inner + '</span>\n';
-      if (paras.length > 0) {
-        block += buildTextoDuplo(paras, '') + '\n';
-      }
-      for (var e = 0; e < quotes.length; e++) {
-        block += '<div class="citacao-bloco fade-in"><blockquote>' + quotes[e].inner + '</blockquote></div>\n';
+      var block = '<div class="fade-in"><span class="' + spanCls + '">' + tk.inner + '</span>';
+      if (paras.length > 0) { block += textoDuplo(paras, ''); }
+      for (var q = 0; q < quotes.length; q++) {
+        block += '<div class="citacao-bloco fade-in"><blockquote>' + quotes[q].inner + '</blockquote></div>';
       }
       block += '</div>';
-      output.push(block);
-
-    // — Citação avulsa (fora de seção com subtítulo) —
-    } else if (t.tag === 'blockquote') {
-      output.push('<div class="citacao-bloco fade-in"><blockquote>' + t.inner + '</blockquote></div>');
-      i++;
+      out.push(block);
+      continue;
+    }
 
     // — Parágrafos de introdução (antes do primeiro subtítulo) —
-    // Coleta até o próximo h2/h3/img. Blockquotes → largura total após.
-    } else {
-      var paras  = [];
-      var quotes = [];
-      while (i < tokens.length && !isSectionBreak(tokens[i].tag)) {
-        if (tokens[i].tag === 'blockquote') {
-          quotes.push(tokens[i]);
-        } else {
-          paras.push(tokens[i]);
-        }
-        i++;
-      }
-      if (paras.length > 0) {
-        output.push(buildTextoDuplo(paras, 'fade-in'));
-      }
-      for (var e = 0; e < quotes.length; e++) {
-        output.push('<div class="citacao-bloco fade-in"><blockquote>' + quotes[e].inner + '</blockquote></div>');
-      }
+    // Mesma lógica: coleta TUDO até o próximo h2/h3/img,
+    // gera UM ÚNICO textoDuplo, depois os quotes.
+    var paras  = [];
+    var quotes = [];
+    while (i < n && !isBreak(tokens[i].type)) {
+      if (tokens[i].type === 'quote') { quotes.push(tokens[i]); }
+      else                            { paras.push(tokens[i]);  }
+      i++;
+    }
+    if (paras.length > 0) { out.push(textoDuplo(paras, 'fade-in')); }
+    for (var q = 0; q < quotes.length; q++) {
+      out.push('<div class="citacao-bloco fade-in"><blockquote>' + quotes[q].inner + '</blockquote></div>');
     }
   }
 
-  return output.join('\n');
+  return out.join('\n');
 }
 
 // ── MONTAR SEÇÃO DE CTAs (sem IA) ────────────────────────────
