@@ -125,8 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
       el.addEventListener('change', agendarSalvamento);
     });
 
-  // Auto-save nos campos dinâmicos (frases e CTAs) via event delegation
-  document.getElementById('frases-container').addEventListener('input',  agendarSalvamento);
+  // Auto-save nos campos dinâmicos (CTAs) via event delegation
   document.getElementById('ctas-container').addEventListener('input',    agendarSalvamento);
   document.getElementById('ctas-container').addEventListener('change',   agendarSalvamento);
 });
@@ -142,7 +141,6 @@ function agendarSalvamento() {
 function salvarRascunho() {
   const r = {
     texto:  quill ? quill.root.innerHTML : '',
-    frases: getFrases(),
     ctas:   getCTAs(),
   };
   CAMPOS_SIMPLES.forEach(function ([id, key]) { r[key] = val(id); });
@@ -163,20 +161,6 @@ function restaurarRascunho() {
 
   // Editor Quill
   if (quill && r.texto) quill.root.innerHTML = r.texto;
-
-  // Frases de destaque
-  if (Array.isArray(r.frases) && r.frases.length) {
-    const c = document.getElementById('frases-container');
-    c.innerHTML = '';
-    r.frases.forEach(function (f) {
-      const div = document.createElement('div');
-      div.className = 'frase-item';
-      div.innerHTML =
-        '<input type="text" class="frase-input" value="' + f.replace(/"/g, '&quot;') + '">' +
-        '<button type="button" class="btn-remove" onclick="removerFrase(this)" title="Remover">✕</button>';
-      c.appendChild(div);
-    });
-  }
 
   // Botões de CTA
   if (Array.isArray(r.ctas) && r.ctas.length) {
@@ -279,31 +263,6 @@ function atualizarAlt(secaoLabel) {
   document.getElementById('f-imagem-alt').value = partes.join(' — ');
 }
 
-// ── FRASES DINÂMICAS ──────────────────────────
-function adicionarFrase() {
-  const container = document.getElementById('frases-container');
-  const div = document.createElement('div');
-  div.className = 'frase-item';
-  div.innerHTML = `<input type="text" class="frase-input" placeholder="Digite a frase de destaque...">
-    <button type="button" class="btn-remove" onclick="removerFrase(this)" title="Remover">✕</button>`;
-  container.appendChild(div);
-  div.querySelector('input').focus();
-}
-
-function removerFrase(btn) {
-  const container = document.getElementById('frases-container');
-  if (container.children.length <= 1) {
-    btn.closest('.frase-item').querySelector('input').value = '';
-    return;
-  }
-  btn.closest('.frase-item').remove();
-}
-
-function getFrases() {
-  return Array.from(document.querySelectorAll('.frase-input'))
-    .map(i => i.value.trim()).filter(Boolean);
-}
-
 // ── CTAs DINÂMICOS ────────────────────────────
 const CTA_TIPOS = ['WhatsApp', 'Site', 'Instagram', 'LinkedIn', 'E-mail', 'YouTube', 'Outro'];
 
@@ -347,9 +306,6 @@ function limparForm() {
   });
   if (quill) quill.setContents([]);
   document.getElementById('f-data').valueAsDate = new Date();
-  document.getElementById('frases-container').innerHTML =
-    `<div class="frase-item"><input type="text" class="frase-input" placeholder='"Conexões que transformam negócios em legados"'>
-    <button class="btn-remove" onclick="removerFrase(this)">✕</button></div>`;
   document.getElementById('ctas-container').innerHTML = '';
   document.getElementById('cta-vazio').style.display = 'block';
   document.getElementById('slug-hint').textContent = '';
@@ -380,7 +336,6 @@ async function gerarMateria() {
     imagemUrl:   val('f-imagem-url') || `/edicao-02/${val('f-slug')}/hero.jpg`,
     imagemAlt:   val('f-imagem-alt'),
     texto:       quill ? quill.root.innerHTML : '',
-    frases:      getFrases(),
     ctas:        getCTAs(),
   };
 
@@ -429,18 +384,7 @@ function montarCorpoArtigo(d, legendas) {
   // Elementos estruturais que quebram o fluxo de colunas
   const isStructural = tag => tag === 'h2' || tag === 'h3' || tag === 'blockquote' || tag === 'img-placeholder';
 
-  const frases = d.frases || [];
-  const totalContent = tokens.filter(t => !isStructural(t.tag)).length;
-  const fraseEvery = frases.length > 0 ? Math.max(2, Math.floor(totalContent / (frases.length + 1))) : Infinity;
-  let fraseIdx = 0;
-  let contentCount = 0;
   const output = [];
-
-  const maybeFrase = () => {
-    if (fraseIdx < frases.length && contentCount >= fraseEvery * (fraseIdx + 1)) {
-      output.push('<div class="citacao-bloco fade-in"><blockquote>' + frases[fraseIdx++] + '</blockquote></div>');
-    }
-  };
 
   let i = 0;
   while (i < tokens.length) {
@@ -477,23 +421,14 @@ function montarCorpoArtigo(d, legendas) {
       }
       html += '</div>';
       output.push(html);
-      contentCount += section.length;
-      maybeFrase();
 
     } else {
       // Parágrafo/lista — pareia com o próximo elemento não-estrutural
       const next = (i + 1 < tokens.length && !isStructural(tokens[i + 1].tag))
         ? tokens[i + 1] : null;
       output.push('<div class="texto-duplo fade-in"><div>' + t.html + '</div><div>' + (next ? next.html : '') + '</div></div>');
-      contentCount += next ? 2 : 1;
       i += next ? 2 : 1;
-      maybeFrase();
     }
-  }
-
-  // Frases restantes no final
-  while (fraseIdx < frases.length) {
-    output.push('<div class="citacao-bloco fade-in"><blockquote>' + frases[fraseIdx++] + '</blockquote></div>');
   }
 
   return output.join('\n');
@@ -920,8 +855,6 @@ function marcarPublicada(slug) {
 // ── EXPOSIÇÃO GLOBAL (chamadas via onclick no HTML) ───
 window.onSecaoChange  = onSecaoChange;
 window.onTituloInput  = onTituloInput;
-window.adicionarFrase = adicionarFrase;
-window.removerFrase   = removerFrase;
 window.adicionarCTA   = adicionarCTA;
 window.removerCTA     = removerCTA;
 window.fazerLogin     = fazerLogin;
