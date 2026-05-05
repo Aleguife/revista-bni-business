@@ -108,7 +108,7 @@ Painel em `/admin/` para criação de matérias via browser.
 - Geração de HTML via Claude API (modelo: `claude-sonnet-4-20250514`)
 - Publicação direta via GitHub API (sem terminal)
 - Checklist integrado das 16 matérias
-- **Versão atual do `admin.js`:** `?v=24`
+- **Versão atual do `admin.js`:** `?v=25`
 
 ---
 
@@ -138,11 +138,35 @@ Quando teste isolado em Node funciona mas a integração no painel falha, a prim
 
 ---
 
+## Hero title — padrão 3 linhas vermelho/cinza/vermelho (05/05/2026)
+
+**Função responsável:** `formatarTituloHero(titulo)` em `painel/admin.js`
+
+**Regras:**
+1. Se o campo Título contiver ` | ` (espaço-pipe-espaço): usa como quebra manual exata → sempre JS, nunca IA.
+2. Títulos com ≤ 4 palavras (sem pipe): **2 linhas** vermelho/cinza.
+3. Títulos com 5+ palavras (sem pipe): **3 linhas** vermelho/cinza/vermelho.
+   - JS divide em terços equilibrados como fallback.
+   - IA divide com critério gramatical (preposições, conjunções) quando retorna resultado.
+
+**Fluxo no painel:** se o usuário usa pipe → JS sempre; sem pipe → IA retorna as `<span>`, JS serve de fallback.
+
+**Exemplo de uso do pipe pelo usuário:**
+```
+Campo Título: "Quando o BNI | vai além do | networking"
+```
+Gera:
+```html
+<span style="color:var(--vermelho);">Quando o BNI</span><br>
+<span style="color:#b3b2b2;">vai além do</span><br>
+<span style="color:var(--vermelho);">networking</span>
+```
+
 ## Pendências conhecidas do Admin CMS
 
-1. **Título do hero** — padrão de 3 linhas vermelho/cinza/vermelho não está sendo gerado (atualmente só gera 2 linhas)
+1. ~~**Título do hero**~~ — **RESOLVIDO** (v=25): função `formatarTituloHero` + prompt atualizado
 2. **CTA** — seção vazia; `montarCTASection()` não está gerando conteúdo
-3. **Citações inline** — citações em largura total ficam ao final da seção, mas a intenção do Quill é que apareçam inline no fluxo do texto (entre parágrafos específicos). Solução proposta: tratar `blockquote` como separador estrutural, dividindo a seção em sub-blocos de `.texto-duplo`. **Cuidado:** essa lógica era a causa do bug original — qualquer correção precisa preservar o filtro de parágrafos vazios.
+3. **Citações inline** — **RESOLVIDO** (v=23): blockquotes ficam inline no fluxo da seção
 
 ---
 
