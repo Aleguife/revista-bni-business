@@ -1810,7 +1810,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 </script>
 <script src="../../nav.js?v=2026050303" defer></script>
   <script src="../../footer.js?v=2026050303" defer></script>
-  <script src="../../sumario.js?v=2026050501" defer></script>
+  <script src="../../sumario.js?v=2026050502" defer></script>
   </head>
 <body>
 <div class="reading-circle" id="readingCircle">

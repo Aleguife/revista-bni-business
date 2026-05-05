@@ -83,7 +83,7 @@
       +       '<span class="sumario-secao">Case de sucesso</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">02</span><span class="sumario-desc">Quando o BNI vai além do networking</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:1;grid-row:3;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/jrt-print/" style="grid-column:1;grid-row:3;">'
       +       '<span class="sumario-secao">Case de sucesso</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">03</span><span class="sumario-desc">Quanto vale uma conexão certa?</span></span>'
       +     '</a>'
