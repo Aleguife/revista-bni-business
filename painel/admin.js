@@ -2101,8 +2101,17 @@ function montarTemplate(d, parts) {
   const slug       = d.slug || 'materia';
 
   const seoDesc    = (parts.seo    || '').replace(/%%/g, '').trim();
-  const heroTitulo = (parts.titulo || d.titulo || '').trim();
   const caption    = (parts.caption || '').trim();
+
+  // Título do hero: pipe manual → sempre JS (determinístico);
+  // sem pipe → prefere resultado da IA, JS como fallback.
+  var heroTituloRaw = d.titulo || '';
+  var heroTitulo;
+  if (heroTituloRaw.indexOf(' | ') !== -1) {
+    heroTitulo = formatarTituloHero(heroTituloRaw);
+  } else {
+    heroTitulo = (parts.titulo && parts.titulo.trim()) ? parts.titulo.trim() : formatarTituloHero(heroTituloRaw);
+  }
 
   const artigo     = montarCorpoArtigo(d, parts.legendas || {});
   const ctaHtml    = montarCTASection(d);
@@ -2133,6 +2142,43 @@ function montarTemplate(d, parts) {
   R('%%TOTAL_MINS%%',   String(totalMins));
 
   return html;
+}
+
+
+// ── FORMATAR TÍTULO DO HERO ───────────────────────────────────
+// Pipe " | " = quebra manual respeitada à risca.
+// ≤4 palavras (sem pipe) = 2 linhas (vermelho / cinza).
+// 5+ palavras (sem pipe) = 3 linhas equilibradas (vermelho / cinza / vermelho).
+function formatarTituloHero(titulo) {
+  titulo = (titulo || '').trim();
+  var partes;
+
+  if (titulo.indexOf(' | ') !== -1) {
+    partes = titulo.split(' | ').map(function (p) { return p.trim(); }).filter(Boolean);
+  } else {
+    var palavras = titulo.split(/\s+/).filter(Boolean);
+    var n = palavras.length;
+    if (n <= 1) {
+      partes = [titulo];
+    } else if (n <= 4) {
+      // 2 linhas: todas exceto a última | última
+      partes = [palavras.slice(0, n - 1).join(' '), palavras[n - 1]];
+    } else {
+      // 3 linhas: ceil(n/3) | ceil(restante/2) | restante
+      var t1 = Math.ceil(n / 3);
+      var t2 = Math.ceil((n - t1) / 2);
+      partes = [
+        palavras.slice(0, t1).join(' '),
+        palavras.slice(t1, t1 + t2).join(' '),
+        palavras.slice(t1 + t2).join(' ')
+      ];
+    }
+  }
+
+  var cores = ['var(--vermelho)', '#b3b2b2', 'var(--vermelho)'];
+  return partes.map(function (p, i) {
+    return '<span style="color:' + (cores[i] || 'var(--vermelho)') + ';">' + p + '</span>';
+  }).join('<br>\n');
 }
 
 
@@ -2223,11 +2269,31 @@ ${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 [descricao de ate 150 caracteres para meta description e og:description — baseada no titulo e texto]
 
 ==TITULO==
-[titulo "${d.titulo}" dividido em 2-3 linhas com <br>, seguindo EXATAMENTE este padrao de cores (igual a materia publicada):
-<span style="color:var(--vermelho);">primeira linha</span><br>
-<span style="color:#b3b2b2;">segunda linha</span><br>
-<span style="color:var(--vermelho);">terceira linha (se houver)</span>
-Distribua as palavras naturalmente entre as linhas. Nao altere as palavras do titulo.]
+[Formate o titulo "${d.titulo}" em HTML para o hero. REGRAS OBRIGATORIAS:
+
+1. PADRAO DE CORES: vermelho → cinza → vermelho.
+   Vermelho = var(--vermelho) | Cinza = #b3b2b2
+
+2. PIPE " | " = quebra manual: use EXATAMENTE esses pontos, sem alterar palavras.
+   Ex: "Quando o BNI | vai além do | networking"
+   → <span style="color:var(--vermelho);">Quando o BNI</span><br>
+   <span style="color:#b3b2b2;">vai além do</span><br>
+   <span style="color:var(--vermelho);">networking</span>
+
+3. SEM PIPE + TITULO CURTO (4 palavras ou menos) = 2 linhas (vermelho/cinza).
+   Ex: "O fim do silêncio"
+   → <span style="color:var(--vermelho);">O fim do</span><br>
+   <span style="color:#b3b2b2;">silêncio</span>
+
+4. SEM PIPE + TITULO LONGO (5+ palavras) = SEMPRE 3 linhas (vermelho/cinza/vermelho).
+   Quebre em preposicoes, conjuncoes ou pausas gramaticais naturais.
+   NAO corte nomes proprios nem expressoes idiomaticas.
+   Ex: "Quando o BNI vai além do networking"
+   → <span style="color:var(--vermelho);">Quando o BNI</span><br>
+   <span style="color:#b3b2b2;">vai além do</span><br>
+   <span style="color:var(--vermelho);">networking</span>
+
+Retorne APENAS os span e br, sem a tag h1. Nao altere as palavras do titulo.]
 
 ==CAPTION==
 [cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]`;
