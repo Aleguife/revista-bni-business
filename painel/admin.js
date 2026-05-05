@@ -460,43 +460,50 @@ function montarCorpoArtigo(d, legendas) {
     }
 
     // — Subtítulo h2 / h3 —
-    // Coleta TODOS os tokens da seção (até o próximo h2/h3/img).
-    // 'quote' vai para quotes[], tudo mais vai para paras[].
-    // Gera UM ÚNICO textoDuplo com todos os paras, depois os quotes.
+    // Processa tokens da seção em ordem, mantendo citações inline.
+    // A cada blockquote: flush dos paras acumulados como texto-duplo,
+    // emite a citação, continua coletando. Preserva o filtro ehVazio.
     if (tk.type === 'h2' || tk.type === 'h3') {
       var spanCls = tk.type === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
       i++;
-      var paras  = [];
-      var quotes = [];
+      var block = '<div class="fade-in"><span class="' + spanCls + '">' + tk.inner + '</span>';
+      var currentParas = [];
       while (i < n && !isBreak(tokens[i].type)) {
-        if (tokens[i].type === 'quote') { quotes.push(tokens[i]); }
-        else                            { paras.push(tokens[i]);  }
+        var cur = tokens[i];
+        if (cur.type === 'quote') {
+          if (currentParas.length > 0) {
+            block += textoDuplo(currentParas, '');
+            currentParas = [];
+          }
+          block += '<div class="citacao-bloco"><blockquote>' + cur.inner + '</blockquote></div>';
+        } else {
+          currentParas.push(cur);
+        }
         i++;
       }
-      var block = '<div class="fade-in"><span class="' + spanCls + '">' + tk.inner + '</span>';
-      if (paras.length > 0) { block += textoDuplo(paras, ''); }
-      for (var q = 0; q < quotes.length; q++) {
-        block += '<div class="citacao-bloco fade-in"><blockquote>' + quotes[q].inner + '</blockquote></div>';
-      }
+      if (currentParas.length > 0) { block += textoDuplo(currentParas, ''); }
       block += '</div>';
       out.push(block);
       continue;
     }
 
     // — Parágrafos de introdução (antes do primeiro subtítulo) —
-    // Mesma lógica: coleta TUDO até o próximo h2/h3/img,
-    // gera UM ÚNICO textoDuplo, depois os quotes.
-    var paras  = [];
-    var quotes = [];
+    // Mesma lógica inline: flush ao encontrar cada citação.
+    var currentParas = [];
     while (i < n && !isBreak(tokens[i].type)) {
-      if (tokens[i].type === 'quote') { quotes.push(tokens[i]); }
-      else                            { paras.push(tokens[i]);  }
+      var cur = tokens[i];
+      if (cur.type === 'quote') {
+        if (currentParas.length > 0) {
+          out.push(textoDuplo(currentParas, 'fade-in'));
+          currentParas = [];
+        }
+        out.push('<div class="citacao-bloco fade-in"><blockquote>' + cur.inner + '</blockquote></div>');
+      } else {
+        currentParas.push(cur);
+      }
       i++;
     }
-    if (paras.length > 0) { out.push(textoDuplo(paras, 'fade-in')); }
-    for (var q = 0; q < quotes.length; q++) {
-      out.push('<div class="citacao-bloco fade-in"><blockquote>' + quotes[q].inner + '</blockquote></div>');
-    }
+    if (currentParas.length > 0) { out.push(textoDuplo(currentParas, 'fade-in')); }
   }
 
   return out.join('\n');
@@ -822,6 +829,13 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
     left: -0.5rem;
     top: -1.5rem;
     line-height: 1;
+  }
+
+  /* ESPAÇAMENTO ENTRE SUB-BLOCOS DENTRO DE UMA SEÇÃO */
+  .fade-in > .citacao-bloco,
+  .fade-in > .texto-duplo + .citacao-bloco,
+  .fade-in > .citacao-bloco + .texto-duplo {
+    margin-top: 3rem;
   }
 
   /* CITAÇÃO LATERAL (sidebar) */
