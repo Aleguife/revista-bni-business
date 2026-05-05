@@ -385,23 +385,22 @@ function montarCorpoArtigo(d, legendas) {
     tokens.push({ tag: tag, html: el.outerHTML, inner: el.innerHTML });
   });
 
-  // Predicado: elemento que não participa do fluxo de 2 colunas
-  function isStructural(tag) {
-    return tag === 'h2' || tag === 'h3' || tag === 'blockquote' || tag === 'img-placeholder';
+  // Quebra de seção: apenas h2/h3 e img-placeholder.
+  // blockquote NÃO quebra — é coletado junto com os parágrafos
+  // e renderizado em largura total após o .texto-duplo da seção.
+  function isSectionBreak(tag) {
+    return tag === 'h2' || tag === 'h3' || tag === 'img-placeholder';
   }
 
-  // ── buildTextoDuplo ─────────────────────────────────────────
-  // Recebe um array ORDENADO de tokens de parágrafo.
-  // Coluna esquerda  = tokens[0 .. ceil(n/2) - 1]   (primeira metade)
-  // Coluna direita   = tokens[ceil(n/2) .. n-1]      (segunda metade)
-  // NUNCA intercala: nenhum índice par/ímpar — sempre fatia sequencial.
+  // Coluna esquerda = tokens[0 .. ceil(n/2)-1] (primeira metade)
+  // Coluna direita  = tokens[ceil(n/2) .. n-1]  (segunda metade)
+  // Uma única chamada por seção — nunca pares.
   function buildTextoDuplo(paras, extraClass) {
-    var n    = paras.length;
-    var mid  = Math.ceil(n / 2);                          // ponto de corte
-    var left  = '';
-    var right = '';
-    for (var k = 0; k < mid; k++)  left  += paras[k].html + '\n      ';
-    for (var k = mid; k < n; k++)  right += paras[k].html + '\n      ';
+    var n   = paras.length;
+    var mid = Math.ceil(n / 2);
+    var left = '', right = '';
+    for (var k = 0; k < mid; k++) left  += paras[k].html + '\n      ';
+    for (var k = mid; k < n; k++) right += paras[k].html + '\n      ';
     var cls = extraClass ? ' ' + extraClass : '';
     return (
       '<div class="texto-duplo' + cls + '">\n' +
@@ -411,6 +410,16 @@ function montarCorpoArtigo(d, legendas) {
     );
   }
 
+  function renderImg(t) {
+    var file    = t.file;
+    var caption = legendas[file] || '';
+    var src     = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
+    var fig = '<figure class="foto-larga fade-in">\n  <img src="' + src +
+              '" alt="' + caption + '" loading="lazy">\n';
+    if (caption) fig += '  <figcaption>' + caption + '</figcaption>\n';
+    return fig + '</figure>';
+  }
+
   // ── Loop principal ──────────────────────────────────────────
   var output = [];
   var i = 0;
@@ -418,57 +427,63 @@ function montarCorpoArtigo(d, legendas) {
   while (i < tokens.length) {
     var t = tokens[i];
 
-    // — Imagem inline —
+    // — Imagem standalone —
     if (t.tag === 'img-placeholder') {
-      var file    = t.file;
-      var caption = legendas[file] || '';
-      var src     = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
-      var fig = '<figure class="foto-larga fade-in">\n  <img src="' + src +
-                '" alt="' + caption + '" loading="lazy">\n';
-      if (caption) fig += '  <figcaption>' + caption + '</figcaption>\n';
-      fig += '</figure>';
-      output.push(fig);
+      output.push(renderImg(t));
       i++;
 
-    // — Citação —
+    // — Subtítulo de seção (h2 / h3) —
+    // Coleta TUDO até o próximo h2/h3/img (blockquotes inclusos).
+    // Parágrafos → único .texto-duplo. Blockquotes → largura total após.
+    } else if (t.tag === 'h2' || t.tag === 'h3') {
+      var cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
+      i++;
+
+      var paras  = [];
+      var quotes = [];
+      while (i < tokens.length && !isSectionBreak(tokens[i].tag)) {
+        if (tokens[i].tag === 'blockquote') {
+          quotes.push(tokens[i]);
+        } else {
+          paras.push(tokens[i]);
+        }
+        i++;
+      }
+
+      var block = '<div class="fade-in">\n<span class="' + cls + '">' + t.inner + '</span>\n';
+      if (paras.length > 0) {
+        block += buildTextoDuplo(paras, '') + '\n';
+      }
+      for (var e = 0; e < quotes.length; e++) {
+        block += '<div class="citacao-bloco fade-in"><blockquote>' + quotes[e].inner + '</blockquote></div>\n';
+      }
+      block += '</div>';
+      output.push(block);
+
+    // — Citação avulsa (fora de seção com subtítulo) —
     } else if (t.tag === 'blockquote') {
       output.push('<div class="citacao-bloco fade-in"><blockquote>' + t.inner + '</blockquote></div>');
       i++;
 
-    // — Subtítulo de seção (h2 / h3) —
-    // O subtítulo fica em largura total; todos os parágrafos que
-    // vêm a seguir (até o próximo elemento estrutural) formam um
-    // ÚNICO .texto-duplo com divisão sequencial ao meio.
-    } else if (t.tag === 'h2' || t.tag === 'h3') {
-      var cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
-      i++; // avança além do próprio subtítulo
-
-      // Coleta parágrafos que pertencem a esta seção
-      var paras = [];
-      while (i < tokens.length && !isStructural(tokens[i].tag)) {
-        paras.push(tokens[i]);
-        i++;
-      }
-
-      var block = '<div class="fade-in"><span class="' + cls + '">' + t.inner + '</span>\n';
-      if (paras.length > 0) {
-        // buildTextoDuplo garante: primeiros ceil(n/2) → esquerda,
-        // restantes floor(n/2) → direita. Uma única chamada, nunca pares.
-        block += buildTextoDuplo(paras, '');
-      }
-      block += '\n</div>';
-      output.push(block);
-
-    // — Parágrafos soltos (sem subtítulo) —
-    // Mesma regra: coleta tudo até o próximo estrutural,
-    // divide ao meio em um único .texto-duplo.
+    // — Parágrafos de introdução (antes do primeiro subtítulo) —
+    // Coleta até o próximo h2/h3/img. Blockquotes → largura total após.
     } else {
-      var paras = [];
-      while (i < tokens.length && !isStructural(tokens[i].tag)) {
-        paras.push(tokens[i]);
+      var paras  = [];
+      var quotes = [];
+      while (i < tokens.length && !isSectionBreak(tokens[i].tag)) {
+        if (tokens[i].tag === 'blockquote') {
+          quotes.push(tokens[i]);
+        } else {
+          paras.push(tokens[i]);
+        }
         i++;
       }
-      output.push(buildTextoDuplo(paras, 'fade-in'));
+      if (paras.length > 0) {
+        output.push(buildTextoDuplo(paras, 'fade-in'));
+      }
+      for (var e = 0; e < quotes.length; e++) {
+        output.push('<div class="citacao-bloco fade-in"><blockquote>' + quotes[e].inner + '</blockquote></div>');
+      }
     }
   }
 
