@@ -5,6 +5,28 @@ Leia este arquivo inteiro antes de qualquer ação.
 
 ---
 
+## FLUXO DO PROJETO (CRÍTICO PARA ENTENDER O CONTEXTO)
+
+A Revista BNI Business é uma revista **IMPRESSA**. Este CMS é canal de publicação **DIGITAL**, não de criação editorial.
+
+**Fluxo completo:**
+1. Jornalista envia as matérias para Alexandre
+2. Alexandre diagrama tudo no InDesign
+3. Sequência de aprovações e revisões com o cliente
+4. PDF final entregue à gráfica
+5. Enquanto a gráfica imprime, Alexandre publica as matérias neste CMS
+
+**IMPORTANTE:** Quando Alexandre vai publicar uma matéria, todo o conteúdo (texto, imagens, citações, fotos) **JÁ ESTÁ PRONTO** e aprovado. Não há criação de conteúdo aqui — só replicação digital do que já foi aprovado para impressão.
+
+**Status das edições:**
+- Edição 2: em produção digital (prioridade comercial atual)
+- Edição 1: próxima após Edição 2
+- Edição 3: em fase comercial, será replicada depois
+
+**Implicação para Claude:** NÃO perguntar se o conteúdo está pronto, se Alexandre vai escrever, se tem rascunho. O conteúdo SEMPRE está pronto. As perguntas válidas são apenas sobre detalhes técnicos da publicação digital (slug, posição no sumário, etc).
+
+---
+
 ## Visão geral
 
 **Revista BNI Business** é uma publicação editorial premium do BNI São Paulo.
