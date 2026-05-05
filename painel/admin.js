@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     modules: {
       toolbar: [
         ['bold', 'italic', 'underline'],
-        [{ header: 2 }, { header: 3 }],
+        [{ header: 2 }, { header: 3 }, 'blockquote'],
         [{ list: 'ordered' }, { list: 'bullet' }],
         ['clean'],
       ],
@@ -402,9 +402,11 @@ function montarCorpoArtigo(d) {
     tokens.push({ tag, html: el.outerHTML, inner: el.innerHTML });
   });
 
+  // Elementos estruturais que quebram o fluxo de colunas
+  const isStructural = tag => tag === 'h2' || tag === 'h3' || tag === 'blockquote';
+
   const frases = d.frases || [];
-  const totalContent = tokens.filter(t => t.tag !== 'h2' && t.tag !== 'h3').length;
-  // Intervalo para distribuir as frases de forma uniforme
+  const totalContent = tokens.filter(t => !isStructural(t.tag)).length;
   const fraseEvery = frases.length > 0 ? Math.max(2, Math.floor(totalContent / (frases.length + 1))) : Infinity;
   let fraseIdx = 0;
   let contentCount = 0;
@@ -419,18 +421,22 @@ function montarCorpoArtigo(d) {
   let i = 0;
   while (i < tokens.length) {
     const t = tokens[i];
-    const isHeading = t.tag === 'h2' || t.tag === 'h3';
 
-    if (isHeading) {
-      // Coleta parágrafos dessa seção até o próximo heading
+    if (t.tag === 'blockquote') {
+      // Blockquote do Quill → .citacao-bloco diretamente (não conta como parágrafo)
+      output.push('<div class="citacao-bloco fade-in"><blockquote>' + t.inner + '</blockquote></div>');
+      i++;
+
+    } else if (t.tag === 'h2' || t.tag === 'h3') {
+      // H2 → .secao-titulo | H3 → .secao-subtitulo
+      const cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
       const section = [];
       i++;
-      while (i < tokens.length && tokens[i].tag !== 'h2' && tokens[i].tag !== 'h3') {
+      while (i < tokens.length && !isStructural(tokens[i].tag)) {
         section.push(tokens[i]);
         i++;
       }
-      // Emite heading + pares dentro de um wrapper .fade-in
-      let html = '<div class="fade-in"><span class="secao-titulo">' + t.inner + '</span>';
+      let html = '<div class="fade-in"><span class="' + cls + '">' + t.inner + '</span>';
       for (let j = 0; j < section.length; j += 2) {
         html += '<div class="texto-duplo"><div>' + section[j].html + '</div><div>' + (section[j + 1] ? section[j + 1].html : '') + '</div></div>';
       }
@@ -440,8 +446,8 @@ function montarCorpoArtigo(d) {
       maybeFrase();
 
     } else {
-      // Parágrafo normal — pareia com o próximo se também não for heading
-      const next = (i + 1 < tokens.length && tokens[i + 1].tag !== 'h2' && tokens[i + 1].tag !== 'h3')
+      // Parágrafo/lista — pareia com o próximo elemento não-estrutural
+      const next = (i + 1 < tokens.length && !isStructural(tokens[i + 1].tag))
         ? tokens[i + 1] : null;
       output.push('<div class="texto-duplo fade-in"><div>' + t.html + '</div><div>' + (next ? next.html : '') + '</div></div>');
       contentCount += next ? 2 : 1;
@@ -570,6 +576,7 @@ function montarTemplate(d, parts) {
   .secao-titulo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--vermelho); margin-bottom: 1.5rem; padding-bottom: 0.4rem; display: block; position: relative; }
   .secao-titulo::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background: var(--vermelho); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
   .secao-titulo.animado::after { width: 100%; }
+  .secao-subtitulo { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--preto); margin-bottom: 1rem; display: block; }
   .citacao-bloco { background: var(--vermelho); padding: 3.5rem 4rem; position: relative; opacity: 0; transform: translateX(-30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4,0,0.2,1); }
   .citacao-bloco.visible { opacity: 1; transform: translateX(0); }
   .citacao-bloco blockquote { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem,2.5vw,1.8rem); font-style: italic; color: var(--branco); line-height: 1.5; font-weight: 400; padding-left: 5rem; position: relative; }
@@ -666,7 +673,7 @@ ${ctaHtml}
   const obsTitulo = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animado'); obsTitulo.unobserve(e.target); } });
   }, { threshold: 0.8 });
-  document.querySelectorAll('.secao-titulo').forEach(el => obsTitulo.observe(el));
+  document.querySelectorAll('.secao-titulo, .secao-subtitulo').forEach(el => obsTitulo.observe(el));
   const obsCitacao = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obsCitacao.unobserve(e.target); } });
   }, { threshold: 0.15 });
