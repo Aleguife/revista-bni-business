@@ -561,9 +561,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="%%AUTOR%%">
 <meta property="article:section" content="%%SECAO%%">
-<meta property="article:tag" content="engenharia">
-<meta property="article:tag" content="licitações">
-<meta property="article:tag" content="BNI">
+%%ARTICLE_TAGS%%
 <meta property="article:author" content="%%AUTOR%%">
 <meta property="article:published_time" content="%%DATA_ISO%%">
 
@@ -1861,7 +1859,6 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <!-- HERO -->
 <section class="hero">
   <div class="hero-foto">
-    <!-- Placeholder: substituir pela foto real do Felipe -->
     <img src="%%IMAGEM_URL%%" alt="%%IMAGEM_ALT%%" loading="eager" fetchpriority="high" />
     <div class="hero-foto-caption">
       <p><strong>%%PROFISSIONAL%%</strong> %%CAPTION%%</p>
@@ -2141,6 +2138,19 @@ function montarTemplate(d, parts) {
   R('%%CTA_SECTION%%',  ctaHtml);
   R('%%TOTAL_MINS%%',   String(totalMins));
 
+  // Gera <meta property="article:tag"> a partir das tags retornadas pela IA.
+  // Se a IA não retornou tags, não gera nenhuma meta tag (sem fallback hardcoded).
+  var articleTagsHtml = '';
+  if (parts.tags) {
+    var tagsArr = parts.tags.split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+    if (tagsArr.length > 0) {
+      articleTagsHtml = tagsArr.map(function (t) {
+        return '<meta property="article:tag" content="' + t + '">';
+      }).join('\n');
+    }
+  }
+  R('%%ARTICLE_TAGS%%', articleTagsHtml);
+
   return html;
 }
 
@@ -2184,7 +2194,7 @@ function formatarTituloHero(titulo) {
 
 // ── API CLAUDE ─────────────────────────────────
 function parseAIResponse(text) {
-  const sections = ['SEO', 'TITULO', 'CAPTION'];
+  const sections = ['SEO', 'TITULO', 'CAPTION', 'TAGS'];
   const parts = {};
   sections.forEach((sec, i) => {
     const marker = '==' + sec + '==';
@@ -2296,7 +2306,10 @@ ${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 Retorne APENAS os span e br, sem a tag h1. Nao altere as palavras do titulo.]
 
 ==CAPTION==
-[cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]`;
+[cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]
+
+==TAGS==
+[entre 3 e 5 tags de SEO para esta materia, separadas por virgula. REGRAS: (1) portugues sem acentos; (2) tudo em minusculo; (3) foco em palavras que pessoas buscam no Google; (4) incluir 1 tag especifica do tema (ex: "outsourcing de impressao", "esclerose lateral amiotrofica"), 1 tag tematica ampla (ex: "empreendedorismo", "saude"), e obrigatoriamente a tag "bni"; (5) evitar genericos sem contexto ("negocios", "sucesso"). Ex para JRT Print: outsourcing de impressao, networking empresarial, bni osasco, empreendedorismo, bni]`;
 }
 
 
