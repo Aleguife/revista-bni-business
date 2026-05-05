@@ -85,16 +85,31 @@ document.addEventListener('DOMContentLoaded', function () {
   quill = new Quill('#f-texto-editor', {
     theme: 'snow',
     modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline'],
-        [{ header: 2 }, { header: 3 }, 'blockquote'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        ['clean'],
-      ],
+      toolbar: {
+        container: [
+          ['bold', 'italic', 'underline'],
+          [{ header: 2 }, { header: 3 }, 'blockquote'],
+          ['imagem'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['clean'],
+        ],
+        handlers: {
+          imagem: function () {
+            const range = quill.getSelection(true);
+            const placeholder = '[IMG: img/nome-da-imagem.webp]';
+            quill.insertText(range.index, placeholder, 'user');
+            quill.setSelection(range.index + placeholder.length);
+          },
+        },
+      },
       clipboard: { matchVisual: false },
     },
     placeholder: 'Cole aqui o texto completo. Bold, italic, listas e subtítulos são preservados automaticamente ao colar do InDesign ou Word.',
   });
+
+  // Estiliza botão customizado 📷
+  const btnImg = document.querySelector('.ql-imagem');
+  if (btnImg) { btnImg.textContent = '📷'; btnImg.title = 'Inserir imagem [IMG: arquivo.webp]'; }
 
   // Restaura rascunho do localStorage
   restaurarRascunho();
@@ -389,7 +404,9 @@ async function gerarMateria() {
 // ── MONTAR CORPO DO ARTIGO (sem IA) ──────────────────────────
 // Pega o HTML do Quill, distribui em blocos .texto-duplo.fade-in
 // e insere .citacao-bloco.fade-in nas posições corretas.
-function montarCorpoArtigo(d) {
+// legendas: { 'img/arquivo.webp': 'caption text', ... }
+function montarCorpoArtigo(d, legendas) {
+  legendas = legendas || {};
   const tmp = document.createElement('div');
   tmp.innerHTML = d.texto || '';
 
@@ -398,12 +415,19 @@ function montarCorpoArtigo(d) {
   Array.from(tmp.children).forEach(el => {
     const tag = el.tagName ? el.tagName.toLowerCase() : '';
     if (!tag) return;
-    if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !el.textContent.trim()) return;
+    const text = el.textContent.trim();
+    // Detecta marcador [IMG: arquivo.webp]
+    const imgMatch = text.match(/^\[IMG:\s*([^\]]+)\]$/);
+    if (imgMatch) {
+      tokens.push({ tag: 'img-placeholder', file: imgMatch[1].trim() });
+      return;
+    }
+    if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !text) return;
     tokens.push({ tag, html: el.outerHTML, inner: el.innerHTML });
   });
 
   // Elementos estruturais que quebram o fluxo de colunas
-  const isStructural = tag => tag === 'h2' || tag === 'h3' || tag === 'blockquote';
+  const isStructural = tag => tag === 'h2' || tag === 'h3' || tag === 'blockquote' || tag === 'img-placeholder';
 
   const frases = d.frases || [];
   const totalContent = tokens.filter(t => !isStructural(t.tag)).length;
@@ -422,7 +446,18 @@ function montarCorpoArtigo(d) {
   while (i < tokens.length) {
     const t = tokens[i];
 
-    if (t.tag === 'blockquote') {
+    if (t.tag === 'img-placeholder') {
+      // [IMG: arquivo.webp] → <figure class="foto-larga fade-in">
+      const file = t.file;
+      const caption = legendas[file] || '';
+      const src = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
+      let fig = '<figure class="foto-larga fade-in">\n  <img src="' + src + '" alt="' + caption + '" loading="lazy">\n';
+      if (caption) fig += '  <figcaption>' + caption + '</figcaption>\n';
+      fig += '</figure>';
+      output.push(fig);
+      i++;
+
+    } else if (t.tag === 'blockquote') {
       // Blockquote do Quill → .citacao-bloco diretamente (não conta como parágrafo)
       output.push('<div class="citacao-bloco fade-in"><blockquote>' + t.inner + '</blockquote></div>');
       i++;
@@ -500,7 +535,7 @@ function montarTemplate(d, parts) {
   const caption    = (parts.caption || '').trim();
 
   // Artigo e CTAs montados em JS — sem IA
-  const artigo  = montarCorpoArtigo(d);
+  const artigo  = montarCorpoArtigo(d, parts.legendas || {});
   const ctaHtml = montarCTASection(d);
 
   const autorMeta  = d.autor   ? '\n<meta name="author" content="' + d.autor + '">' : '';
@@ -705,6 +740,16 @@ function parseAIResponse(text) {
     }
     parts[sec.toLowerCase()] = text.slice(contentStart, end).trim();
   });
+
+  // Extrai ==LEGENDA:arquivo.webp== texto ==FIM==
+  const legendas = {};
+  const legendaRe = /==LEGENDA:([^=\n]+)==([\s\S]*?)==FIM==/g;
+  let m;
+  while ((m = legendaRe.exec(text)) !== null) {
+    legendas[m[1].trim()] = m[2].trim();
+  }
+  parts.legendas = legendas;
+
   return parts;
 }
 
@@ -714,7 +759,7 @@ async function chamarClaudeAPI(apiKey, dados) {
     headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 1000,
+      max_tokens: 1500,
       messages: [{ role: 'user', content: montarPrompt(dados) }],
     }),
   });
@@ -735,6 +780,17 @@ function montarPrompt(d) {
     ? new Date(d.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : '';
 
+  // Detecta imagens no texto ([IMG: arquivo.webp])
+  const textoPlano = (d.texto || '').replace(/<[^>]+>/g, ' ');
+  const imgMatches = [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].map(m => m[1].trim());
+  const uniqueImgs = [...new Set(imgMatches)];
+
+  let legendaBloco = '';
+  if (uniqueImgs.length > 0) {
+    legendaBloco = '\n\nO texto contem ' + uniqueImgs.length + ' imagem(ns) marcada(s). Para cada uma, gere uma legenda adequada ao contexto da materia (1 linha, sem ponto final), usando o formato:\n\n' +
+      uniqueImgs.map(f => '==LEGENDA:' + f + '==\n[legenda]\n==FIM==').join('\n\n');
+  }
+
   return `Voce e o assistente SEO da Revista BNI Business.
 O sistema ja monta automaticamente o HTML completo da materia.
 Sua unica funcao: fornecer 3 textos curtos para SEO e apresentacao visual.
@@ -747,9 +803,9 @@ Secao: ${d.secao}
 Data: ${dataFormatada}
 
 === PRIMEIROS PARAGRAFOS DO TEXTO (para contexto) ===
-${(d.texto || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 600)}...
+${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 
-=== RETORNE EXATAMENTE NESTE FORMATO ===
+=== RETORNE EXATAMENTE NESTE FORMATO ===${legendaBloco}
 
 ==SEO==
 [descricao de ate 150 caracteres para meta description e og:description — baseada no titulo e texto]
