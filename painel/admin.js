@@ -357,8 +357,11 @@ async function gerarMateria() {
 }
 
 // ── MONTAR CORPO DO ARTIGO (sem IA) ──────────────────────────
-// Pega o HTML do Quill, distribui em blocos .texto-duplo.fade-in
-// e insere .citacao-bloco.fade-in nas posições corretas.
+// Fluxo jornalístico correto: um único .texto-duplo por grupo de
+// parágrafos consecutivos — primeira METADE na coluna esquerda,
+// segunda METADE na coluna direita (leitura top-down por coluna).
+// Subtítulos, citações e imagens ficam em largura total e iniciam
+// um novo grupo de parágrafos.
 // legendas: { 'img/arquivo.webp': 'caption text', ... }
 function montarCorpoArtigo(d, legendas) {
   legendas = legendas || {};
@@ -381,20 +384,29 @@ function montarCorpoArtigo(d, legendas) {
     tokens.push({ tag, html: el.outerHTML, inner: el.innerHTML });
   });
 
-  // Elementos estruturais que quebram o fluxo de colunas
+  // Elementos que quebram o fluxo de colunas e ficam em largura total
   const isStructural = tag => tag === 'h2' || tag === 'h3' || tag === 'blockquote' || tag === 'img-placeholder';
 
-  const output = [];
+  // Constrói um único .texto-duplo: metade esquerda / metade direita
+  function buildTextoDuplo(paras, extraClass) {
+    const mid   = Math.ceil(paras.length / 2);
+    const left  = paras.slice(0, mid).map(t => t.html).join('\n    ');
+    const right = paras.slice(mid).map(t => t.html).join('\n    ');
+    const cls   = extraClass ? ' ' + extraClass : '';
+    return '<div class="texto-duplo' + cls + '">\n  <div>\n    ' + left + '\n  </div>\n  <div>\n    ' + right + '\n  </div>\n</div>';
+  }
 
+  const output = [];
   let i = 0;
+
   while (i < tokens.length) {
     const t = tokens[i];
 
     if (t.tag === 'img-placeholder') {
       // [IMG: arquivo.webp] → <figure class="foto-larga fade-in">
-      const file = t.file;
+      const file    = t.file;
       const caption = legendas[file] || '';
-      const src = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
+      const src     = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
       let fig = '<figure class="foto-larga fade-in">\n  <img src="' + src + '" alt="' + caption + '" loading="lazy">\n';
       if (caption) fig += '  <figcaption>' + caption + '</figcaption>\n';
       fig += '</figure>';
@@ -402,32 +414,31 @@ function montarCorpoArtigo(d, legendas) {
       i++;
 
     } else if (t.tag === 'blockquote') {
-      // Blockquote do Quill → .citacao-bloco diretamente (não conta como parágrafo)
       output.push('<div class="citacao-bloco fade-in"><blockquote>' + t.inner + '</blockquote></div>');
       i++;
 
     } else if (t.tag === 'h2' || t.tag === 'h3') {
-      // H2 → .secao-titulo | H3 → .secao-subtitulo
+      // Título de seção em largura total + parágrafos seguintes num único texto-duplo
       const cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
-      const section = [];
       i++;
+      const paras = [];
       while (i < tokens.length && !isStructural(tokens[i].tag)) {
-        section.push(tokens[i]);
+        paras.push(tokens[i]);
         i++;
       }
-      let html = '<div class="fade-in"><span class="' + cls + '">' + t.inner + '</span>';
-      for (let j = 0; j < section.length; j += 2) {
-        html += '<div class="texto-duplo"><div>' + section[j].html + '</div><div>' + (section[j + 1] ? section[j + 1].html : '') + '</div></div>';
-      }
-      html += '</div>';
+      let html = '<div class="fade-in"><span class="' + cls + '">' + t.inner + '</span>\n';
+      if (paras.length > 0) html += buildTextoDuplo(paras, '');
+      html += '\n</div>';
       output.push(html);
 
     } else {
-      // Parágrafo/lista — pareia com o próximo elemento não-estrutural
-      const next = (i + 1 < tokens.length && !isStructural(tokens[i + 1].tag))
-        ? tokens[i + 1] : null;
-      output.push('<div class="texto-duplo fade-in"><div>' + t.html + '</div><div>' + (next ? next.html : '') + '</div></div>');
-      i += next ? 2 : 1;
+      // Coleta todos os parágrafos/listas consecutivos até o próximo elemento estrutural
+      const paras = [];
+      while (i < tokens.length && !isStructural(tokens[i].tag)) {
+        paras.push(tokens[i]);
+        i++;
+      }
+      output.push(buildTextoDuplo(paras, 'fade-in'));
     }
   }
 
