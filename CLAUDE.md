@@ -108,7 +108,20 @@ Painel em `/admin/` para criação de matérias via browser.
 - Geração de HTML via Claude API (modelo: `claude-sonnet-4-20250514`)
 - Publicação direta via GitHub API (sem terminal)
 - Checklist integrado das 16 matérias
-- **Versão atual do `admin.js`:** `?v=22`
+- **Versão atual do `admin.js`:** `?v=24`
+
+---
+
+## Sumário externalizado — sumario.js (05/05/2026)
+
+O sumário da revista foi externalizado em `/sumario.js`, seguindo o mesmo padrão de injeção dinâmica do `nav.js` e `footer.js`.
+
+- Para alterar o sumário no futuro, edite **APENAS `/sumario.js`**
+- O sumário atual contém os **16 itens da Edição 2**
+- `sumario.js` injeta CSS + HTML + expõe `abrirSumario()` e `fecharSumario()` globalmente
+- O `grid-template-rows` correto é `repeat(8, 1fr)` (8 linhas = 8 itens por coluna)
+- **Versão:** `sumario.js?v=2026050501`
+- **Cuidado:** o bloco `<div class="sumario-overlay" id="sumario">` **NÃO deve ser reintroduzido** inline nas matérias novas geradas pelo painel — o script externo cuida disso
 
 ---
 
