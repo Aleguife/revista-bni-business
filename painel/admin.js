@@ -357,83 +357,113 @@ async function gerarMateria() {
 }
 
 // ── MONTAR CORPO DO ARTIGO (sem IA) ──────────────────────────
-// Fluxo jornalístico correto: um único .texto-duplo por grupo de
-// parágrafos consecutivos — primeira METADE na coluna esquerda,
-// segunda METADE na coluna direita (leitura top-down por coluna).
-// Subtítulos, citações e imagens ficam em largura total e iniciam
-// um novo grupo de parágrafos.
+// Regra de distribuição: para qualquer grupo de N parágrafos
+// consecutivos, os primeiros ceil(N/2) vão na coluna ESQUERDA e
+// os restantes floor(N/2) vão na coluna DIREITA — um único
+// .texto-duplo por grupo, leitura top-down por coluna.
+//
+// Elementos estruturais (h2, h3, blockquote, [IMG:]) ficam em
+// largura total e reiniciam um novo grupo.
 // legendas: { 'img/arquivo.webp': 'caption text', ... }
 function montarCorpoArtigo(d, legendas) {
   legendas = legendas || {};
   const tmp = document.createElement('div');
   tmp.innerHTML = d.texto || '';
 
-  // Tokens em ordem do documento
+  // ── Tokenização ────────────────────────────────────────────
   const tokens = [];
-  Array.from(tmp.children).forEach(el => {
-    const tag = el.tagName ? el.tagName.toLowerCase() : '';
+  Array.from(tmp.children).forEach(function (el) {
+    const tag  = el.tagName ? el.tagName.toLowerCase() : '';
     if (!tag) return;
     const text = el.textContent.trim();
-    // Detecta marcador [IMG: arquivo.webp]
     const imgMatch = text.match(/^\[IMG:\s*([^\]]+)\]$/);
     if (imgMatch) {
       tokens.push({ tag: 'img-placeholder', file: imgMatch[1].trim() });
       return;
     }
     if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !text) return;
-    tokens.push({ tag, html: el.outerHTML, inner: el.innerHTML });
+    tokens.push({ tag: tag, html: el.outerHTML, inner: el.innerHTML });
   });
 
-  // Elementos que quebram o fluxo de colunas e ficam em largura total
-  const isStructural = tag => tag === 'h2' || tag === 'h3' || tag === 'blockquote' || tag === 'img-placeholder';
-
-  // Constrói um único .texto-duplo: metade esquerda / metade direita
-  function buildTextoDuplo(paras, extraClass) {
-    const mid   = Math.ceil(paras.length / 2);
-    const left  = paras.slice(0, mid).map(t => t.html).join('\n    ');
-    const right = paras.slice(mid).map(t => t.html).join('\n    ');
-    const cls   = extraClass ? ' ' + extraClass : '';
-    return '<div class="texto-duplo' + cls + '">\n  <div>\n    ' + left + '\n  </div>\n  <div>\n    ' + right + '\n  </div>\n</div>';
+  // Predicado: elemento que não participa do fluxo de 2 colunas
+  function isStructural(tag) {
+    return tag === 'h2' || tag === 'h3' || tag === 'blockquote' || tag === 'img-placeholder';
   }
 
-  const output = [];
-  let i = 0;
+  // ── buildTextoDuplo ─────────────────────────────────────────
+  // Recebe um array ORDENADO de tokens de parágrafo.
+  // Coluna esquerda  = tokens[0 .. ceil(n/2) - 1]   (primeira metade)
+  // Coluna direita   = tokens[ceil(n/2) .. n-1]      (segunda metade)
+  // NUNCA intercala: nenhum índice par/ímpar — sempre fatia sequencial.
+  function buildTextoDuplo(paras, extraClass) {
+    var n    = paras.length;
+    var mid  = Math.ceil(n / 2);                          // ponto de corte
+    var left  = '';
+    var right = '';
+    for (var k = 0; k < mid; k++)  left  += paras[k].html + '\n      ';
+    for (var k = mid; k < n; k++)  right += paras[k].html + '\n      ';
+    var cls = extraClass ? ' ' + extraClass : '';
+    return (
+      '<div class="texto-duplo' + cls + '">\n' +
+      '  <div>\n      ' + left.trim()  + '\n  </div>\n' +
+      '  <div>\n      ' + right.trim() + '\n  </div>\n' +
+      '</div>'
+    );
+  }
+
+  // ── Loop principal ──────────────────────────────────────────
+  var output = [];
+  var i = 0;
 
   while (i < tokens.length) {
-    const t = tokens[i];
+    var t = tokens[i];
 
+    // — Imagem inline —
     if (t.tag === 'img-placeholder') {
-      // [IMG: arquivo.webp] → <figure class="foto-larga fade-in">
-      const file    = t.file;
-      const caption = legendas[file] || '';
-      const src     = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
-      let fig = '<figure class="foto-larga fade-in">\n  <img src="' + src + '" alt="' + caption + '" loading="lazy">\n';
+      var file    = t.file;
+      var caption = legendas[file] || '';
+      var src     = '/edicao-02/' + (d.slug || 'materia') + '/' + file;
+      var fig = '<figure class="foto-larga fade-in">\n  <img src="' + src +
+                '" alt="' + caption + '" loading="lazy">\n';
       if (caption) fig += '  <figcaption>' + caption + '</figcaption>\n';
       fig += '</figure>';
       output.push(fig);
       i++;
 
+    // — Citação —
     } else if (t.tag === 'blockquote') {
       output.push('<div class="citacao-bloco fade-in"><blockquote>' + t.inner + '</blockquote></div>');
       i++;
 
+    // — Subtítulo de seção (h2 / h3) —
+    // O subtítulo fica em largura total; todos os parágrafos que
+    // vêm a seguir (até o próximo elemento estrutural) formam um
+    // ÚNICO .texto-duplo com divisão sequencial ao meio.
     } else if (t.tag === 'h2' || t.tag === 'h3') {
-      // Título de seção em largura total + parágrafos seguintes num único texto-duplo
-      const cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
-      i++;
-      const paras = [];
+      var cls = t.tag === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
+      i++; // avança além do próprio subtítulo
+
+      // Coleta parágrafos que pertencem a esta seção
+      var paras = [];
       while (i < tokens.length && !isStructural(tokens[i].tag)) {
         paras.push(tokens[i]);
         i++;
       }
-      let html = '<div class="fade-in"><span class="' + cls + '">' + t.inner + '</span>\n';
-      if (paras.length > 0) html += buildTextoDuplo(paras, '');
-      html += '\n</div>';
-      output.push(html);
 
+      var block = '<div class="fade-in"><span class="' + cls + '">' + t.inner + '</span>\n';
+      if (paras.length > 0) {
+        // buildTextoDuplo garante: primeiros ceil(n/2) → esquerda,
+        // restantes floor(n/2) → direita. Uma única chamada, nunca pares.
+        block += buildTextoDuplo(paras, '');
+      }
+      block += '\n</div>';
+      output.push(block);
+
+    // — Parágrafos soltos (sem subtítulo) —
+    // Mesma regra: coleta tudo até o próximo estrutural,
+    // divide ao meio em um único .texto-duplo.
     } else {
-      // Coleta todos os parágrafos/listas consecutivos até o próximo elemento estrutural
-      const paras = [];
+      var paras = [];
       while (i < tokens.length && !isStructural(tokens[i].tag)) {
         paras.push(tokens[i]);
         i++;
