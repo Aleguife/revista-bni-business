@@ -2380,7 +2380,11 @@ ${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 [descricao de ate 150 caracteres para meta description e og:description — baseada no titulo e texto]
 
 ==TITULO==
-[titulo "${d.titulo}" formatado com <br> para 2-3 linhas e <span style="color:#C8102E;"> em 1-2 palavras-chave — nao altere as palavras]
+[titulo "${d.titulo}" dividido em 2-3 linhas com <br>, seguindo EXATAMENTE este padrao de cores (igual a materia publicada):
+<span style="color:var(--vermelho);">primeira linha</span><br>
+<span style="color:#b3b2b2;">segunda linha</span><br>
+<span style="color:var(--vermelho);">terceira linha (se houver)</span>
+Distribua as palavras naturalmente entre as linhas. Nao altere as palavras do titulo.]
 
 ==CAPTION==
 [cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]`;
