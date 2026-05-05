@@ -91,7 +91,7 @@
       +       '<span class="sumario-secao">Matéria de Capa</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">04</span><span class="sumario-desc">O estrategista por trás da nova geração de obras</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:1;grid-row:5;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/alef-editora/" style="grid-column:1;grid-row:5;">'
       +       '<span class="sumario-secao">Editorial</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">05</span><span class="sumario-desc">O impresso que o digital não consegue substituir</span></span>'
       +     '</a>'
