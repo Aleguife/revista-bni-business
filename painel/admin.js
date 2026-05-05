@@ -379,13 +379,25 @@ function montarCorpoArtigo(d, legendas) {
   // ── Tokenização ────────────────────────────────────────────
   // Cada filho direto do Quill vira um token com type explícito:
   //   'h2' | 'h3' | 'quote' | 'img' | 'para'
+
+  // O Quill insere <p>&nbsp;</p> e <p><br></p> entre elementos.
+  // textContent.trim() NÃO remove \u00a0 (non-breaking space),
+  // fazendo esses parágrafos vazios serem tratados como reais.
+  function ehVazio(el) {
+    var tag = el.tagName ? el.tagName.toLowerCase() : '';
+    if (tag !== 'p') return false;
+    var texto = el.textContent.replace(/\u00a0/g, ' ').trim();
+    return texto === '' && !el.querySelector('img');
+  }
+
   var tokens = [];
   var children = tmp.children;
   for (var c = 0; c < children.length; c++) {
     var el   = children[c];
     var tag  = el.tagName ? el.tagName.toLowerCase() : '';
     if (!tag) continue;
-    var text = el.textContent.trim();
+    if (ehVazio(el)) continue;                           // ← filtra &nbsp; e <br> vazios
+    var text = el.textContent.replace(/\u00a0/g, ' ').trim();
     var imgMatch = text.match(/^\[IMG:\s*([^\]]+)\]$/);
     if (imgMatch) {
       tokens.push({ type: 'img', file: imgMatch[1].trim() });
