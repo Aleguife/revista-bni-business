@@ -370,6 +370,12 @@ function montarCorpoArtigo(d, legendas) {
   var tmp = document.createElement('div');
   tmp.innerHTML = d.texto || '';
 
+  // ── DEBUG — remover após diagnóstico ───────────────────────
+  console.log('=== DEBUG QUILL OUTPUT ===');
+  console.log('Tipo:', typeof d.texto);
+  console.log('Conteúdo bruto:', d.texto);
+  console.log('=== FIM DEBUG ===');
+
   // ── Tokenização ────────────────────────────────────────────
   // Cada filho direto do Quill vira um token com type explícito:
   //   'h2' | 'h3' | 'quote' | 'img' | 'para'
