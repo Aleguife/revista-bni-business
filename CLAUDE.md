@@ -203,9 +203,113 @@ As `<meta property="article:tag">` são geradas automaticamente pela Claude API 
 
 ---
 
+## Prompts Reutilizáveis para Publicação
+
+Prompts genéricos prontos para usar com o Claude Code em cada nova matéria. Copiar, substituir `[SLUG]`/`[NUMERO]`/`[NOVA_VERSAO]` e colar.
+
+---
+
+### PROMPT 1 — Versionar Imagens da Matéria
+
+**Quando usar:** depois de criar a pasta `edicao-02/[SLUG]/img/` com as 3 imagens da matéria.
+
+```
+Vou publicar uma nova matéria da Edição 2 da Revista BNI Business.
+As imagens já estão preparadas localmente em edicao-02/[SLUG]/img/
+
+## TAREFA
+
+1. Execute "ls edicao-02/[SLUG]/img/" para listar as imagens 
+   da pasta
+
+2. Mostre os arquivos encontrados e me peça confirmação dos 
+   nomes antes de prosseguir (validação contra typos)
+
+3. Após minha confirmação, execute:
+   git add edicao-02/[SLUG]/img/
+   git status (mostre o que será commitado)
+
+4. Faça commit:
+   git commit -m "feat: adiciona imagens da matéria [SLUG]"
+
+5. Faça push:
+   git push origin main
+
+6. Aguarde o GitHub Actions completar e me reporte 
+   o número do workflow + status final
+
+## CUIDADOS CRÍTICOS
+
+- NÃO crie o index.html da matéria — isso será feito pelo painel
+- NÃO mexa em outros arquivos do projeto
+- NÃO atualize sumario.js, admin.js, nem outras matérias
+- Apenas versione as imagens da pasta /img/ desta matéria
+
+## LEMBRETE
+
+Confirme que SSH da Locaweb está habilitado antes do push. 
+Se não estiver, o deploy vai dar timeout.
+```
+
+---
+
+### PROMPT 2 — Atualizar Item do Sumário
+
+**Quando usar:** depois de publicar a matéria pelo painel, para trocar `href="#"` pela URL real no `sumario.js`.
+
+```
+A matéria [SLUG] foi publicada em:
+https://bnibusiness.com.br/edicao-02/[SLUG]/
+
+Por favor, atualize o sumario.js para que o item [NUMERO] 
+(que hoje está com href="#") aponte para essa URL.
+
+## TAREFA 1 — Atualizar sumario.js
+
+Localize o item [NUMERO] (procure por grid-row:[NUMERO] ou pelo 
+texto da matéria) e troque href="#" por:
+href="https://bnibusiness.com.br/edicao-02/[SLUG]/"
+
+## TAREFA 2 — Atualizar versão do sumario.js
+
+A versão atual é v=2026050502.
+Atualize para v=[NOVA_VERSAO] em todos os arquivos que carregam 
+o sumario.js. Procure por sumario.js?v=2026050502 em:
+
+- /edicao-02/*/index.html (todas as matérias publicadas)
+- /painel/admin.js
+
+Use o padrão de data do dia atual: vYYYYMMDDXX (sequencial)
+
+## CUIDADOS
+
+- NÃO mexa no admin.js além da string da versão do sumario.js
+  (admin.js mantém v=26)
+- NÃO mexa em nav.js ou footer.js
+
+## RELATÓRIO ANTES DO PUSH
+
+Antes de commit/push, me reporte:
+1. Item alterado no sumario.js (antes/depois)
+2. Lista de arquivos com versão atualizada
+3. Aguarde minha aprovação
+
+## DEPOIS DA APROVAÇÃO
+
+git add .
+git commit -m "feat: atualiza link do item [NUMERO] do sumário para matéria [SLUG]"
+git push origin main
+
+## LEMBRETE
+
+Confirme SSH da Locaweb antes do push.
+```
+
+---
+
 ## Próximas fases
 
-- [ ] Edição 2: publicar as 14 matérias restantes (próxima: `jose-roberto-teixeira`)
+- [ ] Edição 2: publicar as 12 matérias restantes (4 de 16 publicadas)
 - [ ] Página índice `/edicao-02/` com grid das 16 matérias
 - [ ] Home com grid de edições (após Ed.1 e Ed.2 concluídas)
 - [ ] Edição 1: digitalizar retroativamente
