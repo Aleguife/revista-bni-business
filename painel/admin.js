@@ -386,10 +386,102 @@ async function gerarMateria() {
   }
 }
 
+// ── MONTAR CORPO DO ARTIGO (sem IA) ──────────────────────────
+// Pega o HTML do Quill, distribui em blocos .texto-duplo.fade-in
+// e insere .citacao-bloco.fade-in nas posições corretas.
+function montarCorpoArtigo(d) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = d.texto || '';
+
+  // Tokens em ordem do documento
+  const tokens = [];
+  Array.from(tmp.children).forEach(el => {
+    const tag = el.tagName ? el.tagName.toLowerCase() : '';
+    if (!tag) return;
+    if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !el.textContent.trim()) return;
+    tokens.push({ tag, html: el.outerHTML, inner: el.innerHTML });
+  });
+
+  const frases = d.frases || [];
+  const totalContent = tokens.filter(t => t.tag !== 'h2' && t.tag !== 'h3').length;
+  // Intervalo para distribuir as frases de forma uniforme
+  const fraseEvery = frases.length > 0 ? Math.max(2, Math.floor(totalContent / (frases.length + 1))) : Infinity;
+  let fraseIdx = 0;
+  let contentCount = 0;
+  const output = [];
+
+  const maybeFrase = () => {
+    if (fraseIdx < frases.length && contentCount >= fraseEvery * (fraseIdx + 1)) {
+      output.push('<div class="citacao-bloco fade-in"><blockquote>' + frases[fraseIdx++] + '</blockquote></div>');
+    }
+  };
+
+  let i = 0;
+  while (i < tokens.length) {
+    const t = tokens[i];
+    const isHeading = t.tag === 'h2' || t.tag === 'h3';
+
+    if (isHeading) {
+      // Coleta parágrafos dessa seção até o próximo heading
+      const section = [];
+      i++;
+      while (i < tokens.length && tokens[i].tag !== 'h2' && tokens[i].tag !== 'h3') {
+        section.push(tokens[i]);
+        i++;
+      }
+      // Emite heading + pares dentro de um wrapper .fade-in
+      let html = '<div class="fade-in"><span class="secao-titulo">' + t.inner + '</span>';
+      for (let j = 0; j < section.length; j += 2) {
+        html += '<div class="texto-duplo"><div>' + section[j].html + '</div><div>' + (section[j + 1] ? section[j + 1].html : '') + '</div></div>';
+      }
+      html += '</div>';
+      output.push(html);
+      contentCount += section.length;
+      maybeFrase();
+
+    } else {
+      // Parágrafo normal — pareia com o próximo se também não for heading
+      const next = (i + 1 < tokens.length && tokens[i + 1].tag !== 'h2' && tokens[i + 1].tag !== 'h3')
+        ? tokens[i + 1] : null;
+      output.push('<div class="texto-duplo fade-in"><div>' + t.html + '</div><div>' + (next ? next.html : '') + '</div></div>');
+      contentCount += next ? 2 : 1;
+      i += next ? 2 : 1;
+      maybeFrase();
+    }
+  }
+
+  // Frases restantes no final
+  while (fraseIdx < frases.length) {
+    output.push('<div class="citacao-bloco fade-in"><blockquote>' + frases[fraseIdx++] + '</blockquote></div>');
+  }
+
+  return output.join('\n');
+}
+
+// ── MONTAR SEÇÃO DE CTAs (sem IA) ────────────────────────────
+function montarCTASection(d) {
+  if (!d.ctas.length) return '';
+  const tipoParaClasse = t => t.toLowerCase().replace('e-mail', 'email').replace(/[^a-z]/g, '');
+  const icones = {
+    whatsapp:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>',
+    site:      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+    instagram: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>',
+    linkedin:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>',
+    email:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>',
+    youtube:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>',
+    outro:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>',
+  };
+  const botoes = d.ctas.map(c => {
+    const cls = tipoParaClasse(c.tipo);
+    return '      <a class="cta-btn cta-btn--' + cls + '" href="' + c.link + '" target="_blank" rel="noopener">' + (icones[cls] || icones.outro) + ' ' + (c.texto || c.tipo) + '</a>';
+  }).join('\n');
+  return '<section class="cta-section">\n  <div class="cta-inner">\n    <div class="cta-texto">\n      <h3>' + (d.empresa || d.profissional || 'Entre em contato') + '</h3>\n    </div>\n    <div class="cta-botoes">\n' + botoes + '\n    </div>\n  </div>\n</section>';
+}
+
 // ── TEMPLATE BASE FIXO ────────────────────────────────────────
 // Navbar, hero, CSS, JS, nav-edicao e footer são SEMPRE iguais.
-// A IA gera apenas: descrição SEO, titulo formatado, legenda da
-// foto, corpo do artigo e seção de CTAs.
+// A IA gera APENAS: descrição SEO, titulo formatado, legenda da foto.
+// Artigo e CTAs são montados diretamente pelo JS.
 function montarTemplate(d, parts) {
   const dataFormatada = d.data
     ? new Date(d.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
@@ -400,8 +492,10 @@ function montarTemplate(d, parts) {
   const seoDesc    = (parts.seo     || '').replace(/"/g, '&quot;').trim();
   const heroTitulo = (parts.titulo  || d.titulo).trim();
   const caption    = (parts.caption || '').trim();
-  const artigo     = (parts.artigo  || '').trim();
-  const ctaHtml    = (parts.cta     || '').trim();
+
+  // Artigo e CTAs montados em JS — sem IA
+  const artigo  = montarCorpoArtigo(d);
+  const ctaHtml = montarCTASection(d);
 
   const autorMeta  = d.autor   ? '\n<meta name="author" content="' + d.autor + '">' : '';
   const dataMeta   = dataISO   ? '\n<meta property="article:published_time" content="' + dataISO + '">' : '';
@@ -449,8 +543,6 @@ function montarTemplate(d, parts) {
   :root { --vermelho: #C8102E; --preto: #1a1a1a; --creme: #F5F0E8; --creme-escuro: #EAE3D5; --cinza: #888; --branco: #fff; }
   html { scroll-behavior: smooth; }
   body { background: var(--creme); color: var(--preto); font-family: 'Barlow', sans-serif; font-weight: 400; line-height: 1.7; overflow-x: hidden; }
-
-  /* HERO */
   .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 90vh; background: var(--creme); }
   .hero-foto { position: relative; overflow: hidden; background: #2a2a2a; }
   .hero-foto img { width: 100%; height: 110%; object-fit: cover; object-position: center top; display: block; filter: grayscale(8%); will-change: transform; }
@@ -465,46 +557,34 @@ function montarTemplate(d, parts) {
   .hero-chapeu { font-family: 'Barlow', sans-serif; font-size: 1.2rem; line-height: 1.5; color: #333; border-left: 3px solid var(--vermelho); padding-left: 1.5rem; margin-bottom: 2.5rem; }
   .hero-assina { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: var(--cinza); text-transform: uppercase; }
   .hero-assina span { color: var(--preto); font-weight: 600; }
-
-  /* DIVISOR */
   .divisor { height: 3px; background: linear-gradient(90deg, var(--vermelho) 0%, var(--vermelho) 40%, var(--creme-escuro) 40%); transform: scaleX(0); transform-origin: left; transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); }
   .divisor.animado { transform: scaleX(1); }
-
-  /* ARTIGO */
   .artigo { max-width: 1100px; margin: 0 auto; padding: 4rem; }
   .artigo > div { margin-top: 3.5rem; }
   .artigo > div:first-child { margin-top: 0; }
   .texto-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
   .texto-duplo p { font-family: 'Barlow', sans-serif; font-size: 1.125rem; font-weight: 300; line-height: 1.7; color: #2a2a2a; text-indent: 1.5em; }
+  .texto-duplo ul, .texto-duplo ol { font-family: 'Barlow', sans-serif; font-size: 1.125rem; font-weight: 300; line-height: 1.7; color: #2a2a2a; padding-left: 1.5em; }
   .texto-triplo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; }
   .texto-triplo p { font-family: 'Barlow', sans-serif; font-size: 1.125rem; font-weight: 300; line-height: 1.7; color: #2a2a2a; text-indent: 1.5em; }
   .secao-titulo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--vermelho); margin-bottom: 1.5rem; padding-bottom: 0.4rem; display: block; position: relative; }
   .secao-titulo::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background: var(--vermelho); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
   .secao-titulo.animado::after { width: 100%; }
-
-  /* CITAÇÕES */
   .citacao-bloco { background: var(--vermelho); padding: 3.5rem 4rem; position: relative; opacity: 0; transform: translateX(-30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4,0,0.2,1); }
   .citacao-bloco.visible { opacity: 1; transform: translateX(0); }
   .citacao-bloco blockquote { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem,2.5vw,1.8rem); font-style: italic; color: var(--branco); line-height: 1.5; font-weight: 400; padding-left: 5rem; position: relative; }
   .citacao-bloco blockquote::before { content: '\\201C'; font-family: 'Playfair Display', serif; font-size: 9rem; font-style: normal; color: rgba(255,255,255,0.25); position: absolute; left: -0.5rem; top: -1.5rem; line-height: 1; }
   .citacao-lateral { border-left: 4px solid var(--vermelho); padding: 1rem 1.5rem; float: right; width: 45%; margin-left: 2.5rem; margin-bottom: 1rem; }
   .citacao-lateral p { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: var(--preto); line-height: 1.5; text-indent: 0 !important; }
-
-  /* FOTOS */
   .foto-larga { margin: 3rem 0 1rem; }
   .foto-larga img { width: 100%; height: auto; display: block; }
   .foto-larga figcaption { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: #2a2a2a; margin-top: 0.5rem; line-height: 1.5; }
   .clearfix::after { content: ''; display: block; clear: both; height: 0; }
-
-  /* FADE IN */
   .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; overflow: hidden; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-  /* CTA */
   .cta-section { background: var(--creme-escuro); }
   .cta-inner { max-width: 1100px; margin: 0 auto; padding: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
   .cta-texto h3 { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem,2.5vw,2rem); font-weight: 700; color: var(--preto); margin-bottom: 0.5rem; line-height: 1.2; }
-  .cta-texto p { font-family: 'Barlow', sans-serif; font-size: 1rem; color: #555; }
   .cta-botoes { display: flex; gap: 1rem; flex-wrap: wrap; }
   .cta-btn { display: inline-flex; align-items: center; gap: 10px; padding: 0.9rem 1.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; }
   .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
@@ -516,21 +596,15 @@ function montarTemplate(d, parts) {
   .cta-btn--youtube { background: #FF0000; color: #fff; }
   .cta-btn--outro { background: #333; color: #fff; }
   .cta-btn svg { flex-shrink: 0; }
-
-  /* NAVEGAÇÃO ENTRE MATÉRIAS */
   .nav-edicao { display: flex; align-items: center; justify-content: center; gap: 1.5rem; padding: 4rem; background: var(--branco); border-top: 1px solid var(--creme-escuro); }
   .nav-edicao-btn { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1rem 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 2px solid var(--vermelho); color: var(--vermelho); background: transparent; transition: background 0.2s, color 0.2s; }
   .nav-edicao-btn:hover { background: var(--vermelho); color: var(--branco); }
-
-  /* FOOTER */
   .footer-nav-link { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #fff; text-decoration: none; padding: 1rem 1rem; text-align: center; display: block; transition: background 0.2s, color 0.2s; }
   .footer-nav-link:hover { background: rgba(255,255,255,0.12); color: #fff; }
   .footer-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.75rem 2rem; border-top: 1px solid rgba(255,255,255,0.15); background: var(--vermelho); }
   .footer-bar-copy { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); white-space: nowrap; }
   .footer-bar-link { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
   .footer-bar-link:hover { color: var(--branco); }
-
-  /* RESPONSIVE */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-foto { height: 100vh; }
@@ -610,14 +684,13 @@ ${ctaHtml}
 
 // ── API CLAUDE ─────────────────────────────────
 function parseAIResponse(text) {
-  const sections = ['SEO', 'TITULO', 'CAPTION', 'ARTIGO', 'CTA'];
+  const sections = ['SEO', 'TITULO', 'CAPTION'];
   const parts = {};
   sections.forEach((sec, i) => {
     const marker = '==' + sec + '==';
     const idx = text.indexOf(marker);
     if (idx === -1) { parts[sec.toLowerCase()] = ''; return; }
     const contentStart = idx + marker.length;
-    // Find where this section ends (next marker or end of text)
     let end = text.length;
     for (let j = i + 1; j < sections.length; j++) {
       const nextIdx = text.indexOf('==' + sections[j] + '==', contentStart);
@@ -634,7 +707,7 @@ async function chamarClaudeAPI(apiKey, dados) {
     headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 8000,
+      max_tokens: 1000,
       messages: [{ role: 'user', content: montarPrompt(dados) }],
     }),
   });
@@ -651,80 +724,34 @@ async function chamarClaudeAPI(apiKey, dados) {
 }
 
 function montarPrompt(d) {
-  const frasesInstrucao = d.frases.length
-    ? 'FRASES DE DESTAQUE — copie PALAVRA POR PALAVRA, sem alterar nada:\n' +
-      d.frases.map((f, i) => '  ' + (i + 1) + '. "' + f + '"').join('\n') +
-      '\nIntercale um .citacao-bloco.fade-in apos cada secao principal.'
-    : 'SEM frases de destaque — NAO inclua nenhum .citacao-bloco.';
-
-  const tipoParaClasse = t => t.toLowerCase().replace('e-mail', 'email').replace(/[^a-z]/g, '');
-  const ctaIcones = {
-    whatsapp: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>',
-    site: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
-    instagram: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>',
-    linkedin: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>',
-    email: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>',
-    youtube: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>',
-    outro: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>',
-  };
-  const ctaBotoesHtml = d.ctas.map(c => {
-    const cls = tipoParaClasse(c.tipo);
-    return '      <a class="cta-btn cta-btn--' + cls + '" href="' + c.link + '" target="_blank" rel="noopener">' + (ctaIcones[cls] || ctaIcones.outro) + ' ' + (c.texto || c.tipo) + '</a>';
-  }).join('\n');
-  const ctaSectionHtml = d.ctas.length
-    ? '<section class="cta-section">\n  <div class="cta-inner">\n    <div class="cta-texto">\n      <h3>' + (d.empresa || d.profissional || 'Entre em contato') + '</h3>\n    </div>\n    <div class="cta-botoes">\n' + ctaBotoesHtml + '\n    </div>\n  </div>\n</section>'
-    : '(sem CTA)';
-
   const dataFormatada = d.data
     ? new Date(d.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : '';
 
-  return `Voce e o MONTADOR DE CONTEUDO da Revista BNI Business.
-Estrutura HTML, CSS, navbar, hero, footer e botoes de navegacao ja estao prontos no sistema — voce nao precisa gerar nada disso.
-Sua unica funcao: preencher as 5 secoes delimitadas abaixo com o conteudo correto.
+  return `Voce e o assistente SEO da Revista BNI Business.
+O sistema ja monta automaticamente o HTML completo da materia.
+Sua unica funcao: fornecer 3 textos curtos para SEO e apresentacao visual.
 
-=== DADOS ===
+=== DADOS DA MATERIA ===
 Titulo: ${d.titulo}
-Olho: ${d.olho || ''}
-Secao: ${d.secao}
-Empresa: ${d.empresa || ''}
 Profissional: ${d.profissional || ''}
-Autor: ${d.autor || ''}
+Empresa: ${d.empresa || ''}
+Secao: ${d.secao}
 Data: ${dataFormatada}
 
-=== TEXTO BASE (copie PALAVRA POR PALAVRA, na ORDEM EXATA — nenhuma alteracao permitida) ===
-${d.texto}
+=== PRIMEIROS PARAGRAFOS DO TEXTO (para contexto) ===
+${(d.texto || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 600)}...
 
-=== ${frasesInstrucao} ===
-
-=== CTAs pre-montados (use exatamente este HTML se houver CTAs) ===
-${ctaSectionHtml}
-
-=== INSTRUCOES DE ESTRUTURA DO ARTIGO ===
-- Distribua os <p> do TEXTO BASE em pares dentro de <div class="texto-duplo fade-in">
-  Estrutura: <div class="texto-duplo fade-in"><div><p>paragrafo 1</p></div><div><p>paragrafo 2</p></div></div>
-- Se sobrar um paragrafo impar: coloque em <div class="texto-duplo fade-in"><div><p>...</p></div><div></div></div>
-- <h2> ou <h3> do texto -> <span class="secao-titulo">texto exato</span> (antes do proximo .texto-duplo)
-- .citacao-bloco: <div class="citacao-bloco fade-in"><blockquote>frase exata</blockquote></div>
-- ORDEM OBRIGATORIA: mesma ordem do TEXTO BASE, paragrafo por paragrafo, sem reorganizar nada
-- PROIBIDO: inventar paragrafos, criar secoes, alterar qualquer palavra
-
-=== RETORNE EXATAMENTE NESTE FORMATO (nada alem disso) ===
+=== RETORNE EXATAMENTE NESTE FORMATO ===
 
 ==SEO==
-[descricao SEO ate 150 caracteres, baseada no texto da materia]
+[descricao de ate 150 caracteres para meta description e og:description — baseada no titulo e texto]
 
 ==TITULO==
-[h1 formatado: quebre "${d.titulo}" em 2-3 linhas com <br> e use <span style="color:#C8102E;"> em 1-2 palavras-chave — nao altere as palavras]
+[titulo "${d.titulo}" formatado com <br> para 2-3 linhas e <span style="color:#C8102E;"> em 1-2 palavras-chave — nao altere as palavras]
 
 ==CAPTION==
-[cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]
-
-==ARTIGO==
-[HTML do corpo: apenas o conteudo que vai dentro de <main class="artigo">, sem a tag <main> em si]
-
-==CTA==
-[Cole aqui o HTML dos CTAs pre-montados acima, ou deixe vazio se sem CTAs]`;
+[cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]`;
 }
 
 
