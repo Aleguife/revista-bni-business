@@ -130,7 +130,7 @@ Painel em `/admin/` para criação de matérias via browser.
 - Geração de HTML via Claude API (modelo: `claude-sonnet-4-20250514`)
 - Publicação direta via GitHub API (sem terminal)
 - Checklist integrado das 16 matérias
-- **Versão atual do `admin.js`:** `?v=25`
+- **Versão atual do `admin.js`:** `?v=26`
 
 ---
 
@@ -184,11 +184,21 @@ Gera:
 <span style="color:var(--vermelho);">networking</span>
 ```
 
+## Tags SEO geradas pela IA (v=26)
+
+As `<meta property="article:tag">` são geradas automaticamente pela Claude API em cada matéria. Não há mais tags hardcoded.
+
+- **Formato no prompt:** seção `==TAGS==` com lista separada por vírgula
+- **Regras:** 3–5 tags, pt-BR sem acentos, minúsculo, foco em SEO
+- **Tag obrigatória:** `bni` sempre presente
+- **Se IA não retornar tags:** nenhuma meta tag é gerada (sem fallback hardcoded)
+- **Comentário órfão** `<!-- Placeholder: substituir pela foto real do Felipe -->` removido do template
+
 ## Pendências conhecidas do Admin CMS
 
 1. ~~**Título do hero**~~ — **RESOLVIDO** (v=25): função `formatarTituloHero` + prompt atualizado
 2. **CTA** — seção vazia; `montarCTASection()` não está gerando conteúdo
-3. **Citações inline** — **RESOLVIDO** (v=23): blockquotes ficam inline no fluxo da seção
+3. ~~**Citações inline**~~ — **RESOLVIDO** (v=23): blockquotes ficam inline no fluxo da seção
 
 ---
 
