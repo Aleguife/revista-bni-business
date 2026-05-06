@@ -103,7 +103,7 @@
       +       '<span class="sumario-secao">Saúde mental</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">07</span><span class="sumario-desc">Quando a lei encontra a missão: Tonos e a revolução silenciosa da saúde mental nas empresas</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:1;grid-row:8;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/aposenta-sp/" style="grid-column:1;grid-row:8;">'
       +       '<span class="sumario-secao">Direito</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">08</span><span class="sumario-desc">O futuro que você ainda não planejou pode custar caro</span></span>'
       +     '</a>'
