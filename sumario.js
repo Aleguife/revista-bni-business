@@ -109,7 +109,7 @@
       +     '</a>'
 
       /* ── Coluna direita: itens 09–16 ── */
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:1;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/msr-device-golden-store/" style="grid-column:2;grid-row:1;">'
       +       '<span class="sumario-secao">Estilo</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">09</span><span class="sumario-desc">O brilho que sua marca merece: eternize o que você construiu em joia</span></span>'
       +     '</a>'
