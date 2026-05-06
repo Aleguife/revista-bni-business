@@ -113,7 +113,7 @@
       +       '<span class="sumario-secao">Estilo</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">09</span><span class="sumario-desc">O brilho que sua marca merece: eternize o que você construiu em joia</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:2;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/bni-mundi/" style="grid-column:2;grid-row:2;">'
       +       '<span class="sumario-secao">BNI mundi</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-desc">O inglês que abre portas</span></span>'
       +     '</a>'
