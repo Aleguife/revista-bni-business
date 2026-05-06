@@ -95,7 +95,7 @@
       +       '<span class="sumario-secao">Editorial</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">05</span><span class="sumario-desc">O impresso que o digital não consegue substituir</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:1;grid-row:6;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/up-brasil/" style="grid-column:1;grid-row:6;">'
       +       '<span class="sumario-secao">Negócios</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">06</span><span class="sumario-desc">O bem-estar que chega para todos</span></span>'
       +     '</a>'
