@@ -95,7 +95,7 @@ Retrancas de seção sempre em `#CC0000`. Títulos em Playfair Display. Corpo em
 | 6 | Negócios | Up Brasil / Mariana Cerone | `up-brasil` | ✅ no ar |
 | 7 | Saúde mental | Tonos / Elisa de Lima | `tonos` | ✅ no ar |
 | 8 | Direito | AposentaSP / Dra. Simone Baptista | `aposentasp` | ✅ no ar |
-| 9 | Estilo | MSR Device Golden / Anderson Oliveira | `msr-golden` | ⬜ pendente |
+| 9 | Estilo | MSR Device Golden / Anderson Oliveira | `msr-golden` | ✅ no ar |
 | 10 | BNI Mundi | WPO Languages / Waldir Pires | `bni-mundi` | ⬜ pendente |
 | 11 | Reconhecimento | Evento BNI OESP | `reconhecimento` | ⬜ pendente |
 | 12 | Desenvolvimento pessoal | Massaru Ogata / IFT | `massaru-ogata` | ⬜ pendente |
