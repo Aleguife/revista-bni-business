@@ -92,7 +92,7 @@ Retrancas de seção sempre em `#CC0000`. Títulos em Playfair Display. Corpo em
 | 3 | Case de sucesso | José Roberto Teixeira / JRT Print | `jrt-print` | ✅ no ar |
 | 4 | Matéria de Capa | Felipe Xavier / Redax Engenharia | `felipe-xavier` | ✅ no ar |
 | 5 | Editorial | O impresso que o digital não substitui | `o-impresso` | ⬜ pendente |
-| 6 | Negócios | Up Brasil / Mariana Cerone | `up-brasil` | ⬜ pendente |
+| 6 | Negócios | Up Brasil / Mariana Cerone | `up-brasil` | ✅ no ar |
 | 7 | Saúde mental | Tonos / Elisa de Lima | `tonos` | ⬜ pendente |
 | 8 | Direito | AposentaSP / Dra. Simone Baptista | `aposentasp` | ⬜ pendente |
 | 9 | Estilo | MSR Device Golden / Anderson Oliveira | `msr-golden` | ⬜ pendente |
