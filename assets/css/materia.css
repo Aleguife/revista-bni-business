@@ -1218,10 +1218,10 @@
   .foto-slider {
     margin: 3rem 0 1rem;
     position: relative;
+    overflow: hidden;
   }
   .slider-track {
     display: flex;
-    overflow: hidden;
   }
   .slider-slide {
     min-width: 100%;
@@ -1246,7 +1246,7 @@
     position: absolute;
     top: calc(50% - 1.5rem);
     transform: translateY(-50%);
-    background: rgba(0,0,0,0.45);
+    background: var(--vermelho);
     color: #fff;
     border: none;
     cursor: pointer;
@@ -1263,7 +1263,7 @@
   .slider-prev { left: 0.75rem; }
   .slider-next { right: 0.75rem; }
   .slider-prev:hover,
-  .slider-next:hover { background: rgba(0,0,0,0.72); }
+  .slider-next:hover { background: #a00d24; }
   .slider-dots {
     display: flex;
     justify-content: center;
