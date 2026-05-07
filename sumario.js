@@ -133,7 +133,7 @@
       +       '<span class="sumario-secao">Turismo</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">14</span><span class="sumario-desc">Mônaco te espera — e a sua turma BNI também</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:7;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/fia-business-school/" style="grid-column:2;grid-row:7;">'
       +       '<span class="sumario-secao">Negócios</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">15</span><span class="sumario-desc">FIA Business School: a escola brasileira que conecta conhecimento e decisão no mundo dos negócios</span></span>'
       +     '</a>'
