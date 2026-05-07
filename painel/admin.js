@@ -618,7 +618,7 @@ function montarCorpoArtigo(d, legendas) {
 }
 
 // ── MONTAR SEÇÃO DE CTAs (sem IA) ────────────────────────────
-function montarCTASection(d) {
+function montarCTASection(d, ctaCopy) {
   if (!d.ctas.length) return '';
   const tipoParaClasse = t => t.toLowerCase().replace('e-mail', 'email').replace(/[^a-z]/g, '');
   const icones = {
@@ -634,7 +634,9 @@ function montarCTASection(d) {
     const cls = tipoParaClasse(c.tipo);
     return '      <a class="cta-btn cta-btn--' + cls + '" href="' + c.link + '" target="_blank" rel="noopener">' + (icones[cls] || icones.outro) + ' ' + (c.texto || c.tipo) + '</a>';
   }).join('\n');
-  return '<section class="cta-section">\n  <div class="cta-inner">\n    <div class="cta-texto">\n      <h3>' + (d.empresa || d.profissional || 'Entre em contato') + '</h3>\n    </div>\n    <div class="cta-botoes">\n' + botoes + '\n    </div>\n  </div>\n</section>';
+  const ctaH3 = (ctaCopy && ctaCopy.h3) ? ctaCopy.h3 : ('Entre em contato com ' + (d.empresa || d.profissional || 'a empresa'));
+  const ctaP  = (ctaCopy && ctaCopy.p)  ? '\n      <p>' + ctaCopy.p + '</p>' : '';
+  return '<section class="cta-section">\n  <div class="cta-inner">\n    <div class="cta-texto">\n      <h3>' + ctaH3 + '</h3>' + ctaP + '\n    </div>\n    <div class="cta-botoes">\n' + botoes + '\n    </div>\n  </div>\n</section>';
 }
 
 // ── TEMPLATE BASE FIXO ────────────────────────────────────────
@@ -1034,7 +1036,12 @@ function montarTemplate(d, parts) {
   }
 
   const artigo     = montarCorpoArtigo(d, parts.legendas || {});
-  const ctaHtml    = montarCTASection(d);
+  let ctaCopy = null;
+  if (parts.cta) {
+    const ctaLines = parts.cta.split('\n').map(l => l.trim()).filter(Boolean);
+    if (ctaLines.length >= 1) ctaCopy = { h3: ctaLines[0], p: ctaLines[1] || '' };
+  }
+  const ctaHtml    = montarCTASection(d, ctaCopy);
 
   // Computa tempo de leitura estimado
   const wordCount  = (d.texto || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
@@ -1117,7 +1124,7 @@ function formatarTituloHero(titulo) {
 
 // ── API CLAUDE ─────────────────────────────────
 function parseAIResponse(text) {
-  const sections = ['SEO', 'TITULO', 'CAPTION', 'TAGS'];
+  const sections = ['SEO', 'TITULO', 'CAPTION', 'TAGS', 'CTA'];
   const parts = {};
   sections.forEach((sec, i) => {
     const marker = '==' + sec + '==';
@@ -1261,7 +1268,11 @@ Retorne APENAS os span e br, sem a tag h1. Nao altere as palavras do titulo.]
 [cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]
 
 ==TAGS==
-[entre 3 e 5 tags de SEO para esta materia, separadas por virgula. REGRAS: (1) portugues sem acentos; (2) tudo em minusculo; (3) foco em palavras que pessoas buscam no Google; (4) incluir 1 tag especifica do tema (ex: "outsourcing de impressao", "esclerose lateral amiotrofica"), 1 tag tematica ampla (ex: "empreendedorismo", "saude"), e obrigatoriamente a tag "bni"; (5) evitar genericos sem contexto ("negocios", "sucesso"). Ex para JRT Print: outsourcing de impressao, networking empresarial, bni osasco, empreendedorismo, bni]`;
+[entre 3 e 5 tags de SEO para esta materia, separadas por virgula. REGRAS: (1) portugues sem acentos; (2) tudo em minusculo; (3) foco em palavras que pessoas buscam no Google; (4) incluir 1 tag especifica do tema (ex: "outsourcing de impressao", "esclerose lateral amiotrofica"), 1 tag tematica ampla (ex: "empreendedorismo", "saude"), e obrigatoriamente a tag "bni"; (5) evitar genericos sem contexto ("negocios", "sucesso"). Ex para JRT Print: outsourcing de impressao, networking empresarial, bni osasco, empreendedorismo, bni]
+${d.ctas.length > 0 ? `
+==CTA==
+[LINHA 1 — titulo h3: personalizado ao conteudo da materia. Use como ponto de partida "Gostou da materia?<br>Entre em contato com [nome da empresa ou profissional]" mas adapte ao contexto. Pode usar <br> para quebra de linha. Exemplo real: "Gostou da materia?<br>Entre em contato com a Redax"]
+[LINHA 2 — descricao p: 1 frase curta descrevendo o servico ou produto da empresa, baseada no texto da materia. Sem ponto final opcional. Exemplo real: "Obras publicas e privadas com planejamento, seguranca tecnica e juridica"]` : ''}`;
 }
 
 
