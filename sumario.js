@@ -121,7 +121,7 @@
       +       '<span class="sumario-secao">Reconhecimento</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">11</span><span class="sumario-desc">Uma noite para celebrar quem faz a diferença</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:4;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/massaru-ogata/" style="grid-column:2;grid-row:4;">'
       +       '<span class="sumario-secao">Desenvolvimento pessoal</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">12</span><span class="sumario-desc">O Homem que comprime décadas em sete dias</span></span>'
       +     '</a>'
