@@ -101,7 +101,7 @@ Retrancas de seção sempre em `#CC0000`. Títulos em Playfair Display. Corpo em
 | 12 | Desenvolvimento pessoal | Massaru Ogata / IFT | `massaru-ogata` | ✅ no ar |
 | 13 | Eventos (2ª) | Salleven / Carla Sallada | `salleven` | ✅ no ar |
 | 14 | Turismo | Mônaco / Convenção BNI 2026 | `monaco` | ✅ no ar |
-| 15 | Negócios (2ª) | FIA Business School | `fia-business-school` | ⬜ pendente |
+| 15 | Negócios (2ª) | FIA Business School | `fia-business-school` | ✅ no ar |
 | 16 | BNI São Francisco | BNI São Francisco | `bni-sao-francisco` | ⬜ pendente |
 
 Atualizar este arquivo ao publicar cada matéria (⬜ → ✅).
