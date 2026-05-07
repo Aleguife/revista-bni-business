@@ -137,7 +137,7 @@
       +       '<span class="sumario-secao">Negócios</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">15</span><span class="sumario-desc">FIA Business School: a escola brasileira que conecta conhecimento e decisão no mundo dos negócios</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:8;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/bni-sao-francisco/" style="grid-column:2;grid-row:8;">'
       +       '<span class="sumario-secao">BNI São Francisco</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">16</span><span class="sumario-desc">BNI São Francisco: o grupo que desafiou as expectativas</span></span>'
       +     '</a>'
