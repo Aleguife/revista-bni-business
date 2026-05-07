@@ -460,7 +460,8 @@ function montarCorpoArtigo(d, legendas) {
     var slidesHtml = parts.map(function(p, idx) {
       var m = p.match(/^(.+?)::(.*)$/);
       var file = m ? m[1].trim() : p;
-      var cap  = m ? m[2].trim() : '';
+      // Prioridade: legenda manual (::) → legenda gerada pela IA → vazio
+      var cap  = (m && m[2].trim()) ? m[2].trim() : (legendas[file] || '');
       var src  = '/edicao-02/' + baseSlug + '/' + file;
       var capHtml = cap ? '<figcaption>' + cap + '</figcaption>' : '';
       return '<figure class="slider-slide' + (idx === 0 ? ' active' : '') + '">' +
@@ -1116,10 +1117,26 @@ function montarPrompt(d) {
     ? new Date(d.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : '';
 
-  // Detecta imagens no texto ([IMG: arquivo.webp])
+  // Detecta imagens no texto ([IMG: arquivo.webp] e [SLIDER: ...])
   const textoPlano = (d.texto || '').replace(/<[^>]+>/g, ' ');
   const imgMatches = [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].map(m => m[1].trim());
-  const uniqueImgs = [...new Set(imgMatches)];
+
+  // Extrai arquivos individuais de cada [SLIDER: ...]
+  const sliderMatches = [...textoPlano.matchAll(/\[SLIDER:\s*([^\]]+)\]/g)];
+  const sliderImgs = [];
+  sliderMatches.forEach(function(m) {
+    var raw = m[1];
+    // Remove legenda global (" // ...")
+    var gcIdx = raw.indexOf(' // ');
+    if (gcIdx !== -1) raw = raw.slice(0, gcIdx);
+    // Cada foto: "arquivo.webp" ou "arquivo.webp::legenda manual"
+    raw.split('|').forEach(function(part) {
+      var file = part.trim().split('::')[0].trim();
+      if (file) sliderImgs.push(file);
+    });
+  });
+
+  const uniqueImgs = [...new Set([...imgMatches, ...sliderImgs])];
 
   let legendaBloco = '';
   if (uniqueImgs.length > 0) {
