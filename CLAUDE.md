@@ -91,7 +91,7 @@ Retrancas de seção sempre em `#CC0000`. Títulos em Playfair Display. Corpo em
 | 2 | Case de sucesso | Magna Marinho / ELA | `magna-marinho` | ✅ no ar |
 | 3 | Case de sucesso | José Roberto Teixeira / JRT Print | `jrt-print` | ✅ no ar |
 | 4 | Matéria de Capa | Felipe Xavier / Redax Engenharia | `felipe-xavier` | ✅ no ar |
-| 5 | Editorial | O impresso que o digital não substitui | `o-impresso` | ⬜ pendente |
+| 5 | Editorial | O impresso que o digital não substitui | `o-impresso` | ✅ no ar |
 | 6 | Negócios | Up Brasil / Mariana Cerone | `up-brasil` | ✅ no ar |
 | 7 | Saúde mental | Tonos / Elisa de Lima | `tonos` | ✅ no ar |
 | 8 | Direito | AposentaSP / Dra. Simone Baptista | `aposentasp` | ✅ no ar |
