@@ -654,7 +654,11 @@
   }
   .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
   .cta-btn--whatsapp { background: #25D366; color: #fff; }
+  .cta-btn--instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+  .cta-btn--linkedin { background: #0A66C2; color: #fff; }
+  .cta-btn--facebook { background: #1877F2; color: #fff; }
   .cta-btn--site { background: var(--vermelho); color: #fff; }
+  .cta-btn--email, .cta-btn--youtube, .cta-btn--outro { background: var(--vermelho); color: #fff; }
   .cta-btn svg { flex-shrink: 0; }
 
   /* ── OUTRAS MATÉRIAS ── */
