@@ -125,7 +125,7 @@
       +       '<span class="sumario-secao">Desenvolvimento pessoal</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">12</span><span class="sumario-desc">O Homem que comprime décadas em sete dias</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:5;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/salleven-eventos/" style="grid-column:2;grid-row:5;">'
       +       '<span class="sumario-secao">Eventos empresariais</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">13</span><span class="sumario-desc">De São Paulo para o Brasil: a trajetória da Salleven Eventos Empresariais</span></span>'
       +     '</a>'
