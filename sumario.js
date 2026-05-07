@@ -54,10 +54,11 @@
     '  .sumario-overlay{overflow-y:auto;}',
     '  .sumario-header{padding:0 20px;}',
     '  .sumario-grid{grid-template-columns:1fr;grid-template-rows:unset;overflow-y:unset;padding:0 20px 2rem;}',
-    '  .sumario-item{grid-column:1!important;grid-row:unset!important;}',
-    '  .sumario-desc{display:none;}',
-    '  .sumario-num{font-size:1.2rem;width:2rem;}',
-    '  .sumario-secao{font-size:1.2rem;}',
+    '  .sumario-item{grid-column:1!important;grid-row:unset!important;flex-direction:row;align-items:center;gap:0.4rem;padding:0.3rem 10px;}',
+    '  .sumario-titulo-linha{display:contents;}',
+    '  .sumario-num{order:1;font-size:1rem;width:auto;flex-shrink:0;}',
+    '  .sumario-secao{order:2;padding-left:0;font-size:0.72rem;margin-bottom:0;flex-shrink:0;}',
+    '  .sumario-desc{order:3;display:-webkit-box;font-size:1rem;-webkit-line-clamp:1;}',
     '}'
   ].join('\n');
 
@@ -77,69 +78,69 @@
       /* ── Coluna esquerda: itens 01–08 ── */
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/eventos/" style="grid-column:1;grid-row:1;">'
       +       '<span class="sumario-secao">Eventos</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">01</span><span class="sumario-desc">O que o charuto tem a ver com você</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">01</span><span class="sumario-desc">Cigar Night</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/magna-marinho/" style="grid-column:1;grid-row:2;">'
       +       '<span class="sumario-secao">Case de sucesso</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">02</span><span class="sumario-desc">Quando o BNI vai além do networking</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">02</span><span class="sumario-desc">Magna Marinho</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/jrt-print/" style="grid-column:1;grid-row:3;">'
       +       '<span class="sumario-secao">Case de sucesso</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">03</span><span class="sumario-desc">Quanto vale uma conexão certa?</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">03</span><span class="sumario-desc">José Roberto Teixeira</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/materia-de-capa/" style="grid-column:1;grid-row:4;">'
       +       '<span class="sumario-secao">Matéria de Capa</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">04</span><span class="sumario-desc">O estrategista por trás da nova geração de obras</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">04</span><span class="sumario-desc">Felipe Xavier</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/alef-editora/" style="grid-column:1;grid-row:5;">'
       +       '<span class="sumario-secao">Editorial</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">05</span><span class="sumario-desc">O impresso que o digital não consegue substituir</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">05</span><span class="sumario-desc">Alef Design + Editora</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/up-brasil/" style="grid-column:1;grid-row:6;">'
       +       '<span class="sumario-secao">Negócios</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">06</span><span class="sumario-desc">O bem-estar que chega para todos</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">06</span><span class="sumario-desc">Up Brasil</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/tonos/" style="grid-column:1;grid-row:7;">'
       +       '<span class="sumario-secao">Saúde mental</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">07</span><span class="sumario-desc">Quando a lei encontra a missão: Tonos e a revolução silenciosa da saúde mental nas empresas</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">07</span><span class="sumario-desc">Elisa de Lima</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/aposenta-sp/" style="grid-column:1;grid-row:8;">'
       +       '<span class="sumario-secao">Direito</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">08</span><span class="sumario-desc">O futuro que você ainda não planejou pode custar caro</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">08</span><span class="sumario-desc">Dra. Simone Baptista</span></span>'
       +     '</a>'
 
       /* ── Coluna direita: itens 09–16 ── */
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/msr-device-golden-store/" style="grid-column:2;grid-row:1;">'
       +       '<span class="sumario-secao">Estilo</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">09</span><span class="sumario-desc">O brilho que sua marca merece: eternize o que você construiu em joia</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">09</span><span class="sumario-desc">MSR Device Golden Store</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/bni-mundi/" style="grid-column:2;grid-row:2;">'
       +       '<span class="sumario-secao">BNI mundi</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-desc">O inglês que abre portas</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-desc">BNI Mundi</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/reconhecimento/" style="grid-column:2;grid-row:3;">'
       +       '<span class="sumario-secao">Reconhecimento</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">11</span><span class="sumario-desc">Uma noite para celebrar quem faz a diferença</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">11</span><span class="sumario-desc">Reconhecimento BNI</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/massaru-ogata/" style="grid-column:2;grid-row:4;">'
       +       '<span class="sumario-secao">Desenvolvimento pessoal</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">12</span><span class="sumario-desc">O Homem que comprime décadas em sete dias</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">12</span><span class="sumario-desc">Massaru Ogata</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/salleven-eventos/" style="grid-column:2;grid-row:5;">'
       +       '<span class="sumario-secao">Eventos empresariais</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">13</span><span class="sumario-desc">De São Paulo para o Brasil: a trajetória da Salleven Eventos Empresariais</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">13</span><span class="sumario-desc">Salleven Eventos Empresariais</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/monaco/" style="grid-column:2;grid-row:6;">'
       +       '<span class="sumario-secao">Turismo</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">14</span><span class="sumario-desc">Mônaco te espera — e a sua turma BNI também</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">14</span><span class="sumario-desc">Trip in Viagens Alphaville</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/fia-business-school/" style="grid-column:2;grid-row:7;">'
       +       '<span class="sumario-secao">Negócios</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">15</span><span class="sumario-desc">FIA Business School: a escola brasileira que conecta conhecimento e decisão no mundo dos negócios</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">15</span><span class="sumario-desc">FIA Business School</span></span>'
       +     '</a>'
       +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/bni-sao-francisco/" style="grid-column:2;grid-row:8;">'
       +       '<span class="sumario-secao">BNI São Francisco</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">16</span><span class="sumario-desc">BNI São Francisco: o grupo que desafiou as expectativas</span></span>'
+      +       '<span class="sumario-titulo-linha"><span class="sumario-num">16</span><span class="sumario-desc">BNI São Francisco</span></span>'
       +     '</a>'
 
       +   '</div>'
