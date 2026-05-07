@@ -56,9 +56,9 @@
     '  .sumario-grid{grid-template-columns:1fr;grid-template-rows:unset;overflow-y:unset;padding:0 20px 2rem;}',
     '  .sumario-item{grid-column:1!important;grid-row:unset!important;flex-direction:row;align-items:center;gap:0.4rem;padding:0.3rem 10px;}',
     '  .sumario-titulo-linha{display:contents;}',
-    '  .sumario-num{order:1;font-size:1rem;width:auto;flex-shrink:0;}',
+    '  .sumario-num{order:1;font-size:1.3rem;width:auto;flex-shrink:0;}',
     '  .sumario-secao{display:none;}',
-    '  .sumario-desc{order:2;display:-webkit-box;font-size:1rem;-webkit-line-clamp:1;}',
+    '  .sumario-desc{order:2;display:block;font-size:1.3rem;white-space:nowrap;overflow:hidden;-webkit-line-clamp:unset;}',
     '}'
   ].join('\n');
 
