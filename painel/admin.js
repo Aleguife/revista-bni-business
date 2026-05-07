@@ -982,7 +982,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
       dots[cur] && dots[cur].classList.add('active');
       track.style.transform = 'translateX(-' + (cur * sl.offsetWidth) + 'px)';
     }
-    function play()  { timer = setInterval(function() { goTo(cur + 1); }, 4000); }
+    function play()  { clearInterval(timer); timer = setInterval(function() { goTo(cur + 1); }, 3000); }
     function pause() { clearInterval(timer); }
     if (prev) prev.addEventListener('click', function() { pause(); goTo(cur - 1); play(); });
     if (next) next.addEventListener('click', function() { pause(); goTo(cur + 1); play(); });
