@@ -57,8 +57,8 @@
     '  .sumario-item{grid-column:1!important;grid-row:unset!important;flex-direction:row;align-items:center;gap:0.4rem;padding:0.3rem 10px;}',
     '  .sumario-titulo-linha{display:contents;}',
     '  .sumario-num{order:1;font-size:1rem;width:auto;flex-shrink:0;}',
-    '  .sumario-secao{order:2;padding-left:0;font-size:0.72rem;margin-bottom:0;flex-shrink:0;}',
-    '  .sumario-desc{order:3;display:-webkit-box;font-size:1rem;-webkit-line-clamp:1;}',
+    '  .sumario-secao{display:none;}',
+    '  .sumario-desc{order:2;display:-webkit-box;font-size:1rem;-webkit-line-clamp:1;}',
     '}'
   ].join('\n');
 
