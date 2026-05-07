@@ -129,7 +129,7 @@
       +       '<span class="sumario-secao">Eventos empresariais</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">13</span><span class="sumario-desc">De São Paulo para o Brasil: a trajetória da Salleven Eventos Empresariais</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:6;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/monaco/" style="grid-column:2;grid-row:6;">'
       +       '<span class="sumario-secao">Turismo</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">14</span><span class="sumario-desc">Mônaco te espera — e a sua turma BNI também</span></span>'
       +     '</a>'
