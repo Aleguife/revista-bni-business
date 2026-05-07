@@ -100,12 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quill.insertText(range.index, placeholder, 'user');
             quill.setSelection(range.index + placeholder.length);
           },
-          slider: function () {
-            const range = quill.getSelection(true);
-            const placeholder = '[SLIDER: img/foto1.webp | img/foto2.webp | img/foto3.webp]';
-            quill.insertText(range.index, placeholder, 'user');
-            quill.setSelection(range.index + placeholder.length);
-          },
+          slider: function () { /* tratado pelo dropdown — ver abaixo */ },
         },
       },
       clipboard: { matchVisual: false },
@@ -116,8 +111,49 @@ document.addEventListener('DOMContentLoaded', function () {
   // Estiliza botões customizados 📷 e 🎠
   const btnImg = document.querySelector('.ql-imagem');
   if (btnImg) { btnImg.textContent = '📷'; btnImg.title = 'Inserir imagem [IMG: arquivo.webp]'; }
+  // Dropdown 🎠
   const btnSlider = document.querySelector('.ql-slider');
-  if (btnSlider) { btnSlider.textContent = '🎠'; btnSlider.title = 'Inserir slider [SLIDER: foto1.webp | foto2.webp // legenda opcional]'; }
+  if (btnSlider) {
+    btnSlider.innerHTML = '🎠 <span style="font-size:9px;opacity:0.6;">▾</span>';
+    btnSlider.style.cssText += 'width:auto;padding:0 6px;';
+
+    const ddMenu = document.createElement('div');
+    ddMenu.className = 'ql-slider-dropdown';
+    ddMenu.innerHTML = [
+      ['sl',         'Slider sem legenda'],
+      ['individual', 'Slider legenda individual'],
+      ['global',     'Slider legenda global'],
+      ['manual',     'Slider legenda manual'],
+    ].map(([t, l]) => `<div class="ql-slider-option" data-type="${t}">${l}</div>`).join('');
+
+    const wrap = btnSlider.closest('span') || btnSlider.parentElement;
+    wrap.style.position = 'relative';
+    wrap.appendChild(ddMenu);
+
+    const placeholders = {
+      sl:         '[SLIDER-SL: img/foto1.webp | img/foto2.webp | img/foto3.webp]',
+      individual: '[SLIDER: img/foto1.webp | img/foto2.webp | img/foto3.webp]',
+      global:     '[SLIDER-GLOBAL: img/foto1.webp | img/foto2.webp | img/foto3.webp]',
+      manual:     '[SLIDER: img/foto1.webp::Legenda 1 | img/foto2.webp::Legenda 2 | img/foto3.webp::Legenda 3]',
+    };
+
+    btnSlider.addEventListener('click', function(e) {
+      e.preventDefault(); e.stopPropagation();
+      ddMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', function() { ddMenu.classList.remove('open'); });
+    ddMenu.addEventListener('click', function(e) {
+      const opt = e.target.closest('.ql-slider-option');
+      if (!opt) return;
+      e.stopPropagation();
+      const ph = placeholders[opt.dataset.type];
+      if (!ph) return;
+      const range = quill.getSelection(true);
+      quill.insertText(range.index, ph, 'user');
+      quill.setSelection(range.index + ph.length);
+      ddMenu.classList.remove('open');
+    });
+  }
 
   // Restaura rascunho do localStorage
   restaurarRascunho();
@@ -399,6 +435,7 @@ function montarCorpoArtigo(d, legendas) {
   }
 
   var tokens = [];
+  var sliderGlobalIdx = 0;
   var children = tmp.children;
   for (var c = 0; c < children.length; c++) {
     var el   = children[c];
@@ -414,6 +451,16 @@ function montarCorpoArtigo(d, legendas) {
     var sliderMatch = text.match(/^\[SLIDER:\s*([^\]]+)\]$/);
     if (sliderMatch) {
       tokens.push({ type: 'slider', raw: sliderMatch[1].trim() });
+      continue;
+    }
+    var sliderSlMatch = text.match(/^\[SLIDER-SL:\s*([^\]]+)\]$/);
+    if (sliderSlMatch) {
+      tokens.push({ type: 'slider-sl', raw: sliderSlMatch[1].trim() });
+      continue;
+    }
+    var sliderGlobalMatch = text.match(/^\[SLIDER-GLOBAL:\s*([^\]]+)\]$/);
+    if (sliderGlobalMatch) {
+      tokens.push({ type: 'slider-global', raw: sliderGlobalMatch[1].trim(), idx: sliderGlobalIdx++ });
       continue;
     }
     if ((tag === 'p' || tag === 'ul' || tag === 'ol') && !text) continue;
@@ -446,36 +493,40 @@ function montarCorpoArtigo(d, legendas) {
   }
 
   function sliderHtml(tk) {
-    var raw = tk.raw;
-    var globalCaption = '';
-    // Legenda global: "foto1.webp | foto2.webp // Legenda do conjunto"
-    var gcSep = raw.indexOf(' // ');
-    if (gcSep !== -1) {
-      globalCaption = raw.slice(gcSep + 4).trim();
-      raw = raw.slice(0, gcSep).trim();
-    }
-    var parts = raw.split('|').map(function(s) { return s.trim(); }).filter(Boolean);
+    var parts = tk.raw.split('|').map(function(s) { return s.trim(); }).filter(Boolean);
     var baseSlug = d.slug || 'materia';
     var id = 'sl' + Date.now().toString(36);
+
     var slidesHtml = parts.map(function(p, idx) {
       var m = p.match(/^(.+?)::(.*)$/);
       var file = m ? m[1].trim() : p;
-      // Prioridade: legenda manual (::) → legenda gerada pela IA → vazio
-      var cap  = (m && m[2].trim()) ? m[2].trim() : (legendas[file] || '');
-      var src  = '/edicao-02/' + baseSlug + '/' + file;
-      var capHtml = cap ? '<figcaption>' + cap + '</figcaption>' : '';
+      var cap = '';
+      if (tk.type === 'slider') {
+        // individual: legenda manual (::) tem prioridade, senão usa IA
+        cap = (m && m[2].trim()) ? m[2].trim() : (legendas[file] || '');
+      }
+      // slider-sl: sem legenda
+      // slider-global: legenda fica no rodapé, não por foto
+      var src = '/edicao-02/' + baseSlug + '/' + file;
       return '<figure class="slider-slide' + (idx === 0 ? ' active' : '') + '">' +
-             '<img src="' + src + '" alt="' + cap + '" loading="lazy">' + capHtml + '</figure>';
+             '<img src="' + src + '" alt="' + cap + '" loading="lazy">' +
+             (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
     }).join('');
+
     var dotsHtml = parts.map(function(_, idx) {
       return '<button class="slider-dot' + (idx === 0 ? ' active' : '') + '" data-idx="' + idx + '" aria-label="Slide ' + (idx + 1) + '"></button>';
     }).join('');
-    var gcHtml = globalCaption ? '<p class="slider-caption-global">' + globalCaption + '</p>' : '';
+
+    // Legenda global: gerada pela IA para slider-global
+    var gc = tk.type === 'slider-global' ? (legendas['__sg-' + tk.idx + '__'] || '') : '';
+    var gcHtml = gc ? '<p class="slider-caption-global">' + gc + '</p>' : '';
+
     var nav = parts.length > 1
       ? '<button class="slider-prev" aria-label="Anterior">&#8592;</button>' +
         '<button class="slider-next" aria-label="Próximo">&#8594;</button>' +
         '<div class="slider-dots">' + dotsHtml + '</div>'
       : '';
+
     return '<div class="foto-slider fade-in" id="' + id + '">' +
            '<div class="slider-track">' + slidesHtml + '</div>' +
            nav + gcHtml + '</div>';
@@ -483,7 +534,8 @@ function montarCorpoArtigo(d, legendas) {
 
   // Predicado: inicia nova seção (interrompe coleta de parágrafos)
   function isBreak(type) {
-    return type === 'h2' || type === 'h3' || type === 'img' || type === 'slider';
+    return type === 'h2' || type === 'h3' || type === 'img' ||
+           type === 'slider' || type === 'slider-sl' || type === 'slider-global';
   }
 
   // ── Loop principal ──────────────────────────────────────────
@@ -501,8 +553,8 @@ function montarCorpoArtigo(d, legendas) {
       continue;
     }
 
-    // — Slider —
-    if (tk.type === 'slider') {
+    // — Slider (todas as variantes) —
+    if (tk.type === 'slider' || tk.type === 'slider-sl' || tk.type === 'slider-global') {
       out.push(sliderHtml(tk));
       i++;
       continue;
@@ -1085,6 +1137,11 @@ function parseAIResponse(text) {
   while ((m = legendaRe.exec(text)) !== null) {
     legendas[m[1].trim()] = m[2].trim();
   }
+  // Extrai ==LEGENDA-SLIDER-GLOBAL:N== texto ==FIM==
+  const sgRe = /==LEGENDA-SLIDER-GLOBAL:(\d+)==([\s\S]*?)==FIM==/g;
+  while ((m = sgRe.exec(text)) !== null) {
+    legendas['__sg-' + m[1].trim() + '__'] = m[2].trim();
+  }
   parts.legendas = legendas;
 
   return parts;
@@ -1117,31 +1174,39 @@ function montarPrompt(d) {
     ? new Date(d.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : '';
 
-  // Detecta imagens no texto ([IMG: arquivo.webp] e [SLIDER: ...])
+  // Detecta imagens no texto para geração de legendas pela IA
   const textoPlano = (d.texto || '').replace(/<[^>]+>/g, ' ');
+
+  // [IMG: arquivo.webp] → sempre gera legenda
   const imgMatches = [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].map(m => m[1].trim());
 
-  // Extrai arquivos individuais de cada [SLIDER: ...]
-  const sliderMatches = [...textoPlano.matchAll(/\[SLIDER:\s*([^\]]+)\]/g)];
-  const sliderImgs = [];
-  sliderMatches.forEach(function(m) {
-    var raw = m[1];
-    // Remove legenda global (" // ...")
-    var gcIdx = raw.indexOf(' // ');
-    if (gcIdx !== -1) raw = raw.slice(0, gcIdx);
-    // Cada foto: "arquivo.webp" ou "arquivo.webp::legenda manual"
-    raw.split('|').forEach(function(part) {
-      var file = part.trim().split('::')[0].trim();
-      if (file) sliderImgs.push(file);
+  // [SLIDER: ...] → gera legenda individual apenas para fotos SEM "::" (manual)
+  const sliderIndividualImgs = [];
+  [...textoPlano.matchAll(/\[SLIDER:\s*([^\]]+)\]/g)].forEach(function(m) {
+    m[1].split('|').forEach(function(part) {
+      var t = part.trim();
+      if (t.indexOf('::') === -1) sliderIndividualImgs.push(t);
     });
   });
 
-  const uniqueImgs = [...new Set([...imgMatches, ...sliderImgs])];
+  // [SLIDER-GLOBAL: ...] → IA gera UMA legenda para o conjunto (marcador especial abaixo)
+  const sliderGlobalList = [...textoPlano.matchAll(/\[SLIDER-GLOBAL:\s*([^\]]+)\]/g)];
+
+  // [SLIDER-SL: ...] → sem legenda, IA não gera nada
+
+  const uniqueImgs = [...new Set([...imgMatches, ...sliderIndividualImgs])];
 
   let legendaBloco = '';
   if (uniqueImgs.length > 0) {
     legendaBloco = '\n\nO texto contem ' + uniqueImgs.length + ' imagem(ns) marcada(s). Para cada uma, gere uma legenda adequada ao contexto da materia (1 linha, sem ponto final), usando o formato:\n\n' +
       uniqueImgs.map(f => '==LEGENDA:' + f + '==\n[legenda]\n==FIM==').join('\n\n');
+  }
+
+  let sliderGlobalBloco = '';
+  if (sliderGlobalList.length > 0) {
+    sliderGlobalBloco = '\n\n' + sliderGlobalList.map((_, idx) =>
+      '==LEGENDA-SLIDER-GLOBAL:' + idx + '==\n[legenda unica (1 linha, sem ponto final) que descreva o conjunto de fotos deste slider]\n==FIM=='
+    ).join('\n\n');
   }
 
   return `Voce e o assistente SEO da Revista BNI Business.
@@ -1158,7 +1223,7 @@ Data: ${dataFormatada}
 === PRIMEIROS PARAGRAFOS DO TEXTO (para contexto) ===
 ${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 
-=== RETORNE EXATAMENTE NESTE FORMATO ===${legendaBloco}
+=== RETORNE EXATAMENTE NESTE FORMATO ===${legendaBloco}${sliderGlobalBloco}
 
 ==SEO==
 [descricao de ate 150 caracteres para meta description e og:description — baseada no titulo e texto]
