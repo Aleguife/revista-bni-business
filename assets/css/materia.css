@@ -373,6 +373,7 @@
     .hero-foto { height: 100vh; max-height: none; }
     .hero-texto { padding: 2.5rem 1.5rem; }
     .texto-duplo, .texto-triplo { grid-template-columns: 1fr; gap: 0; }
+    .texto-duplo p, .texto-triplo p { font-size: 1.294rem; }
     .citacao-lateral { float: none; width: 100%; margin: 1.5rem 0; }
     .artigo { padding: 3rem 1.2rem; }
     .citacao-bloco { padding: 2rem 1.5rem; }
