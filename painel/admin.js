@@ -220,8 +220,7 @@ function restaurarRascunho() {
             return '<option' + (t === cta.tipo ? ' selected' : '') + '>' + t + '</option>';
           }).join('') +
         '</select>' +
-        '<input type="text" class="cta-texto" placeholder="Texto do botão" value="' + (cta.texto || '').replace(/"/g, '&quot;') + '">' +
-        '<input type="text" class="cta-link"  placeholder="Link"            value="' + (cta.link  || '').replace(/"/g, '&quot;') + '">' +
+        '<input type="text" class="cta-link" placeholder="Link" value="' + (cta.link || '').replace(/"/g, '&quot;') + '">' +
         '<button type="button" class="btn-remove" onclick="removerCTA(this)">✕</button>';
       c.appendChild(div);
     });
@@ -320,8 +319,7 @@ function adicionarCTA() {
     <select class="cta-tipo">
       ${CTA_TIPOS.map(t => `<option>${t}</option>`).join('')}
     </select>
-    <input type="text" class="cta-texto" placeholder="Texto do botão (Ex: Fale conosco)">
-    <input type="text" class="cta-link" placeholder="Link">
+    <input type="text" class="cta-link" placeholder="Link (ex: https://wa.me/5511...)">
     <button type="button" class="btn-remove" onclick="removerCTA(this)">✕</button>`;
   container.appendChild(div);
 }
@@ -336,7 +334,6 @@ function removerCTA(btn) {
 function getCTAs() {
   return Array.from(document.querySelectorAll('.cta-item')).map(el => ({
     tipo:  el.querySelector('.cta-tipo').value,
-    texto: el.querySelector('.cta-texto').value.trim(),
     link:  el.querySelector('.cta-link').value.trim(),
   })).filter(c => c.link);
 }
@@ -630,9 +627,20 @@ function montarCTASection(d, ctaCopy) {
     youtube:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>',
     outro:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>',
   };
+  const nome = d.profissional || d.empresa || 'a empresa';
+  const labelPorTipo = {
+    whatsapp:  'Falar com ' + nome,
+    site:      'Visitar o site',
+    instagram: 'Siga no Instagram',
+    linkedin:  'LinkedIn',
+    email:     'Enviar e-mail',
+    youtube:   'YouTube',
+    outro:     'Saiba mais',
+  };
   const botoes = d.ctas.map(c => {
     const cls = tipoParaClasse(c.tipo);
-    return '      <a class="cta-btn cta-btn--' + cls + '" href="' + c.link + '" target="_blank" rel="noopener">' + (icones[cls] || icones.outro) + ' ' + (c.texto || c.tipo) + '</a>';
+    const label = labelPorTipo[cls] || c.tipo;
+    return '      <a class="cta-btn cta-btn--' + cls + '" href="' + c.link + '" target="_blank" rel="noopener">' + (icones[cls] || icones.outro) + ' ' + label + '</a>';
   }).join('\n');
   const ctaH3 = (ctaCopy && ctaCopy.h3) ? ctaCopy.h3 : ('Entre em contato com ' + (d.empresa || d.profissional || 'a empresa'));
   const ctaP  = (ctaCopy && ctaCopy.p)  ? '\n      <p>' + ctaCopy.p + '</p>' : '';
@@ -1265,7 +1273,7 @@ ${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 Retorne APENAS os span e br, sem a tag h1. Nao altere as palavras do titulo.]
 
 ==CAPTION==
-[cargo ou descricao breve de ${d.profissional || d.empresa} para legenda da foto — 1 linha, sem ponto final]
+[Legenda narrativa para a foto hero — texto que aparece DEPOIS do nome em negrito. Estilo evocativo, conectado ao conteudo da materia, nunca generico. Referencia real: "de servidor publico ao empreendedor — a trajetoria de quem aprendeu as regras do jogo de dentro para fora". Regras: 1 linha, sem ponto final, sem repetir o nome da pessoa, sem formulas genericas ("especialista em", "profissional com X anos") — use uma perspectiva, contraste ou conquista especifica extraida do texto da materia.]
 
 ==TAGS==
 [entre 3 e 5 tags de SEO para esta materia, separadas por virgula. REGRAS: (1) portugues sem acentos; (2) tudo em minusculo; (3) foco em palavras que pessoas buscam no Google; (4) incluir 1 tag especifica do tema (ex: "outsourcing de impressao", "esclerose lateral amiotrofica"), 1 tag tematica ampla (ex: "empreendedorismo", "saude"), e obrigatoriamente a tag "bni"; (5) evitar genericos sem contexto ("negocios", "sucesso"). Ex para JRT Print: outsourcing de impressao, networking empresarial, bni osasco, empreendedorismo, bni]
