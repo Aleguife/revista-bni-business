@@ -117,7 +117,7 @@
       +       '<span class="sumario-secao">BNI mundi</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-desc">O inglês que abre portas</span></span>'
       +     '</a>'
-      +     '<a class="sumario-item" href="#" style="grid-column:2;grid-row:3;">'
+      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/reconhecimento/" style="grid-column:2;grid-row:3;">'
       +       '<span class="sumario-secao">Reconhecimento</span>'
       +       '<span class="sumario-titulo-linha"><span class="sumario-num">11</span><span class="sumario-desc">Uma noite para celebrar quem faz a diferença</span></span>'
       +     '</a>'
