@@ -97,7 +97,7 @@ Retrancas de seção sempre em `#CC0000`. Títulos em Playfair Display. Corpo em
 | 8 | Direito | AposentaSP / Dra. Simone Baptista | `aposentasp` | ✅ no ar |
 | 9 | Estilo | MSR Device Golden / Anderson Oliveira | `msr-golden` | ✅ no ar |
 | 10 | BNI Mundi | WPO Languages / Waldir Pires | `bni-mundi` | ✅ no ar |
-| 11 | Reconhecimento | Evento BNI OESP | `reconhecimento` | ⬜ pendente |
+| 11 | Reconhecimento | Evento BNI OESP | `reconhecimento` | ✅ no ar |
 | 12 | Desenvolvimento pessoal | Massaru Ogata / IFT | `massaru-ogata` | ⬜ pendente |
 | 13 | Eventos (2ª) | Salleven / Carla Sallada | `salleven` | ⬜ pendente |
 | 14 | Turismo | Mônaco / Convenção BNI 2026 | `monaco` | ⬜ pendente |
