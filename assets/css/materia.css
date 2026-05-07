@@ -239,7 +239,7 @@
     position: relative;
   }
   .citacao-bloco blockquote::before {
-    content: '\\201C';
+    content: '\201C';
     font-family: 'Playfair Display', serif;
     font-size: 9rem;
     font-style: normal;
