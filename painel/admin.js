@@ -974,6 +974,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
     if (!track || slides.length <= 1) return;
     var cur = 0;
     var timer;
+    var hovering = false;
     function goTo(idx) {
       slides[cur].classList.remove('active');
       dots[cur] && dots[cur].classList.remove('active');
@@ -982,16 +983,17 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
       dots[cur] && dots[cur].classList.add('active');
       track.style.transform = 'translateX(-' + (cur * sl.offsetWidth) + 'px)';
     }
-    function play()  { clearInterval(timer); timer = setInterval(function() { goTo(cur + 1); }, 3000); }
-    function pause() { clearInterval(timer); }
-    if (prev) prev.addEventListener('click', function() { pause(); goTo(cur - 1); play(); });
-    if (next) next.addEventListener('click', function() { pause(); goTo(cur + 1); play(); });
+    function startPlay() { clearInterval(timer); if (!hovering) timer = setInterval(function() { goTo(cur + 1); }, 3000); }
+    // Clicks apenas navegam — não tocam no timer
+    if (prev) prev.addEventListener('click', function() { goTo(cur - 1); });
+    if (next) next.addEventListener('click', function() { goTo(cur + 1); });
     dots.forEach(function(dot) {
-      dot.addEventListener('click', function() { pause(); goTo(+this.dataset.idx); play(); });
+      dot.addEventListener('click', function() { goTo(+this.dataset.idx); });
     });
-    sl.addEventListener('mouseenter', pause);
-    sl.addEventListener('mouseleave', play);
-    play();
+    // Hover pausa e retoma o autoplay
+    sl.addEventListener('mouseenter', function() { hovering = true;  clearInterval(timer); });
+    sl.addEventListener('mouseleave', function() { hovering = false; startPlay(); });
+    startPlay();
   });
 
   // ── LANGUAGE SWITCHER ──
