@@ -720,7 +720,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
     <circle class="reading-circle-prog" id="circleProgress" cx="36" cy="36" r="32"/>
   </svg>
   <div class="reading-circle-inner" id="circleInner">
-    <span class="reading-circle-mins" id="circleMins">12</span>
+    <span class="reading-circle-mins" id="circleMins">%%TOTAL_MINS%%</span>
     <span class="reading-circle-label" id="circleLabel">min</span>
   </div>
 </div>
@@ -776,7 +776,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
     <div class="hero-byline">
       <span class="bl-secao">%%SECAO%%</span>
       <span class="bl-data">%%DATA_FORMATADA%%</span>
-      <span class="bl-leitura" id="readingTime">12 min de leitura</span>
+      <span class="bl-leitura" id="readingTime">%%TOTAL_MINS%% min de leitura</span>
     </div>
 
     <h1 class="hero-titulo">%%TITULO_HTML%%</h1>
