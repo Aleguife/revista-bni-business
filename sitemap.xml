@@ -4,6 +4,51 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <url>
+    <loc>https://bnibusiness.com.br/edicao-02/eventos/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O que o charuto tem a ver com você — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/magna-marinho/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>Quando o BNI vai além do networking — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/jrt-print/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-05</news:publication_date>
+      <news:title>Quanto vale uma conexão certa? — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
     <loc>https://bnibusiness.com.br/edicao-02/materia-de-capa/</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
@@ -14,12 +59,475 @@
         <news:language>pt</news:language>
       </news:publication>
       <news:publication_date>2026-04-29</news:publication_date>
-      <news:title>O estrategista por trás da nova geração de obras</news:title>
+      <news:title>O estrategista por trás da nova geração de obras — BNI Business</news:title>
     </news:news>
-    <image:image>
-      <image:loc>https://bnibusiness.com.br/edicao-02/materia-de-capa/img/og-cover.webp</image:loc>
-      <image:title>Felipe Antonio Xavier Andrade — Redax Engenharia</image:title>
-    </image:image>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/alef-editora/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O impresso que o digital não consegue substituir — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/up-brasil/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O bem-estar que chega para todos — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/tonos/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>Tonos e a revolução silenciosa da saúde mental nas empresas — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/aposenta-sp/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O futuro que você ainda não planejou pode custar caro — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/msr-device-golden-store/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O brilho que sua marca merece: eternize o que você construiu em joia — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/bni-mundi/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O inglês  que abre  portas — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/reconhecimento/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>Uma noite para celebrar quem faz a diferença — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/massaru-ogata/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>O Homem que comprime décadas em sete dias — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/salleven-eventos/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>De São Paulo para o Brasil: a trajetória da Salleven Eventos Empresariais — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/monaco/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>Mônaco te espera – e a sua turma BNI também — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/fia-business-school/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-14</news:publication_date>
+      <news:title>FIA Business School: a escola brasileira que conecta conhecimento e decisão no mundo dos negócios — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/edicao-02/bni-sao-francisco/</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Revista BNI Business</news:name>
+        <news:language>pt</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-07</news:publication_date>
+      <news:title>BNI São Francisco: o grupo que desafiou as expectativas — BNI Business</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/eventos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/magna-marinho/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/jrt-print/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/materia-de-capa/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/alef-editora/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/up-brasil/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/tonos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/aposenta-sp/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/msr-device-golden-store/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/bni-mundi/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/reconhecimento/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/massaru-ogata/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/salleven-eventos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/monaco/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/fia-business-school/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/edicao-02/bni-sao-francisco/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/eventos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/magna-marinho/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/jrt-print/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/materia-de-capa/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/alef-editora/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/up-brasil/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/tonos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/aposenta-sp/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/msr-device-golden-store/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/bni-mundi/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/reconhecimento/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/massaru-ogata/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/salleven-eventos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/monaco/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/fia-business-school/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/edicao-02/bni-sao-francisco/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/termos/</loc>
+    <lastmod>2026-05-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/privacidade/</loc>
+    <lastmod>2026-05-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/cookies/</loc>
+    <lastmod>2026-05-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/termos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/privacidade/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/en/cookies/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/termos/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/privacidade/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://bnibusiness.com.br/es/cookies/</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 
 </urlset>
