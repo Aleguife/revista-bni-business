@@ -82,13 +82,13 @@
     var urls = getLangUrls();
     var currentLang = getCurrentLang();
 
-    var html = '<a href="/" class="nav-logo" role="banner" aria-label="Revista BNI Business — Página inicial" style="text-decoration:none">' + LOGO_SVG + '</a>'
+    var html = '<a href="https://bnibusiness.com.br" class="nav-logo" role="banner" aria-label="Revista BNI Business — Página inicial" style="text-decoration:none">' + LOGO_SVG + '</a>'
       + '<nav role="navigation" aria-label="Menu principal">'
       + '<div class="nav-menu">'
 
       /* Link Home */
       + '<div class="nav-item">'
-      +   '<a class="nav-btn" href="/" aria-label="Página inicial">'
+      +   '<a class="nav-btn" href="https://bnibusiness.com.br" aria-label="Página inicial">'
       +     ICON_HOME
       +     '<span class="nav-label">Home</span>'
       +   '</a>'

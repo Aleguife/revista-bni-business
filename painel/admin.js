@@ -709,7 +709,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
   "inLanguage": "pt-BR"
 }
 </script>
-<script src="../../nav.js?v=2026050801" defer></script>
+<script src="../../nav.js?v=2026050802" defer></script>
   <script src="../../footer.js?v=2026050303" defer></script>
   <script src="../../sumario.js?v=2026050706" defer></script>
   </head>
