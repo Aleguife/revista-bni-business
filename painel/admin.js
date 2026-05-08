@@ -710,7 +710,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 }
 </script>
 <script src="../../nav.js?v=2026050802" defer></script>
-  <script src="../../footer.js?v=2026050809" defer></script>
+  <script src="../../footer.js?v=2026050810" defer></script>
   <script src="../../sumario.js?v=2026050706" defer></script>
   </head>
 <body>
