@@ -47,27 +47,24 @@
     return ''
       + '<div style="padding:2rem 2rem 1.5rem;display:flex;flex-wrap:wrap;gap:1.5rem;background:var(--vermelho);">'
 
-      /* Coluna 1 — Logo + redes sociais */
+      /* Coluna 1 — Logo + slogan */
       + '<div style="flex:1 1 200px;min-width:200px;">'
       +   '<div style="max-width:450px;margin:0 auto;">'
       +     '<div style="margin-bottom:0.75rem;">' + FOOTER_LOGO_SVG + '</div>'
       +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7);">Conectando empresários. Gerando resultados.</p>'
-      +     '<div style="display:flex;gap:10px;margin-top:0.75rem;align-items:center;">'
+      +   '</div>'
+      + '</div>'
+
+      /* Coluna 2 — Redes sociais */
+      + '<div style="flex:1 1 150px;min-width:150px;">'
+      +   '<div style="max-width:450px;margin:0 auto;">'
+      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:1rem;">Fale com a Revista BNI Business</h4>'
+      +     '<div style="display:flex;gap:10px;align-items:center;">'
       +       socialBtn('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
       +       socialBtn('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
       +       socialBtn('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
       +       socialBtn('https://linkedin.com/company/revistabnibusiness', 'LinkedIn', ICON_LI)
       +     '</div>'
-      +   '</div>'
-      + '</div>'
-
-      /* Coluna 2 — Links de navegação */
-      + '<div style="flex:1 1 150px;min-width:150px;">'
-      +   '<div style="max-width:450px;margin:0 auto;display:flex;flex-direction:column;">'
-      +     '<a href="#" class="footer-nav-link" style="border-top:1px solid rgba(255,255,255,0.2);border-bottom:1px solid rgba(255,255,255,0.2);">Revistas</a>'
-      +     '<a href="#" class="footer-nav-link" style="border-bottom:1px solid rgba(255,255,255,0.2);">Sobre</a>'
-      +     '<a href="#" class="footer-nav-link" style="border-bottom:1px solid rgba(255,255,255,0.2);">Contato</a>'
-      +     '<a href="#" class="footer-nav-link" style="border-bottom:1px solid rgba(255,255,255,0.2);">Expediente</a>'
       +   '</div>'
       + '</div>'
 
