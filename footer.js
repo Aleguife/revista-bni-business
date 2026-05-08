@@ -57,9 +57,9 @@
 
       /* Coluna 2 — Redes sociais */
       + '<div style="flex:1 1 150px;min-width:150px;">'
-      +   '<div style="max-width:450px;margin:0 auto;">'
+      +   '<div style="max-width:450px;margin:0 auto;text-align:center;">'
       +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:1rem;">Fale com a Revista BNI Business</h4>'
-      +     '<div style="display:flex;gap:10px;align-items:center;">'
+      +     '<div style="display:flex;gap:10px;align-items:center;justify-content:center;">'
       +       socialBtn('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
       +       socialBtn('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
       +       socialBtn('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
