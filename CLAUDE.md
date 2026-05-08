@@ -130,7 +130,7 @@ Painel em `/admin/` para criação de matérias via browser.
 - Geração de HTML via Claude API (modelo: `claude-sonnet-4-20250514`)
 - Publicação direta via GitHub API (sem terminal)
 - Checklist integrado das 16 matérias
-- **Versão atual do `admin.js`:** `?v=26`
+- **Versão atual do `admin.js`:** `?v=35`
 
 ---
 
@@ -284,7 +284,7 @@ Use o padrão de data do dia atual: vYYYYMMDDXX (sequencial)
 ## CUIDADOS
 
 - NÃO mexa no admin.js além da string da versão do sumario.js
-  (admin.js mantém v=26)
+  (admin.js mantém v=35)
 - NÃO mexa em nav.js ou footer.js
 
 ## RELATÓRIO ANTES DO PUSH
