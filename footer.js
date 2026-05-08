@@ -30,7 +30,8 @@
   var ICON_IG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="#fff"/></svg>';
   var ICON_LI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>';
 
-  var SOCIAL_BTN_STYLE = 'display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;';
+  var SOCIAL_BTN_STYLE    = 'display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;';
+  var SOCIAL_BTN_STYLE_LG = 'display:flex;align-items:center;justify-content:center;width:41px;height:41px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;';
 
   function socialBtn(href, title, icon, target) {
     var tgt = target || '_blank';
@@ -39,6 +40,17 @@
       + 'onmouseover="this.style.background=\'rgba(255,255,255,0.25)\'" '
       + 'onmouseout="this.style.background=\'rgba(255,255,255,0.12)\'">'
       + icon
+      + '</a>';
+  }
+
+  function socialBtnLg(href, title, icon, target) {
+    var tgt = target || '_blank';
+    var iconLg = icon.replace(/width="18" height="18"/g, 'width="21" height="21"');
+    return '<a href="' + href + '" target="' + tgt + '" rel="noopener" title="' + title + '" '
+      + 'style="' + SOCIAL_BTN_STYLE_LG + '" '
+      + 'onmouseover="this.style.background=\'rgba(255,255,255,0.25)\'" '
+      + 'onmouseout="this.style.background=\'rgba(255,255,255,0.12)\'">'
+      + iconLg
       + '</a>';
   }
 
@@ -58,12 +70,12 @@
       /* Coluna 2 — Redes sociais */
       + '<div style="flex:1 1 150px;min-width:150px;">'
       +   '<div style="max-width:450px;margin:0 auto;text-align:center;">'
-      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:1rem;">Fale com a Revista BNI Business</h4>'
+      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">Fale com a Revista BNI Business</h4>'
       +     '<div style="display:flex;gap:10px;align-items:center;justify-content:center;">'
-      +       socialBtn('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
-      +       socialBtn('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
-      +       socialBtn('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
-      +       socialBtn('https://linkedin.com/company/revistabnibusiness', 'LinkedIn', ICON_LI)
+      +       socialBtnLg('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
+      +       socialBtnLg('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
+      +       socialBtnLg('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
+      +       socialBtnLg('https://linkedin.com/company/revistabnibusiness', 'LinkedIn', ICON_LI)
       +     '</div>'
       +   '</div>'
       + '</div>'
@@ -88,7 +100,7 @@
 
       /* Barra inferior de copyright */
       + '<div class="footer-bar" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.75rem 2rem;">'
-      +   '<span class="footer-bar-copy" style="white-space:nowrap;font-size:11px;letter-spacing:0.5px;">© 2026 — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
+      +   '<span class="footer-bar-copy" style="white-space:nowrap;font-size:11px;letter-spacing:0.5px;color:#fff;">© 2026 — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
       +   '<div class="footer-bar-links" style="display:flex;gap:1rem;flex-shrink:0;">'
       +     '<a href="https://bnibusiness.com.br/cookies/" class="footer-bar-link" style="font-size:11px;">Cookies</a>'
       +     '<a href="https://bnibusiness.com.br/privacidade/" class="footer-bar-link" style="font-size:11px;">Privacidade</a>'
@@ -104,6 +116,8 @@
     style.id = 'bni-footer-styles';
     style.textContent = [
       '#footer-newsletter-email::placeholder { color: #fff; opacity: 1; }',
+      '#bni-footer .footer-bar-copy { color: #fff; }',
+      '#bni-footer .footer-bar-link { color: #fff; }',
       '@media (max-width: 768px) {',
       '  #bni-footer .footer-bar {',
       '    flex-direction: row !important;',
