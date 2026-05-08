@@ -116,7 +116,7 @@
     var style = document.createElement('style');
     style.id = 'bni-footer-styles';
     style.textContent = [
-      '#footer-newsletter-email::placeholder { color: #fff; opacity: 1; }',
+      '#footer-newsletter-email::placeholder { color: rgba(255,255,255,0.7); opacity: 1; }',
       '#bni-footer .footer-bar-copy { color: #fff; }',
       '#bni-footer .footer-bar-link { color: #fff; }',
       '@media (max-width: 768px) {',
