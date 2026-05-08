@@ -179,6 +179,73 @@ footer { position: relative; z-index: 0; isolation: isolate; }
   .dropdown a:last-child { border-bottom: none; }
   .dropdown a:hover { background: rgba(255,255,255,0.15); }
   footer { position: relative; z-index: 0; isolation: isolate; }
+
+  /* ── FOOTER ── */
+  .footer-bar {
+    background: #a00d24;
+    padding: 1.2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .footer-bar-copy {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    white-space: nowrap;
+  }
+  .footer-bar-links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: nowrap;
+  }
+  .footer-bar-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .footer-bar-link:hover {
+    color: #fff;
+    border-bottom: 1px solid #fff;
+  }
+  @media (max-width: 900px) {
+    .footer-bar {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.2rem 1.5rem 5rem;
+      gap: 0.8rem;
+    }
+    .footer-bar-copy { white-space: normal; font-size: 11px; }
+    .footer-bar-links { flex-wrap: nowrap; justify-content: center; gap: 1.2rem; }
+    .footer-bar-link { font-size: 11px; padding: 8px 4px; min-height: 44px; display: flex; align-items: center; }
+  }
+  .footer-nav-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    padding: 1rem 1rem;
+    text-align: center;
+    display: block;
+    transition: background 0.2s, color 0.2s;
+  }
+  .footer-nav-link:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+  }
 </style>
 <script src="../../nav.js?v=2026050303" defer></script>
 <script src="../../footer.js?v=2026050303" defer></script>
