@@ -31,7 +31,7 @@
   var ICON_LI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>';
 
   var SOCIAL_BTN_STYLE    = 'display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;';
-  var SOCIAL_BTN_STYLE_LG = 'display:flex;align-items:center;justify-content:center;width:41px;height:41px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;';
+  var SOCIAL_BTN_STYLE_LG = 'display:flex;align-items:center;justify-content:center;width:47px;height:47px;border-radius:50%;background:rgba(255,255,255,0.12);transition:background 0.2s;';
 
   function socialBtn(href, title, icon, target) {
     var tgt = target || '_blank';
@@ -45,7 +45,7 @@
 
   function socialBtnLg(href, title, icon, target) {
     var tgt = target || '_blank';
-    var iconLg = icon.replace(/width="18" height="18"/g, 'width="21" height="21"');
+    var iconLg = icon.replace(/width="18" height="18"/g, 'width="24" height="24"');
     return '<a href="' + href + '" target="' + tgt + '" rel="noopener" title="' + title + '" '
       + 'style="' + SOCIAL_BTN_STYLE_LG + '" '
       + 'onmouseover="this.style.background=\'rgba(255,255,255,0.25)\'" '
@@ -71,7 +71,7 @@
       + '<div style="flex:1 1 150px;min-width:150px;">'
       +   '<div style="max-width:450px;margin:0 auto;text-align:center;">'
       +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:30px;text-align:center;">Fale com a Revista BNI Business</h4>'
-      +     '<div style="display:flex;gap:10px;align-items:center;justify-content:center;">'
+      +     '<div style="display:flex;gap:20px;align-items:center;justify-content:center;">'
       +       socialBtnLg('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
       +       socialBtnLg('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
       +       socialBtnLg('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
