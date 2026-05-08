@@ -106,6 +106,7 @@
     var style = document.createElement('style');
     style.id = 'bni-footer-styles';
     style.textContent = [
+      '#footer-newsletter-email::placeholder { color: #fff; opacity: 1; }',
       '@media (max-width: 768px) {',
       '  #bni-footer .footer-bar {',
       '    flex-direction: row !important;',
