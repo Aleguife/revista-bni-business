@@ -133,7 +133,7 @@ body {
 .nav .section-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
 .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--branco); }
 .nav-links { display: flex; gap: 1.2rem; align-items: center; }
-.nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+.nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; padding: 12px 4px; display: inline-block; }
 .nav-links a:hover { color: var(--branco); }
 
 /* ── HERO ── */
@@ -486,15 +486,27 @@ body {
   margin-top: 2.8rem;
 }
 .dep-dot {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dep-dot::before {
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: rgba(245,240,232,0.18);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: background 0.3s ease;
 }
+.dep-dot:hover::before { background: rgba(245,240,232,0.4); }
 .dep-dot:hover { background: rgba(245,240,232,0.4); }
 .dep-dot.active {
   background: var(--creme);
@@ -787,6 +799,7 @@ body {
 
 <script src="nav.js?v=2026050902" defer></script>
 
+<main>
 <!-- HERO -->
 <section class="hero">
   <div class="section-inner">
@@ -803,7 +816,7 @@ body {
 <!-- EDIÇÕES -->
 <section class="edicoes">
   <div class="section-inner">
-    <h3 class="anim-fade-up d1">Edições</h3>
+    <h2 class="anim-fade-up d1">Edições</h2>
     <div class="edicoes-grid">
       <div class="ed-card breve anim-fade-scale d2">
         <img src="capa1.webp" width="1200" height="1600" fetchpriority="high" alt="Edição 1 — Alfredo Tanimoto">
@@ -831,7 +844,7 @@ body {
 <section class="numeros">
   <div class="section-inner">
     <div class="numeros-section">
-      <h3 class="anim-fade-up d1">Números do BNI Global</h3>
+      <h2 class="anim-fade-up d1">Números do BNI Global</h2>
       <div class="nums-grid">
         <div class="num-card anim-fade-up d2">
           <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
@@ -856,7 +869,7 @@ body {
       </div>
     </div>
     <div class="numeros-section">
-      <h3 class="anim-fade-up d1">Números do BNI Brasil</h3>
+      <h2 class="anim-fade-up d1">Números do BNI Brasil</h2>
       <div class="nums-grid">
         <div class="num-card anim-fade-up d2">
           <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
