@@ -4,7 +4,13 @@ name: Deploy para Locaweb
 # Secrets necessários no GitHub (Settings → Secrets → Actions):
 #
 #   SSH_KEY   → chave privada SSH (formato OpenSSH, ed25519)
-#               do usuário bnibusiness1 na Locaweb
+#               do usuário bnibusiness1 na Locaweb,
+#               armazenada como base64 (para evitar problemas
+#               de line endings ao colar no GitHub UI).
+#
+#   Para regenerar:
+#     base64 -i caminho/para/chave_privada | pbcopy
+#     # cola o valor copiado no secret SSH_KEY do GitHub
 #
 # A chave pública correspondente está em ~/.ssh/authorized_keys
 # do usuário bnibusiness1 no servidor.
@@ -26,13 +32,17 @@ jobs:
       - name: Instalar rsync
         run: sudo apt-get install -y rsync
 
-      - name: Configurar agente SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-
-      - name: Adicionar host conhecido
-        run: ssh-keyscan -p 22 ftp.bnibusiness.com.br >> ~/.ssh/known_hosts
+      - name: Configurar chave SSH (decode base64)
+        env:
+          SSH_KEY_B64: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_KEY_B64" | base64 -d > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Validacao: extrai chave publica para confirmar que parse funcionou
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "Chave SSH carregada com sucesso"
+          ssh-keyscan -p 22 ftp.bnibusiness.com.br >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Deploy via rsync sobre SSH
         run: |
@@ -42,5 +52,5 @@ jobs:
             --exclude='.DS_Store' \
             --exclude='*.nfs*' \
             --exclude='README.md' \
-            -e "ssh -p 22" \
+            -e "ssh -i ~/.ssh/deploy_key -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             ./ bnibusiness1@ftp.bnibusiness.com.br:/home/bnibusiness1/public_html/
