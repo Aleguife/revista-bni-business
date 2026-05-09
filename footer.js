@@ -4,10 +4,28 @@
  * Coloque <script src="/footer.js" defer></script> no <head> de cada HTML.
  *
  * SVG Logo footer: versão menor (128.57 × 20) sem o "Revista" expandido.
+ *
+ * Newsletter: integração direta com Kit (ex-ConvertKit) via API V3.
+ * - Form ID: 9421180
+ * - Double opt-in ativo (subscriber recebe e-mail de confirmação)
+ * - API Key V3 é pública por design (uso pretendido pelo Kit)
  */
 
 (function () {
   'use strict';
+
+  /* ════════════════════════════════════════════════════════════
+   * CONFIGURAÇÃO DA NEWSLETTER (Kit / ConvertKit)
+   * ════════════════════════════════════════════════════════════
+   * A API Key V3 abaixo é PÚBLICA por design — pode ficar exposta
+   * no frontend. NÃO é a API Secret.
+   * ════════════════════════════════════════════════════════════ */
+  var KIT_API_KEY = '2JMFwi44dZTjqjWW8BXn6g';
+  var KIT_FORM_ID = '9421180';
+  var KIT_ENDPOINT = 'https://api.convertkit.com/v3/forms/' + KIT_FORM_ID + '/subscribe';
+
+  /* Regex de validação de e-mail (RFC 5322 simplificada, prática) */
+  var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   /* ── SVG logo footer ── */
   var FOOTER_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128.57 20" style="width:100%;max-width:450px;height:auto;display:block;" aria-label="BNI Business">'
@@ -80,19 +98,30 @@
       +   '</div>'
       + '</div>'
 
-      /* Coluna 3 — Newsletter */
+      /* Coluna 3 — Newsletter (FUNCIONAL) */
       + '<div style="flex:1 1 220px;min-width:220px;">'
-      +   '<div style="max-width:450px;margin:0 auto;">'
+      +   '<div id="footer-newsletter-wrap" style="max-width:450px;margin:0 auto;position:relative;">'
       +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">Inscreva-se</h4>'
       +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0;line-height:1.6;">A cada nova edição, primeiro na sua caixa de entrada.</p>'
       +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0.9rem;line-height:1.6;">Entre uma e outra, entrevistas, bastidores e convites pros eventos que conectam empresários de verdade.</p>'
-      +     '<div style="display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.5);margin-bottom:1rem;">'
-      +       '<input type="email" placeholder="Seu melhor e-mail" id="footer-newsletter-email" style="flex:1;background:none;border:none;outline:none;font-family:\'Barlow\',sans-serif;font-size:13px;color:#fff;padding:0.6rem 0;text-align:center;padding-left:32px;" />'
-      +       '<button id="footer-newsletter-btn" style="background:none;border:none;cursor:pointer;color:#fff;padding:0.4rem;display:flex;align-items:center;" aria-label="Assinar newsletter"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>'
+
+      /* Estado inicial: campo + checkbox */
+      +     '<div id="footer-newsletter-form" style="transition:opacity 0.3s ease;">'
+      +       '<div style="display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.5);margin-bottom:0.4rem;">'
+      +         '<input type="email" placeholder="Seu melhor e-mail" id="footer-newsletter-email" autocomplete="email" style="flex:1;background:none;border:none;outline:none;font-family:\'Barlow\',sans-serif;font-size:13px;color:#fff;padding:0.6rem 0;text-align:center;padding-left:32px;" />'
+      +         '<button id="footer-newsletter-btn" type="button" style="background:none;border:none;cursor:pointer;color:#fff;padding:0.4rem;display:flex;align-items:center;transition:opacity 0.2s;" aria-label="Assinar newsletter"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>'
+      +       '</div>'
+      +       '<div id="footer-newsletter-error" style="font-family:\'Barlow\',sans-serif;font-size:0.75rem;color:#fff;text-align:center;min-height:1rem;margin-bottom:0.4rem;opacity:0;transition:opacity 0.2s;" role="alert" aria-live="polite"></div>'
+      +       '<div style="display:flex;align-items:flex-start;justify-content:center;gap:8px;">'
+      +         '<input type="checkbox" id="footer-newsletter-consent" style="margin-top:3px;flex-shrink:0;accent-color:#fff;outline:none;border:none;box-shadow:none;" />'
+      +         '<label for="footer-newsletter-consent" style="font-family:\'Barlow\',sans-serif;font-size:0.8375rem;color:#fff;line-height:1.4;text-align:center;">Concordo em receber a newsletter. Posso cancelar quando quiser.</label>'
+      +       '</div>'
       +     '</div>'
-      +     '<div style="display:flex;align-items:flex-start;justify-content:center;gap:8px;">'
-      +       '<input type="checkbox" id="footer-newsletter-consent" style="margin-top:3px;flex-shrink:0;accent-color:#fff;outline:none;border:none;box-shadow:none;" />'
-      +       '<label for="footer-newsletter-consent" style="font-family:\'Barlow\',sans-serif;font-size:0.8375rem;color:#fff;line-height:1.4;text-align:center;">Concordo em receber a newsletter. Posso cancelar quando quiser.</label>'
+
+      /* Estado de sucesso (oculto por padrão) */
+      +     '<div id="footer-newsletter-success" style="display:none;opacity:0;transition:opacity 0.4s ease;text-align:center;padding:1.2rem 0;">'
+      +       '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-bottom:0.5rem;">Quase lá!</div>'
+      +       '<div style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.9);line-height:1.5;">Confira sua caixa de entrada<br>para confirmar a inscrição.</div>'
       +     '</div>'
       +   '</div>'
       + '</div>'
@@ -117,6 +146,7 @@
     style.id = 'bni-footer-styles';
     style.textContent = [
       '#footer-newsletter-email::placeholder { color: rgba(255,255,255,0.7); opacity: 1; }',
+      '#footer-newsletter-btn:disabled { opacity: 0.4; cursor: not-allowed; }',
       '#bni-footer .footer-bar-copy { color: #fff; }',
       '#bni-footer .footer-bar-link { color: #fff; }',
       '@media (max-width: 768px) {',
@@ -148,6 +178,122 @@
     document.head.appendChild(style);
   }
 
+  /* ════════════════════════════════════════════════════════════
+   * LÓGICA DA NEWSLETTER
+   * ════════════════════════════════════════════════════════════ */
+
+  /* Mostra mensagem de erro inline com fade-in. Limpa após 4s. */
+  var _errorTimeout = null;
+  function showError(msg) {
+    var el = document.getElementById('footer-newsletter-error');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.opacity = '1';
+    if (_errorTimeout) clearTimeout(_errorTimeout);
+    _errorTimeout = setTimeout(function () {
+      el.style.opacity = '0';
+      setTimeout(function () {
+        if (el.style.opacity === '0') el.textContent = '';
+      }, 250);
+    }, 4000);
+  }
+
+  /* Animação de sucesso: form some, mensagem aparece. */
+  function showSuccess() {
+    var form = document.getElementById('footer-newsletter-form');
+    var success = document.getElementById('footer-newsletter-success');
+    if (!form || !success) return;
+
+    form.style.opacity = '0';
+    setTimeout(function () {
+      form.style.display = 'none';
+      success.style.display = 'block';
+      void success.offsetWidth; // força reflow
+      success.style.opacity = '1';
+    }, 300);
+  }
+
+  /* Submete inscrição pra API do Kit */
+  function submitSubscription() {
+    var emailInput = document.getElementById('footer-newsletter-email');
+    var consent = document.getElementById('footer-newsletter-consent');
+    var btn = document.getElementById('footer-newsletter-btn');
+    if (!emailInput || !consent || !btn) return;
+
+    var email = (emailInput.value || '').trim();
+
+    /* Validações client-side */
+    if (!email) {
+      showError('Por favor, informe seu e-mail.');
+      emailInput.focus();
+      return;
+    }
+    if (!EMAIL_REGEX.test(email)) {
+      showError('E-mail inválido.');
+      emailInput.focus();
+      return;
+    }
+    if (!consent.checked) {
+      showError('Aceite os termos para continuar.');
+      return;
+    }
+
+    /* Anti-duplo-clique */
+    btn.disabled = true;
+
+    /* Chamada à API */
+    fetch(KIT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: KIT_API_KEY,
+        email: email
+      })
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, status: res.status, data: data };
+        });
+      })
+      .then(function (result) {
+        if (result.ok && result.data && result.data.subscription) {
+          /* Sucesso — Kit retornou subscription (state: inactive até confirmar e-mail) */
+          showSuccess();
+        } else {
+          /* Erro — interpreta resposta */
+          var msg = (result.data && (result.data.message || result.data.error)) || '';
+          if (/already subscribed|exists|duplicate/i.test(msg)) {
+            showError('Você já está inscrito.');
+          } else if (result.status === 400 || /invalid email/i.test(msg)) {
+            showError('E-mail inválido.');
+          } else {
+            showError('Erro, tente novamente.');
+          }
+          btn.disabled = false;
+        }
+      })
+      .catch(function () {
+        /* Falha de rede */
+        showError('Erro, tente novamente.');
+        btn.disabled = false;
+      });
+  }
+
+  /* Liga handlers da newsletter (botão + Enter no campo) */
+  function bindNewsletter() {
+    var btn = document.getElementById('footer-newsletter-btn');
+    var emailInput = document.getElementById('footer-newsletter-email');
+    if (!btn || !emailInput) return;
+
+    btn.addEventListener('click', submitSubscription);
+    emailInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitSubscription();
+      }
+    });
+  }
+
   /* ── Injeta o footer no final do <body> ── */
   function injectFooter() {
     /* Evita injeção dupla */
@@ -162,6 +308,9 @@
     footer.innerHTML = buildFooter();
 
     document.body.appendChild(footer);
+
+    /* Liga a lógica da newsletter */
+    bindNewsletter();
 
     /* ── Ocultar .share-mobile quando o footer estiver visível ── */
     var _shareMobile = document.querySelector('.share-mobile');
