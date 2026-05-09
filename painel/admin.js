@@ -10,47 +10,76 @@ const SENHA_HASH = '6e707695dc4b5cd530a06f0245e45abc927f151331d527bdcfda28490827
 const REPO_OWNER = 'Aleguife';
 const REPO_NAME  = 'revista-bni-business';
 
-// ── MAPA: valor do <select> → dados da matéria ──
+// ── EDIÇÃO ATUAL ────────────────────────────────────────────────
+// Define qual edição o painel publica por padrão. Pode ser sobrescrito
+// pelo seletor <select id="f-edicao"> no formulário.
+const EDICAO_PADRAO = 'edicao-02';
+
+function getCurrentEdicao() {
+  const el = document.getElementById('f-edicao');
+  return (el && el.value) ? el.value : EDICAO_PADRAO;
+}
+
+function edicaoNumero(edicao) {
+  const m = (edicao || '').match(/edicao-(\d+)/);
+  return m ? m[1] : '00';
+}
+
+// ── MAPA: valor do <select> → dados da matéria (edição 02) ──────
 const SECAO_MAP = {
-  'eventos-1':       { label: 'Eventos',                slug: 'cigar-night'          },
-  'case-1':          { label: 'Case de sucesso',         slug: 'magna-marinho'        },
-  'capa':            { label: 'Matéria de Capa',         slug: 'felipe-xavier'        },
-  'editorial':       { label: 'Editorial',               slug: 'o-impresso'           },
-  'negocios-1':      { label: 'Negócios',                slug: 'up-brasil'            },
-  'saude-mental':    { label: 'Saúde mental',            slug: 'tonos'                },
-  'direito':         { label: 'Direito',                 slug: 'aposentasp'           },
-  'estilo':          { label: 'Estilo',                  slug: 'msr-golden'           },
-  'bni-mundi':       { label: 'BNI Mundi',               slug: 'bni-mundi'            },
-  'reconhecimento':  { label: 'Reconhecimento',          slug: 'reconhecimento'       },
-  'dev-pessoal':     { label: 'Desenvolvimento pessoal', slug: 'massaru-ogata'        },
-  'turismo':         { label: 'Turismo',                 slug: 'monaco'               },
-  'bni-sao-francisco':{ label: 'BNI São Francisco',      slug: 'bni-sao-francisco'    },
-  'eventos-2':       { label: 'Eventos',                 slug: 'salleven'             },
-  'case-2':          { label: 'Case de sucesso',         slug: 'jose-roberto-teixeira'},
-  'negocios-2':      { label: 'Negócios',                slug: 'fia-business-school'  },
+  'eventos-1':       { label: 'Eventos',                 slug: 'eventos'                  },
+  'case-1':          { label: 'Case de sucesso',         slug: 'magna-marinho'            },
+  'capa':            { label: 'Matéria de Capa',         slug: 'materia-de-capa'          },
+  'editorial':       { label: 'Editorial',               slug: 'alef-editora'             },
+  'negocios-1':      { label: 'Negócios',                slug: 'up-brasil'                },
+  'saude-mental':    { label: 'Saúde mental',            slug: 'tonos'                    },
+  'direito':         { label: 'Direito',                 slug: 'aposenta-sp'              },
+  'estilo':          { label: 'Estilo',                  slug: 'msr-device-golden-store'  },
+  'bni-mundi':       { label: 'BNI Mundi',               slug: 'bni-mundi'                },
+  'reconhecimento':  { label: 'Reconhecimento',          slug: 'reconhecimento'           },
+  'dev-pessoal':     { label: 'Desenvolvimento pessoal', slug: 'massaru-ogata'            },
+  'turismo':         { label: 'Turismo',                 slug: 'monaco'                   },
+  'bni-sao-francisco':{ label: 'BNI São Francisco',      slug: 'bni-sao-francisco'        },
+  'eventos-2':       { label: 'Eventos',                 slug: 'salleven-eventos'         },
+  'case-2':          { label: 'Case de sucesso',         slug: 'jrt-print'                },
+  'negocios-2':      { label: 'Negócios',                slug: 'fia-business-school'      },
 };
 
-const MATERIAS = [
-  { num:1,  secao:'Eventos',                titulo:'Cigar Night — Rodrigo Motta',            slug:'cigar-night',            status:'publicada' },
-  { num:2,  secao:'Case de sucesso',         titulo:'Magna Marinho / ELA',                    slug:'magna-marinho',          status:'pendente'  },
-  { num:3,  secao:'Case de sucesso',         titulo:'José Roberto Teixeira / JRT Print',      slug:'jose-roberto-teixeira',  status:'pendente'  },
-  { num:4,  secao:'Matéria de Capa',         titulo:'Felipe Xavier / Redax Engenharia',       slug:'felipe-xavier',          status:'publicada' },
-  { num:5,  secao:'Editorial',               titulo:'O impresso que o digital não substitui', slug:'o-impresso',             status:'pendente'  },
-  { num:6,  secao:'Negócios',                titulo:'Up Brasil / Mariana Cerone',             slug:'up-brasil',              status:'pendente'  },
-  { num:7,  secao:'Saúde mental',            titulo:'Tonos / Elisa de Lima',                  slug:'tonos',                  status:'pendente'  },
-  { num:8,  secao:'Direito',                 titulo:'AposentaSP / Dra. Simone Baptista',      slug:'aposentasp',             status:'pendente'  },
-  { num:9,  secao:'Estilo',                  titulo:'MSR Device Golden / Anderson Oliveira',  slug:'msr-golden',             status:'pendente'  },
-  { num:10, secao:'BNI Mundi',               titulo:'WPO Languages / Waldir Pires',           slug:'bni-mundi',              status:'pendente'  },
-  { num:11, secao:'Reconhecimento',          titulo:'Evento BNI OESP',                        slug:'reconhecimento',         status:'pendente'  },
-  { num:12, secao:'Desenvolvimento pessoal', titulo:'Massaru Ogata / IFT',                    slug:'massaru-ogata',          status:'pendente'  },
-  { num:13, secao:'Eventos',                 titulo:'Salleven / Carla Sallada',               slug:'salleven',               status:'pendente'  },
-  { num:14, secao:'Turismo',                 titulo:'Mônaco / Convenção BNI 2026',            slug:'monaco',                 status:'pendente'  },
-  { num:15, secao:'Negócios',                titulo:'FIA Business School',                    slug:'fia-business-school',    status:'pendente'  },
-  { num:16, secao:'BNI São Francisco',       titulo:'BNI São Francisco',                      slug:'bni-sao-francisco',      status:'pendente'  },
-];
+// ── CHECKLIST POR EDIÇÃO ────────────────────────────────────────
+// Para adicionar a Edição 1, popule MATERIAS_POR_EDICAO['edicao-01']
+// com os 16 itens correspondentes na mesma estrutura.
+const MATERIAS_POR_EDICAO = {
+  'edicao-01': [
+    // Adicionar as 16 matérias da Edição 1 quando os títulos forem definidos.
+    // Estrutura: { num, secao, titulo, slug, status: 'pendente'|'publicada' }
+  ],
+  'edicao-02': [
+    { num:1,  secao:'Eventos',                titulo:'Cigar Night — Rodrigo Motta',            slug:'eventos',                  status:'publicada' },
+    { num:2,  secao:'Case de sucesso',         titulo:'Magna Marinho / ELA',                    slug:'magna-marinho',            status:'publicada' },
+    { num:3,  secao:'Case de sucesso',         titulo:'José Roberto Teixeira / JRT Print',      slug:'jrt-print',                status:'publicada' },
+    { num:4,  secao:'Matéria de Capa',         titulo:'Felipe Xavier / Redax Engenharia',       slug:'materia-de-capa',          status:'publicada' },
+    { num:5,  secao:'Editorial',               titulo:'O impresso que o digital não substitui', slug:'alef-editora',             status:'publicada' },
+    { num:6,  secao:'Negócios',                titulo:'Up Brasil / Mariana Cerone',             slug:'up-brasil',                status:'publicada' },
+    { num:7,  secao:'Saúde mental',            titulo:'Tonos / Elisa de Lima',                  slug:'tonos',                    status:'publicada' },
+    { num:8,  secao:'Direito',                 titulo:'AposentaSP / Dra. Simone Baptista',      slug:'aposenta-sp',              status:'publicada' },
+    { num:9,  secao:'Estilo',                  titulo:'MSR Device Golden / Anderson Oliveira',  slug:'msr-device-golden-store',  status:'publicada' },
+    { num:10, secao:'BNI Mundi',               titulo:'WPO Languages / Waldir Pires',           slug:'bni-mundi',                status:'publicada' },
+    { num:11, secao:'Reconhecimento',          titulo:'Evento BNI OESP',                        slug:'reconhecimento',           status:'publicada' },
+    { num:12, secao:'Desenvolvimento pessoal', titulo:'Massaru Ogata / IFT',                    slug:'massaru-ogata',            status:'publicada' },
+    { num:13, secao:'Eventos',                 titulo:'Salleven / Carla Sallada',               slug:'salleven-eventos',         status:'publicada' },
+    { num:14, secao:'Turismo',                 titulo:'Mônaco / Convenção BNI 2026',            slug:'monaco',                   status:'publicada' },
+    { num:15, secao:'Negócios',                titulo:'FIA Business School',                    slug:'fia-business-school',      status:'publicada' },
+    { num:16, secao:'BNI São Francisco',       titulo:'BNI São Francisco',                      slug:'bni-sao-francisco',        status:'publicada' },
+  ],
+};
+
+function getMateriasAtuais() {
+  return MATERIAS_POR_EDICAO[getCurrentEdicao()] || [];
+}
 
 const RASCUNHO_KEY   = 'bni-rascunho';
 const CAMPOS_SIMPLES = [
+  ['f-edicao',       'edicao'],
   ['f-secao',        'secao'],
   ['f-titulo',       'titulo'],
   ['f-olho',         'olho'],
@@ -204,6 +233,9 @@ function restaurarRascunho() {
     if (el && r[key] != null) el.value = r[key];
   });
 
+  // Sincroniza preview do slug-base com a edição restaurada
+  onEdicaoChange();
+
   // Editor Quill
   if (quill && r.texto) quill.root.innerHTML = r.texto;
 
@@ -236,6 +268,7 @@ async function fazerLogin() {
   if (ok) {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('painel').classList.remove('hidden');
+    onEdicaoChange();
     renderChecklist();
     document.getElementById('f-data').valueAsDate = new Date();
   } else {
@@ -265,6 +298,14 @@ function mostrarAba(id, el) {
   if (id === 'checklist') renderChecklist();
 }
 
+// ── EDIÇÃO ──────────────────────────────────
+function onEdicaoChange() {
+  const edicao = getCurrentEdicao();
+  const base = document.getElementById('slug-base');
+  if (base) base.textContent = 'bnibusiness.com.br/' + edicao + '/';
+  renderChecklist();
+}
+
 // ── SLUG + IMAGEM + ALT AUTOMÁTICOS ──────────
 function onSecaoChange() {
   const key  = document.getElementById('f-secao').value;
@@ -273,7 +314,7 @@ function onSecaoChange() {
 
   const { slug, label } = SECAO_MAP[key];
   const statusSalvo = JSON.parse(localStorage.getItem('bni-status') || '{}');
-  const materia     = MATERIAS.find(m => m.slug === slug);
+  const materia     = getMateriasAtuais().find(m => m.slug === slug);
 
   // 1. Slug
   document.getElementById('f-slug').value = slug;
@@ -375,7 +416,7 @@ async function gerarMateria() {
     profissional: val('f-profissional'),
     autor:       val('f-autor'),
     data:        val('f-data'),
-    imagemUrl:   val('f-imagem-url') || `/edicao-02/${val('f-slug')}/hero.jpg`,
+    imagemUrl:   val('f-imagem-url') || `/${getCurrentEdicao()}/${val('f-slug')}/hero.jpg`,
     imagemAlt:   val('f-imagem-alt'),
     texto:       quill ? quill.root.innerHTML : '',
     ctas:        getCTAs(),
@@ -501,7 +542,7 @@ function montarCorpoArtigo(d, legendas) {
 
   function imgHtml(tk) {
     var cap = legendas[tk.file] || '';
-    var src = '/edicao-02/' + (d.slug || 'materia') + '/' + tk.file;
+    var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/' + tk.file;
     return '<figure class="foto-larga fade-in"><img src="' + src +
            '" alt="' + cap + '" loading="lazy">' +
            (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
@@ -522,7 +563,7 @@ function montarCorpoArtigo(d, legendas) {
       }
       // slider-sl: sem legenda
       // slider-global: legenda fica no rodapé, não por foto
-      var src = '/edicao-02/' + baseSlug + '/' + file;
+      var src = '/' + getCurrentEdicao() + '/' + baseSlug + '/' + file;
       return '<figure class="slider-slide' + (idx === 0 ? ' active' : '') + '">' +
              '<img src="' + src + '" alt="' + cap + '" loading="lazy">' +
              (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
@@ -689,10 +730,10 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <meta property="og:site_name" content="Revista BNI Business">
 <meta property="og:title" content="%%TITULO_SEO%% | BNI">
 <meta property="og:description" content="%%SEO_DESC%%">
-<meta property="og:image" content="https://bnibusiness.com.br/edicao-02/%%SLUG%%/img/og-cover.webp">
+<meta property="og:image" content="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/img/og-cover.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://bnibusiness.com.br/edicao-02/%%SLUG%%">
+<meta property="og:url" content="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%">
 <meta property="og:locale" content="pt_BR">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="%%AUTOR%%">
@@ -705,9 +746,9 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="%%TITULO_SEO%% | BNI">
 <meta name="twitter:description" content="%%SEO_DESC%%">
-<meta name="twitter:image" content="https://bnibusiness.com.br/edicao-02/%%SLUG%%/img/og-cover.webp">
+<meta name="twitter:image" content="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/img/og-cover.webp">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bnibusiness.com.br/sitemap.xml">
-<link rel="canonical" href="https://bnibusiness.com.br/edicao-02/%%SLUG%%/">
+<link rel="canonical" href="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
@@ -718,11 +759,11 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
   "@type": "Article",
   "headline": "%%TITULO_SEO%%",
   "description": "%%SEO_DESC%%",
-  "image": "https://bnibusiness.com.br/edicao-02/%%SLUG%%/img/og-cover.webp",
+  "image": "https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/img/og-cover.webp",
   "author": {"@type": "Person", "name": "%%AUTOR%%"},
   "publisher": {"@type": "Organization", "name": "Revista BNI Business", "url": "https://bnibusiness.com.br"},
   "datePublished": "%%DATA_ISO%%",
-  "mainEntityOfPage": "https://bnibusiness.com.br/edicao-02/%%SLUG%%/",
+  "mainEntityOfPage": "https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/",
   "articleSection": "%%SECAO%%",
   "inLanguage": "pt-BR"
 }
@@ -745,24 +786,24 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 
 <!-- COMPARTILHAMENTO LATERAL (desktop) -->
 <div class="share-sidebar" id="shareSidebar">
-  <a class="share-btn share-btn--whatsapp" href="https://wa.me/?text=%%TITULO_SEO%% — BNI Business%20https://bnibusiness.com.br/edicao-02/%%SLUG%%" target="_blank" rel="noopener" data-tip="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-  <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://bnibusiness.com.br/edicao-02/%%SLUG%%" target="_blank" rel="noopener" data-tip="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-  <a class="share-btn share-btn--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://bnibusiness.com.br/edicao-02/%%SLUG%%" target="_blank" rel="noopener" data-tip="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+  <a class="share-btn share-btn--whatsapp" href="https://wa.me/?text=%%TITULO_SEO%% — BNI Business%20https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%" target="_blank" rel="noopener" data-tip="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+  <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%" target="_blank" rel="noopener" data-tip="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+  <a class="share-btn share-btn--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%" target="_blank" rel="noopener" data-tip="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
   <button class="share-btn share-btn--copy" onclick="copiarLink()" data-tip="Copiar link" id="copyBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
 </div>
 
 <!-- COMPARTILHAMENTO INFERIOR (mobile) -->
 <div class="share-mobile" id="shareMobile">
   <div class="share-mobile-item">
-    <a class="share-btn share-btn--whatsapp" href="https://wa.me/?text=%%TITULO_SEO%% — BNI Business%20https://bnibusiness.com.br/edicao-02/%%SLUG%%" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+    <a class="share-btn share-btn--whatsapp" href="https://wa.me/?text=%%TITULO_SEO%% — BNI Business%20https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
     <span class="share-label">WhatsApp</span>
   </div>
   <div class="share-mobile-item">
-    <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://bnibusiness.com.br/edicao-02/%%SLUG%%" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+    <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
     <span class="share-label">LinkedIn</span>
   </div>
   <div class="share-mobile-item">
-    <a class="share-btn share-btn--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://bnibusiness.com.br/edicao-02/%%SLUG%%" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a class="share-btn share-btn--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
     <span class="share-label">Facebook</span>
   </div>
   <div class="share-mobile-item">
@@ -910,7 +951,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 
   // Copy link
   function copiarLink() {
-    navigator.clipboard.writeText('https://bnibusiness.com.br/edicao-02/%%SLUG%%').then(() => {
+    navigator.clipboard.writeText('https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%').then(() => {
       const btn = document.getElementById('copyBtn');
       if (btn) {
         btn.classList.add('copied');
@@ -1084,7 +1125,8 @@ function montarTemplate(d, parts) {
   R('%%AUTOR%%',        d.autor || '');
   R('%%DATA_ISO%%',     dataISO);
   R('%%DATA_FORMATADA%%', dataFormatada);
-  R('%%IMAGEM_URL%%',   d.imagemUrl || ('/edicao-02/' + slug + '/hero.jpg'));
+  R('%%IMAGEM_URL%%',   d.imagemUrl || ('/' + getCurrentEdicao() + '/' + slug + '/hero.jpg'));
+  R('%%EDICAO%%',       getCurrentEdicao());
   R('%%IMAGEM_ALT%%',   d.imagemAlt || '');
   R('%%PROFISSIONAL%%', d.profissional || d.empresa || '');
   R('%%CAPTION%%',      caption);
@@ -1339,7 +1381,8 @@ async function publicar() {
   const html = document.getElementById('html-gerado').value;
   if (!slug || !html) { alert('Gere a matéria antes de publicar.'); return; }
 
-  const caminho = `edicao-02/${slug}/index.html`;
+  const edicao = getCurrentEdicao();
+  const caminho = `${edicao}/${slug}/index.html`;
   addLog('Publicando no GitHub...', 'loading');
 
   try {
@@ -1353,7 +1396,7 @@ async function publicar() {
       method: 'PUT',
       headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: `feat: matéria ${slug} — Edição 02`,
+        message: `feat: matéria ${slug} — Edição ${edicaoNumero(edicao)}`,
         content: btoa(unescape(encodeURIComponent(html))),
         ...(sha ? { sha } : {}),
       }),
@@ -1362,7 +1405,7 @@ async function publicar() {
     if (!res.ok) throw new Error((await res.json().catch(()=>({}))).message || `HTTP ${res.status}`);
 
     addLog('✓ Publicado! Deploy em ~30 segundos.', 'ok');
-    addLog(`🔗 bnibusiness.com.br/edicao-02/${slug}/`, 'ok');
+    addLog(`🔗 bnibusiness.com.br/${edicao}/${slug}/`, 'ok');
     marcarPublicada(slug);
   } catch (e) {
     addLog('Erro: ' + e.message, 'erro');
@@ -1376,7 +1419,16 @@ function renderChecklist() {
   tbody.innerHTML = '';
   let publicadas = 0;
 
-  MATERIAS.forEach(m => {
+  const materias = getMateriasAtuais();
+
+  if (materias.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#888;">Nenhuma matéria cadastrada para a edição ' + edicaoNumero(getCurrentEdicao()) + '. Edite MATERIAS_POR_EDICAO em admin.js para popular o checklist desta edição.</td></tr>';
+    document.getElementById('progress-bar').style.width = '0%';
+    document.getElementById('progress-texto').textContent = '0 / 0 publicadas';
+    return;
+  }
+
+  materias.forEach(m => {
     const status = statusSalvo[m.slug] || m.status;
     if (status === 'publicada') publicadas++;
     const tr = document.createElement('tr');
@@ -1389,9 +1441,9 @@ function renderChecklist() {
     tbody.appendChild(tr);
   });
 
-  const pct = Math.round((publicadas / MATERIAS.length) * 100);
+  const pct = Math.round((publicadas / materias.length) * 100);
   document.getElementById('progress-bar').style.width = pct + '%';
-  document.getElementById('progress-texto').textContent = `${publicadas} / ${MATERIAS.length} publicadas`;
+  document.getElementById('progress-texto').textContent = `${publicadas} / ${materias.length} publicadas`;
 }
 
 function marcarPublicada(slug) {
@@ -1402,6 +1454,7 @@ function marcarPublicada(slug) {
 }
 
 // ── EXPOSIÇÃO GLOBAL (chamadas via onclick no HTML) ───
+window.onEdicaoChange = onEdicaoChange;
 window.onSecaoChange  = onSecaoChange;
 window.onTituloInput  = onTituloInput;
 window.adicionarCTA   = adicionarCTA;
