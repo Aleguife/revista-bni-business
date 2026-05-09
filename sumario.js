@@ -1,8 +1,12 @@
 /**
  * sumario.js — Revista BNI Business
- * Injeta dinamicamente o popup de sumário em todas as matérias.
- * Coloque <script src="../../sumario.js?v=..." defer></script>
- * no <head> de cada matéria, junto de nav.js e footer.js.
+ * Sumário data-driven multi-edição multi-idioma.
+ * Detecta a edição pela URL (/edicao-XX/) e o idioma por <html lang>.
+ *
+ * Para adicionar uma nova edição: popule SUMARIOS['edicao-XX'] abaixo.
+ *
+ * Carregar com:
+ *   <script src="/sumario.js?v=N" defer></script>
  *
  * Expõe globalmente: abrirSumario(), fecharSumario()
  */
@@ -10,7 +14,103 @@
 (function () {
   'use strict';
 
-  /* ── Logo SVG (mesmos dados do nav.js, IDs de clipPath únicos sum-*) ── */
+  /* ── DADOS DOS SUMARIOS POR EDIÇÃO ──────────────────────────────
+   * Cada item: { num, slug, secao: { pt, en, es }, desc: { pt, en, es } }
+   * Para adicionar Edição 01, popule SUMARIOS['edicao-01'] com 16 itens.
+   */
+  var SUMARIOS = {
+    'edicao-01': [
+      // Adicione aqui os 16 itens da Edição 01 quando os títulos forem definidos.
+    ],
+    'edicao-02': [
+      { num: 1,  slug: 'eventos',
+        secao: { pt: 'Eventos',                 en: 'Events',                 es: 'Eventos' },
+        desc:  { pt: 'Cigar Night',             en: 'Cigar Night',            es: 'Cigar Night' } },
+      { num: 2,  slug: 'magna-marinho',
+        secao: { pt: 'Case de sucesso',         en: 'Success Story',          es: 'Caso de éxito' },
+        desc:  { pt: 'Magna Marinho',           en: 'Magna Marinho',          es: 'Magna Marinho' } },
+      { num: 3,  slug: 'jrt-print',
+        secao: { pt: 'Case de sucesso',         en: 'Success Story',          es: 'Caso de éxito' },
+        desc:  { pt: 'José Roberto Teixeira',   en: 'José Roberto Teixeira',  es: 'José Roberto Teixeira' } },
+      { num: 4,  slug: 'materia-de-capa',
+        secao: { pt: 'Matéria de Capa',         en: 'Cover Story',            es: 'Portada' },
+        desc:  { pt: 'Felipe Xavier',           en: 'Felipe Xavier',          es: 'Felipe Xavier' } },
+      { num: 5,  slug: 'alef-editora',
+        secao: { pt: 'Editorial',               en: 'Editorial',              es: 'Editorial' },
+        desc:  { pt: 'Alef Design + Editora',   en: 'Alef Design + Editora',  es: 'Alef Design + Editora' } },
+      { num: 6,  slug: 'up-brasil',
+        secao: { pt: 'Negócios',                en: 'Business',               es: 'Negocios' },
+        desc:  { pt: 'Up Brasil',               en: 'Up Brasil',              es: 'Up Brasil' } },
+      { num: 7,  slug: 'tonos',
+        secao: { pt: 'Saúde mental',            en: 'Mental Health',          es: 'Salud mental' },
+        desc:  { pt: 'Elisa de Lima',           en: 'Elisa de Lima',          es: 'Elisa de Lima' } },
+      { num: 8,  slug: 'aposenta-sp',
+        secao: { pt: 'Direito',                 en: 'Law',                    es: 'Derecho' },
+        desc:  { pt: 'Dra. Simone Baptista',    en: 'Dra. Simone Baptista',   es: 'Dra. Simone Baptista' } },
+      { num: 9,  slug: 'msr-device-golden-store',
+        secao: { pt: 'Estilo',                  en: 'Style',                  es: 'Estilo' },
+        desc:  { pt: 'MSR Device Golden Store', en: 'MSR Device Golden Store',es: 'MSR Device Golden Store' } },
+      { num: 10, slug: 'bni-mundi',
+        secao: { pt: 'BNI mundi',               en: 'BNI World',              es: 'BNI Mundi' },
+        desc:  { pt: 'BNI Mundi',               en: 'BNI Mundi',              es: 'BNI Mundi' } },
+      { num: 11, slug: 'reconhecimento',
+        secao: { pt: 'Reconhecimento',          en: 'Recognition',            es: 'Reconocimiento' },
+        desc:  { pt: 'Reconhecimento BNI',      en: 'Reconhecimento BNI',     es: 'Reconhecimento BNI' } },
+      { num: 12, slug: 'massaru-ogata',
+        secao: { pt: 'Desenvolvimento pessoal', en: 'Personal Development',   es: 'Desarrollo personal' },
+        desc:  { pt: 'Massaru Ogata',           en: 'Massaru Ogata',          es: 'Massaru Ogata' } },
+      { num: 13, slug: 'salleven-eventos',
+        secao: { pt: 'Eventos empresariais',    en: 'Corporate Events',       es: 'Eventos empresariales' },
+        desc:  { pt: 'Salleven Eventos Empresariais', en: 'Salleven Eventos Empresariais', es: 'Salleven Eventos Empresariais' } },
+      { num: 14, slug: 'monaco',
+        secao: { pt: 'Turismo',                 en: 'Tourism',                es: 'Turismo' },
+        desc:  { pt: 'Trip in Viagens Alphaville', en: 'Trip in Viagens Alphaville', es: 'Trip in Viagens Alphaville' } },
+      { num: 15, slug: 'fia-business-school',
+        secao: { pt: 'Negócios',                en: 'Business',               es: 'Negocios' },
+        desc:  { pt: 'FIA Business School',     en: 'FIA Business School',    es: 'FIA Business School' } },
+      { num: 16, slug: 'bni-sao-francisco',
+        secao: { pt: 'BNI São Francisco',       en: 'BNI São Francisco',      es: 'BNI São Francisco' },
+        desc:  { pt: 'BNI São Francisco',       en: 'BNI São Francisco',      es: 'BNI São Francisco' } },
+    ],
+  };
+
+  var I18N = {
+    fechar: { pt: 'Fechar', en: 'Close', es: 'Cerrar' }
+  };
+
+  /* ── DETECÇÃO DE CONTEXTO ─────────────────────────────────────── */
+  function detectEdicao() {
+    var m = location.pathname.match(/\/edicao-(\d+)\//);
+    return m ? 'edicao-' + m[1] : 'edicao-02';
+  }
+
+  function detectLang() {
+    var docLang = (document.documentElement.lang || '').toLowerCase();
+    if (docLang.indexOf('en') === 0) return 'en';
+    if (docLang.indexOf('es') === 0) return 'es';
+    return 'pt';
+  }
+
+  function langPathPrefix(lang) {
+    return lang === 'pt' ? '' : lang + '/';
+  }
+
+  function getItems() {
+    var edicao = detectEdicao();
+    var lang   = detectLang();
+    var prefix = langPathPrefix(lang);
+    var raw    = SUMARIOS[edicao] || [];
+    return raw.map(function (it) {
+      return {
+        num:   it.num,
+        url:   'https://bnibusiness.com.br/' + prefix + edicao + '/' + it.slug + '/',
+        secao: (it.secao && (it.secao[lang] || it.secao.pt)) || '',
+        desc:  (it.desc  && (it.desc[lang]  || it.desc.pt))  || ''
+      };
+    });
+  }
+
+  /* ── Logo SVG (mesmos dados do nav.js, IDs únicos sum-*) ── */
   var LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 192.9 20" style="display:block" aria-label="Revista BNI Business">'
     + '<defs>'
     + '<clipPath id="sum-cp0"><rect width="192.9" height="20"/></clipPath>'
@@ -62,93 +162,41 @@
     '}'
   ].join('\n');
 
-  /* ── HTML do sumário — 16 itens da Edição 2 ── */
+  /* ── HTML do sumário (data-driven) ── */
   function buildHTML() {
+    var items = getItems();
+    if (items.length === 0) return null;
+
+    var lang   = detectLang();
+    var fechar = I18N.fechar[lang] || I18N.fechar.pt;
+
     var CLOSE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" width="20" height="20">'
       + '<line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>';
 
-    return ''
-      + '<div class="sumario-overlay" id="sumario">'
-      +   '<div class="sumario-header">'
-      +     '<div class="nav-logo">' + LOGO_SVG + '</div>'
-      +     '<button class="sumario-fechar" onclick="fecharSumario()">Fechar ' + CLOSE_ICON + '</button>'
-      +   '</div>'
-      +   '<div class="sumario-grid">'
+    var html = '<div class="sumario-overlay" id="sumario">'
+             +   '<div class="sumario-header">'
+             +     '<div class="nav-logo">' + LOGO_SVG + '</div>'
+             +     '<button class="sumario-fechar" onclick="fecharSumario()">' + fechar + ' ' + CLOSE_ICON + '</button>'
+             +   '</div>'
+             +   '<div class="sumario-grid">';
 
-      /* ── Coluna esquerda: itens 01–08 ── */
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/eventos/" style="grid-column:1;grid-row:1;">'
-      +       '<span class="sumario-secao">Eventos</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">01</span><span class="sumario-desc">Cigar Night</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/magna-marinho/" style="grid-column:1;grid-row:2;">'
-      +       '<span class="sumario-secao">Case de sucesso</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">02</span><span class="sumario-desc">Magna Marinho</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/jrt-print/" style="grid-column:1;grid-row:3;">'
-      +       '<span class="sumario-secao">Case de sucesso</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">03</span><span class="sumario-desc">José Roberto Teixeira</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/materia-de-capa/" style="grid-column:1;grid-row:4;">'
-      +       '<span class="sumario-secao">Matéria de Capa</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">04</span><span class="sumario-desc">Felipe Xavier</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/alef-editora/" style="grid-column:1;grid-row:5;">'
-      +       '<span class="sumario-secao">Editorial</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">05</span><span class="sumario-desc">Alef Design + Editora</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/up-brasil/" style="grid-column:1;grid-row:6;">'
-      +       '<span class="sumario-secao">Negócios</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">06</span><span class="sumario-desc">Up Brasil</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/tonos/" style="grid-column:1;grid-row:7;">'
-      +       '<span class="sumario-secao">Saúde mental</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">07</span><span class="sumario-desc">Elisa de Lima</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/aposenta-sp/" style="grid-column:1;grid-row:8;">'
-      +       '<span class="sumario-secao">Direito</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">08</span><span class="sumario-desc">Dra. Simone Baptista</span></span>'
-      +     '</a>'
+    items.forEach(function (item, idx) {
+      var col = idx < 8 ? 1 : 2;
+      var row = (idx % 8) + 1;
+      var num = String(item.num).padStart(2, '0');
+      html += '<a class="sumario-item" href="' + item.url + '" style="grid-column:' + col + ';grid-row:' + row + ';">'
+            +   '<span class="sumario-secao">' + item.secao + '</span>'
+            +   '<span class="sumario-titulo-linha"><span class="sumario-num">' + num + '</span><span class="sumario-desc">' + item.desc + '</span></span>'
+            + '</a>';
+    });
 
-      /* ── Coluna direita: itens 09–16 ── */
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/msr-device-golden-store/" style="grid-column:2;grid-row:1;">'
-      +       '<span class="sumario-secao">Estilo</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">09</span><span class="sumario-desc">MSR Device Golden Store</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/bni-mundi/" style="grid-column:2;grid-row:2;">'
-      +       '<span class="sumario-secao">BNI mundi</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">10</span><span class="sumario-desc">BNI Mundi</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/reconhecimento/" style="grid-column:2;grid-row:3;">'
-      +       '<span class="sumario-secao">Reconhecimento</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">11</span><span class="sumario-desc">Reconhecimento BNI</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/massaru-ogata/" style="grid-column:2;grid-row:4;">'
-      +       '<span class="sumario-secao">Desenvolvimento pessoal</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">12</span><span class="sumario-desc">Massaru Ogata</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/salleven-eventos/" style="grid-column:2;grid-row:5;">'
-      +       '<span class="sumario-secao">Eventos empresariais</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">13</span><span class="sumario-desc">Salleven Eventos Empresariais</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/monaco/" style="grid-column:2;grid-row:6;">'
-      +       '<span class="sumario-secao">Turismo</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">14</span><span class="sumario-desc">Trip in Viagens Alphaville</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/fia-business-school/" style="grid-column:2;grid-row:7;">'
-      +       '<span class="sumario-secao">Negócios</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">15</span><span class="sumario-desc">FIA Business School</span></span>'
-      +     '</a>'
-      +     '<a class="sumario-item" href="https://bnibusiness.com.br/edicao-02/bni-sao-francisco/" style="grid-column:2;grid-row:8;">'
-      +       '<span class="sumario-secao">BNI São Francisco</span>'
-      +       '<span class="sumario-titulo-linha"><span class="sumario-num">16</span><span class="sumario-desc">BNI São Francisco</span></span>'
-      +     '</a>'
-
-      +   '</div>'
-      + '</div>';
+    html += '</div></div>';
+    return html;
   }
 
   /* ── Injeta CSS no <head> ── */
   function injectStyles() {
+    if (document.getElementById('sumario-styles')) return;
     var style = document.createElement('style');
     style.id = 'sumario-styles';
     style.textContent = CSS;
@@ -158,8 +206,10 @@
   /* ── Injeta HTML no fim do <body> ── */
   function injectHTML() {
     if (document.getElementById('sumario')) return; /* evita duplicata */
+    var markup = buildHTML();
+    if (!markup) return; /* edição sem itens */
     var tmp = document.createElement('div');
-    tmp.innerHTML = buildHTML();
+    tmp.innerHTML = markup;
     document.body.appendChild(tmp.firstChild);
   }
 
