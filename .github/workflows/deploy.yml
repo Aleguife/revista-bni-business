@@ -8,9 +8,6 @@ name: Deploy para Locaweb
 #
 # A chave pública correspondente está em ~/.ssh/authorized_keys
 # do usuário bnibusiness1 no servidor.
-#
-# Os demais valores (host, usuário, porta, pasta) estão
-# hardcoded abaixo por não serem sensíveis.
 # ──────────────────────────────────────────────────────────────
 
 on:
@@ -29,15 +26,13 @@ jobs:
       - name: Instalar rsync
         run: sudo apt-get install -y rsync
 
-      - name: Configurar chave SSH
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p 22 ftp.bnibusiness.com.br >> ~/.ssh/known_hosts 2>/dev/null || true
+      - name: Configurar agente SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Adicionar host conhecido
+        run: ssh-keyscan -p 22 ftp.bnibusiness.com.br >> ~/.ssh/known_hosts
 
       - name: Deploy via rsync sobre SSH
         run: |
@@ -47,5 +42,5 @@ jobs:
             --exclude='.DS_Store' \
             --exclude='*.nfs*' \
             --exclude='README.md' \
-            -e "ssh -i ~/.ssh/deploy_key -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            -e "ssh -p 22" \
             ./ bnibusiness1@ftp.bnibusiness.com.br:/home/bnibusiness1/public_html/
