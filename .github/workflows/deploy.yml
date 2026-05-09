@@ -3,7 +3,11 @@ name: Deploy para Locaweb
 # ──────────────────────────────────────────────────────────────
 # Secrets necessários no GitHub (Settings → Secrets → Actions):
 #
-#   SSH_PASS   → senha SSH do usuário bnibusiness1 na Locaweb
+#   SSH_KEY   → chave privada SSH (formato OpenSSH, ed25519)
+#               do usuário bnibusiness1 na Locaweb
+#
+# A chave pública correspondente está em ~/.ssh/authorized_keys
+# do usuário bnibusiness1 no servidor.
 #
 # Os demais valores (host, usuário, porta, pasta) estão
 # hardcoded abaixo por não serem sensíveis.
@@ -22,18 +26,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Instalar rsync e sshpass
-        run: sudo apt-get install -y rsync sshpass
+      - name: Instalar rsync
+        run: sudo apt-get install -y rsync
+
+      - name: Configurar chave SSH
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p 22 ftp.bnibusiness.com.br >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Deploy via rsync sobre SSH
-        env:
-          SSHPASS: ${{ secrets.SSH_PASS }}
         run: |
-          sshpass -e rsync -az --delete \
+          rsync -az --delete \
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='.DS_Store' \
             --exclude='*.nfs*' \
             --exclude='README.md' \
-            -e "ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            -e "ssh -i ~/.ssh/deploy_key -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             ./ bnibusiness1@ftp.bnibusiness.com.br:/home/bnibusiness1/public_html/
