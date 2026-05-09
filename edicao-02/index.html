@@ -133,42 +133,16 @@
       padding-bottom: clamp(56px, 8vw, 120px);
       border-bottom: 1px solid var(--rule);
     }
-    .hero__top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--ink);
-      margin-bottom: clamp(36px, 6vw, 72px);
-    }
-    .hero__brand {
-      font-family: var(--f-ui);
-      font-weight: 500;
-      font-size: 13px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-    .hero__brand b { font-weight: 600; }
-    .hero__meta {
-      font-family: var(--f-ui);
-      font-weight: 400;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
     .hero__grid {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr;
-      gap: clamp(32px, 5vw, 80px);
-      align-items: end;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(32px, 5vw, 56px);
+      text-align: center;
     }
 
-    .hero__copy { padding-bottom: 8px; }
-    .hero__retranca { margin-bottom: 28px; display: inline-flex; align-items: center; gap: 14px; }
+    .hero__copy { padding-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
+    .hero__retranca { margin-bottom: 28px; display: inline-flex; align-items: center; gap: 14px; justify-content: center; }
     .hero__retranca::after {
       content: "";
       display: inline-block;
@@ -199,13 +173,14 @@
       line-height: 1.45;
       max-width: 38ch;
       color: var(--ink);
-      margin: 0 0 32px;
+      margin: 0 auto 32px;
       text-wrap: balance;
     }
 
     .hero__stats {
       display: flex;
       gap: 36px;
+      justify-content: center;
       padding-top: 22px;
       border-top: 1px solid var(--rule);
       font-family: var(--f-ui);
@@ -231,6 +206,8 @@
       background: var(--paper-2);
       overflow: hidden;
       display: block;
+      width: 100%;
+      max-width: 420px;
     }
     .hero__cover img {
       width: 100%;
@@ -452,54 +429,15 @@
     }
 
     /* ============================================================
-       OUTRO
-       ============================================================ */
-    .outro {
-      padding: clamp(48px, 6vw, 80px) 0 clamp(80px, 8vw, 120px);
-      border-top: 1px solid var(--ink);
-    }
-    .outro__row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: end;
-    }
-    .outro__quote {
-      font-family: var(--f-display);
-      font-weight: 700;
-      font-style: italic;
-      font-size: clamp(24px, 2.6vw, 34px);
-      line-height: 1.15;
-      letter-spacing: -0.005em;
-      margin: 0;
-      max-width: 22ch;
-      text-wrap: balance;
-    }
-    .outro__meta {
-      font-family: var(--f-ui);
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: right;
-      line-height: 1.8;
-    }
-    .outro__meta b { color: var(--ink); font-weight: 600; }
-
-    /* ============================================================
        RESPONSIVE
        ============================================================ */
     @media (max-width: 1024px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
-      .hero__grid { grid-template-columns: 1fr; gap: 48px; }
       .hero__cover { max-width: 420px; aspect-ratio: 3 / 4; }
-      .outro__row { grid-template-columns: 1fr; gap: 24px; }
-      .outro__meta { text-align: left; }
     }
     @media (max-width: 768px) {
       body { font-size: 16px; }
       .grid { grid-template-columns: repeat(2, 1fr); gap: 24px 14px; }
-      .hero__top { flex-direction: column; align-items: flex-start; gap: 8px; }
       .hero__stats { flex-wrap: wrap; gap: 24px; }
       .index-head__row { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
@@ -514,12 +452,6 @@
          ============================================================ -->
     <section class="hero">
       <div class="container">
-
-        <div class="hero__top fade-up">
-          <div class="hero__brand">Revista <b>BNI Business</b> · São Paulo</div>
-          <div class="hero__meta">Vol. 02 — Abril 2026</div>
-        </div>
-
         <div class="hero__grid">
 
           <div class="hero__copy">
@@ -570,24 +502,7 @@
 
     <section class="container grid" id="articles" aria-label="Matérias da Edição 02">
       <!-- Cards injetados por JS abaixo -->
-    </section>
-
-    <!-- ============================================================
-         OUTRO
-         ============================================================ -->
-    <section class="container outro">
-      <div class="outro__row">
-        <p class="outro__quote">
-          Negócios são feitos por pessoas. Aqui, contamos as histórias de quem está construindo&nbsp;os&nbsp;próximos.
-        </p>
-        <div class="outro__meta">
-          <div>Próxima edição</div>
-          <div><b>Maio · 2026</b></div>
-        </div>
-      </div>
-    </section>
-
-  </main>
+    </section>  </main>
 
   <script>
     // ============================================================
