@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /painel/
+Disallow: /checklist/
+Disallow: /newsletter/obrigado/
 
 User-agent: facebookexternalhit
 Allow: /
