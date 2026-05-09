@@ -108,12 +108,12 @@
       +   '</div>'
       + '</div>'
 
-      /* Botão Sumário (só presente se a página tiver o overlay #sumario) */
+      /* Botão Sumário (só visível dentro de uma edição; aponta pra página índice) */
       + '<div class="nav-item" id="nav-sumario-item">'
-      +   '<button class="nav-btn" id="nav-sumario-btn" onclick="if(typeof abrirSumario===\'function\')abrirSumario()" aria-label="Abrir sumário">'
+      +   '<a class="nav-btn" id="nav-sumario-link" href="#" aria-label="Ver sumário desta edição">'
       +     ICON_MENU
       +     '<span class="nav-label">Sumário</span>'
-      +   '</button>'
+      +   '</a>'
       + '</div>'
 
       + '</div>'  /* .nav-menu */
@@ -142,7 +142,7 @@
     }
 
     hideLangCurrent();
-    hideSumarioIfAbsent();
+    configureSumarioButton();
   }
 
   /* ── Oculta o idioma atual do dropdown ── */
@@ -155,16 +155,26 @@
     if (label) label.textContent = pageLang;
   }
 
-  /* ── Oculta o botão "Sumário" se a página não tiver o overlay ── */
-  function hideSumarioIfAbsent() {
-    var sumarioItem = document.getElementById('nav-sumario-item');
-    if (!sumarioItem) return;
-    /* Aguarda o DOM completo para checar a existência do overlay */
-    document.addEventListener('DOMContentLoaded', function () {
-      if (!document.getElementById('sumario')) {
-        sumarioItem.style.display = 'none';
-      }
-    });
+  /* ── Configura o botão "Sumário" ──
+   * Detecta se a URL atual está dentro de uma edição (/edicao-XX/) e:
+   *   - dentro: aponta pra /[lang/]edicao-XX/ (página índice)
+   *   - fora:   esconde o botão
+   */
+  function configureSumarioButton() {
+    var item = document.getElementById('nav-sumario-item');
+    var link = document.getElementById('nav-sumario-link');
+    if (!item || !link) return;
+
+    var match = location.pathname.match(/\/edicao-(\d+)\//);
+    if (!match) {
+      item.style.display = 'none';
+      return;
+    }
+
+    var edicao = 'edicao-' + match[1];
+    var langMatch = location.pathname.match(/^\/(en|es)\//);
+    var prefix = langMatch ? '/' + langMatch[1] + '/' : '/';
+    link.href = prefix + edicao + '/';
   }
 
   /* ── API pública exposta globalmente ── */

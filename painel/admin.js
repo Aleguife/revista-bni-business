@@ -772,10 +772,8 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
   "inLanguage": "pt-BR"
 }
 </script>
-<script src="../../nav.js?v=2026050802" defer></script>
-  <script src="../../footer.js?v=2026050813" defer></script>
-  <script src="../../sumario.js?v=2026050901" defer></script>
-  </head>
+<script src="../../nav.js?v=2026050902" defer></script>
+  <script src="../../footer.js?v=2026050813" defer></script>  </head>
 <body>
 <div class="reading-circle" id="readingCircle">
   <svg viewBox="0 0 72 72">
