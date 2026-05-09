@@ -762,7 +762,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
   "description": "%%SEO_DESC%%",
   "image": "https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/img/og-cover.webp",
   "author": {"@type": "Person", "name": "%%AUTOR%%"},
-  "publisher": {"@type": "Organization", "name": "Revista BNI Business", "url": "https://bnibusiness.com.br"},
+  "publisher": {"@type": "Organization", "name": "Revista BNI Business", "url": "https://bnibusiness.com.br", "logo": {"@type": "ImageObject", "url": "https://bnibusiness.com.br/assets/img/logo.svg", "width": 600, "height": 60}},
   "datePublished": "%%DATA_ISO%%",
   "mainEntityOfPage": "https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/",
   "articleSection": "%%SECAO%%",
