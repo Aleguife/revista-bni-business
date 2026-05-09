@@ -1,2 +1,92 @@
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
+
+# ─── COMPRESSAO GZIP (mod_deflate) ──────────────────────────────────
+# Reduz drasticamente o tamanho de HTML/CSS/JS/JSON/SVG/XML em transito
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE application/font-woff
+    AddOutputFilterByType DEFLATE application/font-woff2
+</IfModule>
+
+# ─── CACHE DE ASSETS (mod_expires) ──────────────────────────────────
+# Cache longo para imagens, fontes, CSS e JS (cache busting via ?v=N
+# garante que mudancas sejam refletidas).
+# HTML mantem cache curto para nao reter conteudo desatualizado.
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # HTML - cache curto (5min) para permitir publicacao rapida
+    ExpiresByType text/html "access plus 5 minutes"
+
+    # XML / sitemap / robots - 1 dia
+    ExpiresByType text/xml "access plus 1 day"
+    ExpiresByType application/xml "access plus 1 day"
+
+    # CSS / JS - 1 ano (cache busting via ?v=N nas referencias)
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+
+    # Imagens - 1 ano
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # Fontes - 1 ano
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+
+    # Default
+    ExpiresDefault "access plus 1 month"
+</IfModule>
+
+# ─── CACHE-CONTROL EXPLICITO (mod_headers) ──────────────────────────
+<IfModule mod_headers.c>
+    # Assets imutaveis com cache busting (?v=N) - cache de 1 ano
+    <FilesMatch "\.(css|js|webp|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|otf)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML - revalidar a cada acesso para garantir conteudo atualizado
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=300, must-revalidate"
+    </FilesMatch>
+
+    # ─── SEGURANCA ─────────────────────────────────────────────────
+    # Impede MIME-type sniffing (forca Content-Type declarado)
+    Header set X-Content-Type-Options "nosniff"
+
+    # Bloqueia embed do site em iframes de outros dominios (clickjacking)
+    Header set X-Frame-Options "SAMEORIGIN"
+
+    # Limita info de Referer enviada para outros dominios
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Permissoes de APIs do navegador (desabilita o que nao usamos)
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ─── PROTECAO DE ARQUIVOS SENSIVEIS ─────────────────────────────────
+<FilesMatch "^\.(htaccess|htpasswd|gitignore|env)">
+    Require all denied
+</FilesMatch>
