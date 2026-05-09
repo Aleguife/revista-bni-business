@@ -108,6 +108,22 @@ Atualizar este arquivo ao publicar cada matéria (⬜ → ✅).
 
 ---
 
+## ⚠ DEPENDÊNCIA CRÍTICA — nav.js exige materia.css
+
+**O `nav.js` NÃO injeta CSS próprio.** Toda página que carregar `nav.js` DEVE também carregar `materia.css`, caso contrário a navbar aparecerá sem estilo (texto puro, sem background, sem layout).
+
+**Cabeçalho obrigatório em qualquer página nova fora do painel:**
+```html
+<link rel="stylesheet" href="/assets/css/materia.css">
+<script src="/nav.js?v=VERSAO" defer></script>
+<script src="/footer.js?v=VERSAO" defer></script>
+<script src="/sumario.js?v=VERSAO" defer></script>
+```
+
+Páginas especiais sem navbar (ex: `/newsletter/obrigado/`) são exceção — não carregam nav.js nem materia.css.
+
+---
+
 ## Regras de desenvolvimento
 
 1. **Nunca usar frameworks** — HTML/CSS/JS puro apenas
