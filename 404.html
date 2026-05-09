@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página não encontrada — Revista BNI Business</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Barlow+Condensed:wght@400;600&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --vermelho: #C8102E;
+      --escuro: #2b2c2f;
+      --creme: #F5F0E8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--creme);
+      color: var(--escuro);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in { opacity: 0; animation: fadeIn 0.7s ease forwards; }
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.25s; }
+    .d3 { animation-delay: 0.42s; }
+    .d4 { animation-delay: 0.58s; }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem 5rem;
+    }
+
+    .container {
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .numero {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 700;
+      color: var(--vermelho);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -4px;
+    }
+
+    .divider {
+      width: 36px;
+      height: 1.5px;
+      background: var(--vermelho);
+      margin: 0 auto 1.4rem;
+      opacity: 0.5;
+    }
+
+    .label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--escuro);
+      margin-bottom: 1.8rem;
+    }
+
+    .mensagem {
+      font-size: 1.0625rem;
+      line-height: 1.8;
+      color: var(--escuro);
+      opacity: 0.75;
+      margin-bottom: 2.8rem;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--vermelho);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, gap 0.2s;
+    }
+
+    .btn-home:hover {
+      border-bottom-color: var(--vermelho);
+      gap: 0.6rem;
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 3rem 1.25rem 4rem; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="container">
+
+      <p class="numero fade-in d1">404</p>
+
+      <div class="divider fade-in d2"></div>
+
+      <p class="label fade-in d2">Página não encontrada</p>
+
+      <p class="mensagem fade-in d3">Esta página não existe ou foi movida.<br>Mas a revista continua por aqui.</p>
+
+      <a href="https://bnibusiness.com.br/" class="btn-home fade-in d4">
+        Voltar para a home
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+
+    </div>
+  </main>
+
+  <script src="/footer.js?v=2026050814" defer></script>
+</body>
+</html>
