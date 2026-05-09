@@ -469,11 +469,28 @@ function montarCorpoArtigo(d, legendas) {
 
   // ── textoDuplo ─────────────────────────────────────────────
   // Recebe TODOS os parágrafos da seção de uma vez.
-  // Esquerda = primeiros ceil(n/2), direita = restantes floor(n/2).
+  // O ponto de corte é escolhido por massa de caracteres: encontra
+  // o índice i (1 ≤ i < n) onde a soma acumulada de chars fica mais
+  // próxima de 50% do total — sempre na fronteira entre parágrafos,
+  // preservando a ordem de leitura e sem viúvas/forcas.
   // Chamada UMA ÚNICA vez por seção — nunca em pares.
   function textoDuplo(paras, extraCls) {
-    var n   = paras.length;
-    var mid = Math.ceil(n / 2);
+    var n = paras.length;
+    var mid;
+    if (n <= 2) {
+      mid = Math.ceil(n / 2);
+    } else {
+      var total = 0;
+      for (var k = 0; k < n; k++) total += paras[k].html.length;
+      var target = total / 2;
+      var best = 1, bestDiff = Infinity, cum = 0;
+      for (var k = 0; k < n - 1; k++) {
+        cum += paras[k].html.length;
+        var diff = Math.abs(cum - target);
+        if (diff < bestDiff) { bestDiff = diff; best = k + 1; }
+      }
+      mid = best;
+    }
     var L = '', R = '';
     for (var k = 0; k < mid; k++) L += paras[k].html;
     for (var k = mid; k < n; k++) R += paras[k].html;
