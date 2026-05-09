@@ -184,15 +184,17 @@
     text-indent: 1.5em;
   }
 
-  /* SUBTÍTULOS DE SEÇÃO */
+  /* SUBTÍTULOS DE SEÇÃO (h2 com classe .secao-titulo) */
+  h2.secao-titulo,
   .secao-titulo {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 18px;
     font-weight: 600;
+    line-height: 1.2;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--vermelho);
-    margin-bottom: 1.5rem;
+    margin: 0 0 1.5rem 0;
     padding-bottom: 0.4rem;
     display: block;
     position: relative;

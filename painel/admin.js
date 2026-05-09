@@ -628,9 +628,10 @@ function montarCorpoArtigo(d, legendas) {
     // A cada blockquote: flush dos paras acumulados como texto-duplo,
     // emite a citação, continua coletando. Preserva o filtro ehVazio.
     if (tk.type === 'h2' || tk.type === 'h3') {
-      var spanCls = tk.type === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
+      var headTag = tk.type;
+      var headCls = tk.type === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
       i++;
-      var block = '<div class="fade-in"><span class="' + spanCls + '">' + tk.inner + '</span>';
+      var block = '<div class="fade-in"><' + headTag + ' class="' + headCls + '">' + tk.inner + '</' + headTag + '>';
       var currentParas = [];
       while (i < n && !isBreak(tokens[i].type)) {
         var cur = tokens[i];
