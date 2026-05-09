@@ -38,7 +38,8 @@ Site estático em HTML/CSS/JS puro, hospedado na Locaweb, deploy automático via
 - **Stack:** HTML5 semântico, CSS3, JS vanilla — sem frameworks, sem build tools
 - **Deploy:** SSH/rsync via GitHub Actions (`.github/workflows/deploy.yml`)
   - Host: `ftp.bnibusiness.com.br` | Usuário: `bnibusiness1` | Porta: `22`
-  - Secret necessário no GitHub: `SSH_PASS`
+  - Secret necessário no GitHub: `SSH_KEY` (chave privada ed25519 em base64)
+  - Para regenerar: `base64 -i caminho/para/chave_privada | pbcopy` e cola no secret
 
 ---
 
@@ -47,11 +48,12 @@ Site estático em HTML/CSS/JS puro, hospedado na Locaweb, deploy automático via
 O deploy deste projeto é **SEMPRE via SSH/rsync**. **NUNCA use FTP-Deploy-Action**.
 
 - Workflow: `.github/workflows/deploy.yml`
-- Mecanismo: `sshpass -e rsync` sobre SSH na porta 22
+- Mecanismo: `rsync -e "ssh -i chave_privada"` sobre SSH na porta 22
 - Host: `ftp.bnibusiness.com.br` | Usuário: `bnibusiness1`
-- Secret: `SSH_PASS` (configurado no GitHub → Settings → Secrets → Actions)
+- Secret: `SSH_KEY` (chave privada ed25519 em base64, configurado no GitHub → Settings → Secrets → Actions)
+- Chave pública correspondente vive em `~/.ssh/authorized_keys` do `bnibusiness1@ftp.bnibusiness.com.br`
 
-Não altere o workflow para FTP sob nenhuma circunstância.
+Não altere o workflow para FTP sob nenhuma circunstância. Não troque o método de autenticação para senha (`sshpass`) — chave SSH é mais seguro e também resolve o problema de senha vazada.
 
 ---
 
