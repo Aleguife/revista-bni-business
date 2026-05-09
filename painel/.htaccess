@@ -1,1 +1,12 @@
 DirectoryIndex index.html
+
+# Protege /painel/ com HTTP Basic Auth (camada extra além do hash SHA-256 client-side)
+AuthType Basic
+AuthName "Painel BNI Business"
+AuthUserFile /home/bnibusiness1/public_html/painel/.htpasswd
+Require valid-user
+
+# Bloqueia acesso ao próprio .htpasswd e .htaccess
+<FilesMatch "^\.(htpasswd|htaccess)$">
+    Require all denied
+</FilesMatch>

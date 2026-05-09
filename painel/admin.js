@@ -2,10 +2,10 @@
 // BNI BUSINESS — ADMIN CMS v2
 // =============================================
 
-// Senha padrão: bni@2025 (mude o hash abaixo)
-// Gere em: https://emn178.github.io/online-tools/sha256.html
-const SENHA_HASH  = 'PLACEHOLDER';
-const SENHA_HASH_2 = '75dfc3ade28887f1ca579a643e4ba6d1b17cca447f232cfeb2b15a94a2be300c';
+// Hash SHA-256 da senha do painel.
+// Para trocar a senha: gere o hash em https://emn178.github.io/online-tools/sha256.html
+// e substitua a string abaixo. Sem fallback em texto claro.
+const SENHA_HASH = '6e707695dc4b5cd530a06f0245e45abc927f151331d527bdcfda284908275415';
 
 const REPO_OWNER = 'Aleguife';
 const REPO_NAME  = 'revista-bni-business';
@@ -232,7 +232,7 @@ function restaurarRascunho() {
 async function fazerLogin() {
   const input = document.getElementById('senha-input').value;
   const hash  = await sha256(input);
-  const ok    = (hash === SENHA_HASH) || (hash === SENHA_HASH_2) || (SENHA_HASH === 'PLACEHOLDER' && input === 'bni@2025');
+  const ok    = (hash === SENHA_HASH);
   if (ok) {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('painel').classList.remove('hidden');
