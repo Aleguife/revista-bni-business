@@ -174,7 +174,17 @@
     var edicao = 'edicao-' + match[1];
     var langMatch = location.pathname.match(/^\/(en|es)\//);
     var prefix = langMatch ? '/' + langMatch[1] + '/' : '/';
-    link.href = prefix + edicao + '/';
+    var indiceUrl = prefix + edicao + '/';
+
+    /* Esconde se ja estiver na propria pagina indice (URL termina em /edicao-XX/) */
+    var pathNoTrailingSlash = location.pathname.replace(/\/$/, '');
+    var indiceNoTrailingSlash = indiceUrl.replace(/\/$/, '');
+    if (pathNoTrailingSlash === indiceNoTrailingSlash) {
+      item.style.display = 'none';
+      return;
+    }
+
+    link.href = indiceUrl;
   }
 
   /* ── API pública exposta globalmente ── */
