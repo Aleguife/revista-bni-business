@@ -619,10 +619,10 @@
     margin: 0 auto;
     padding: 4rem 4rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    text-align: center;
     gap: 2rem;
-    flex-wrap: wrap;
   }
   .cta-texto h3 {
     font-family: 'Playfair Display', serif;
