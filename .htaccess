@@ -90,3 +90,8 @@ ErrorDocument 404 /404.html
 <FilesMatch "^\.(htaccess|htpasswd|gitignore|env)">
     Require all denied
 </FilesMatch>
+
+# Documentos internos versionados mas nao publicos (estrategia comercial, etc)
+<FilesMatch "^(PLANO-CRESCIMENTO|CLAUDE)\.md$">
+    Require all denied
+</FilesMatch>
