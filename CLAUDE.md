@@ -181,6 +181,27 @@ Painel em `/painel/index.html` para criação de matérias via browser.
 
 ---
 
+## Sitemap automatico (scripts/gerar-sitemap.js)
+
+Desde 11/05/2026, `sitemap.xml` e gerado automaticamente. Nao editar manualmente.
+
+**Como funciona:**
+- Le `MATERIAS_POR_EDICAO` em `painel/admin.js` (slugs + status)
+- Le HTML de cada materia publicada pra extrair `<title>` e `article:published_time`
+- Gera 63 URLs (home, indices de edicao, materias PT/EN/ES, paginas legais)
+- PT inclui `<news:news>` block; EN/ES nao
+- `lastmod` = mtime do arquivo HTML
+
+**Comandos:**
+```bash
+node scripts/gerar-sitemap.js              # gera sitemap.xml
+node scripts/gerar-sitemap.js --dry-run    # imprime no stdout, nao grava
+```
+
+**Quando rodar:** apos publicar nova materia (status:publicada no admin.js), ou apos editar uma materia existente. Ideal rodar antes de cada `git push`.
+
+---
+
 ## `.htaccess` raiz (PR 2, 09/05/2026)
 
 Configuração Apache na raiz do projeto:
