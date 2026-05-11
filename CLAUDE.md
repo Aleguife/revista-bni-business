@@ -255,12 +255,7 @@ Função `formatarTituloHero(titulo)` em `painel/admin.js`:
 
 ## Pendências conhecidas
 
-1. **CTA do painel** — seção pode ficar vazia; `montarCTASection()` precisa investigação
-2. **Compressão dos 4 heros pesados** (>200KB): `monaco-hero.webp`, `dra-simone-baptista-hero.webp`, `rodrigo-motta.webp`, `fia-business-school-hero.webp` — recomprimir manualmente em squoosh.app (qualidade 78, alvo ~130KB)
-3. **`en/index.html` e `es/index.html`** — home traduzida não existe; clicar PT→EN/ES na home leva pra 404
-4. **JSON-LD enrichment** — falta `dateModified`, `image` como objeto com width/height, `Organization.logo`
-5. **Hierarquia h2/h3** — 4 matérias sem subtítulos marcados: `magna-marinho`, `jrt-print`, `eventos`, `reconhecimento`
-6. **Página índice** `/edicao-02/` com grid das 16 matérias (próxima fase)
+Nenhuma pendência técnica pendente (auditoria de 10/05/2026). Próximas frentes em `PLANO-CRESCIMENTO.md`.
 
 ---
 
