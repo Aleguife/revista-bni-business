@@ -46,12 +46,25 @@ const SECAO_MAP = {
 };
 
 // ── CHECKLIST POR EDIÇÃO ────────────────────────────────────────
-// Para adicionar a Edição 1, popule MATERIAS_POR_EDICAO['edicao-01']
-// com os 16 itens correspondentes na mesma estrutura.
 const MATERIAS_POR_EDICAO = {
   'edicao-01': [
-    // Adicionar as 16 matérias da Edição 1 quando os títulos forem definidos.
-    // Estrutura: { num, secao, titulo, slug, status: 'pendente'|'publicada' }
+    { num:1,  secao:'Eventos',                titulo:'A definir', slug:'eventos',                  status:'pendente' },
+    { num:2,  secao:'Turismo',                titulo:'A definir', slug:'turismo',                  status:'pendente' },
+    { num:3,  secao:'Matéria de Capa',        titulo:'A definir', slug:'materia-de-capa',          status:'pendente' },
+    { num:4,  secao:'Branding',               titulo:'A definir', slug:'branding',                 status:'pendente' },
+    { num:5,  secao:'Case de sucesso',        titulo:'A definir', slug:'case-bni',                 status:'pendente' },
+    { num:6,  secao:'Estilo',                 titulo:'A definir', slug:'estilo',                   status:'pendente' },
+    { num:7,  secao:'Design',                 titulo:'A definir', slug:'design',                   status:'pendente' },
+    { num:8,  secao:'CEOs no BNI',            titulo:'A definir', slug:'ceos-no-bni',              status:'pendente' },
+    { num:9,  secao:'Desenvolvimento pessoal',titulo:'A definir', slug:'desenvolvimento-pessoal',  status:'pendente' },
+    { num:10, secao:'Idiomas',                titulo:'A definir', slug:'idiomas',                  status:'pendente' },
+    { num:11, secao:'Engenharia',             titulo:'A definir', slug:'engenharia',               status:'pendente' },
+    { num:12, secao:'ONG',                    titulo:'A definir', slug:'ong',                      status:'pendente' },
+    { num:13, secao:'Saúde mental',           titulo:'A definir', slug:'saude-mental',             status:'pendente' },
+    { num:14, secao:'Saúde',                  titulo:'A definir', slug:'saude',                    status:'pendente' },
+    { num:15, secao:'Publicidade',            titulo:'A definir', slug:'publicidade',              status:'pendente' },
+    { num:16, secao:'Investimentos',          titulo:'A definir', slug:'investimentos',            status:'pendente' },
+    { num:17, secao:'Investimentos',          titulo:'A definir', slug:'investimentos-2',          status:'pendente' },
   ],
   'edicao-02': [
     { num:1,  secao:'Eventos',                titulo:'Cigar Night — Rodrigo Motta',            slug:'eventos',                  status:'publicada' },
