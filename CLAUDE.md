@@ -20,7 +20,7 @@ A Revista BNI Business é uma revista **IMPRESSA**. Este CMS é canal de publica
 
 **Status das edições (12/05/2026):**
 - ✅ Edição 2: 16 matérias publicadas (PT/EN/ES)
-- ✅ Edição 1: 17 matérias publicadas (PT) — versões EN/ES e índice ainda pendentes
+- ✅ Edição 1: 17 matérias publicadas (PT/EN/ES) com página índice nas 3 versões
 - 📋 Edição 3: em fase comercial
 
 **Implicação para Claude:** NÃO perguntar se o conteúdo está pronto, se Alexandre vai escrever, se tem rascunho. O conteúdo SEMPRE está pronto. As perguntas válidas são apenas sobre detalhes técnicos da publicação digital (slug, posição no sumário, etc).
@@ -141,7 +141,6 @@ Toda matéria carrega esta sequência de scripts no `<head>` (com `defer`):
 <link rel="stylesheet" href="/assets/css/materia.css">
 <script src="/nav.js?v=VERSAO" defer></script>
 <script src="/footer.js?v=VERSAO" defer></script>
-<script src="/sumario.js?v=VERSAO" defer></script>
 <script src="/assets/js/materia.js?v=VERSAO" defer></script>
 ```
 
@@ -149,7 +148,6 @@ Toda matéria carrega esta sequência de scripts no `<head>` (com `defer`):
 |---------|------------------|
 | `nav.js` | Injeta navbar (logo + links + dropdown de idiomas) |
 | `footer.js` | Injeta rodapé (newsletter ConvertKit + links + créditos) |
-| `sumario.js` | Sumário data-driven multi-edição multi-idioma |
 | `assets/js/materia.js` | Comportamentos da matéria: fade-in, parallax, share, reading circle, sliders, language switcher |
 
 **⚠ Dependência crítica:** `nav.js` NÃO injeta CSS próprio. Toda página que carregar `nav.js` DEVE também carregar `/assets/css/materia.css`, caso contrário a navbar aparece sem estilo.
@@ -158,19 +156,18 @@ Páginas especiais sem navbar (ex: `/newsletter/obrigado/`) são exceção — n
 
 ---
 
-## Sumário data-driven (`sumario.js`)
+## Página índice de cada edição
 
-Desde 09/05/2026, sumário unificado (PR 3c). Os antigos `sumario-en.js` e `sumario-es.js` foram **deletados**.
+Desde 09/05/2026, `sumario.js` (data-driven JS) foi **removido** em favor de páginas índice estáticas (commit `03fd3ae`, "limpa sumario.js orfao").
 
-**Como funciona:**
-- `sumario.js` detecta a edição pela URL (`/edicao-XX/`) e o idioma por `<html lang>`
-- Constante `SUMARIOS = { 'edicao-XX': [...] }` no topo do arquivo
-- Cada item: `{ num, slug, secao: { pt, en, es }, desc: { pt, en, es } }`
-- URL gerada em runtime: `https://bnibusiness.com.br/[lang/]edicao-XX/[slug]/`
+Cada edição tem 3 páginas índice (uma por idioma):
+- `/edicao-XX/index.html` (PT)
+- `/en/edicao-XX/index.html` (EN)
+- `/es/edicao-XX/index.html` (ES)
 
-**Versão atual:** `sumario.js?v=2026050901`
+Layout: hero com capa + estatísticas, grid de cards das matérias. Estrutura inline (CSS no `<style>` da própria página, dados num `const ARTICLES = [...]` no script inline). Replicar entre edições é cópia + adaptação do conteúdo.
 
-**Para adicionar Edição 1 ao sumário:** popular `SUMARIOS['edicao-01']` no `sumario.js` com 16 itens (mesma estrutura da Ed.2). Bump da versão.
+**Cross-link entre idiomas:** cada matéria e índice traz um bloco `<link rel="alternate" hreflang>` no head para as 3 versões + `x-default`.
 
 ---
 
@@ -184,22 +181,23 @@ Painel em `/painel/index.html` para criação de matérias via browser.
 - Mesma senha nas duas camadas (mantida em gerenciador de senhas pessoal)
 
 **Funcionalidades:**
-- Geração de HTML via Claude API (modelo: `claude-sonnet-4-20250514`)
+- Geração de HTML via Claude API (modelo: `claude-sonnet-4-6`, com Vision input — ver "Histórico técnico")
 - Publicação direta via GitHub API (sem terminal)
 - Seletor de Edição no formulário (`<select id="f-edicao">`) — define pasta de publicação
 - Checklist por edição (`MATERIAS_POR_EDICAO['edicao-XX']` em admin.js)
-- **Versão atual do `admin.js`:** `?v=40`
+- **Versão atual do `admin.js`:** `?v=49`
 
-**Para publicar matéria de Edição 1:**
-1. Selecionar "Edição 01" no dropdown topo do formulário
-2. O preview do slug muda para `bnibusiness.com.br/edicao-01/[slug]/`
-3. Resto do fluxo é igual ao da Ed.2
+**Para publicar matéria de qualquer edição:**
+1. Selecionar a edição no dropdown topo do formulário
+2. O preview do slug muda para `bnibusiness.com.br/edicao-XX/[slug]/`
+3. Versionar imagens da matéria no Git ANTES (a regra de ouro + pré-requisito da Vision API)
+4. Preencher o formulário e gerar com IA — o painel baixa as imagens via raw GitHub e envia como Vision input
 
-**Para popular checklist da Edição 1:** editar `painel/admin.js` linha ~56 (constante `MATERIAS_POR_EDICAO`):
+**Para adicionar uma nova edição (Ed.3+) ao checklist:** editar `painel/admin.js` na constante `MATERIAS_POR_EDICAO`:
 ```js
-'edicao-01': [
+'edicao-XX': [
   { num:1, secao:'...', titulo:'...', slug:'...', status:'pendente' },
-  // ... 15 mais
+  // ...
 ],
 ```
 
@@ -212,7 +210,7 @@ Desde 11/05/2026, `sitemap.xml` e gerado automaticamente. Nao editar manualmente
 **Como funciona:**
 - Le `MATERIAS_POR_EDICAO` em `painel/admin.js` (slugs + status)
 - Le HTML de cada materia publicada pra extrair `<title>` e `article:published_time`
-- Gera 63 URLs (home, indices de edicao, materias PT/EN/ES, paginas legais)
+- Gera 117 URLs (home, indices de edicao, materias PT/EN/ES, paginas legais)
 - PT inclui `<news:news>` block; EN/ES nao
 - `lastmod` = mtime do arquivo HTML
 
@@ -242,7 +240,7 @@ Cache busting via `?v=N` continua sendo o mecanismo principal de invalidação.
 ## Regras de desenvolvimento
 
 1. **Nunca usar frameworks** — HTML/CSS/JS puro apenas
-2. **Cache busting** — ao editar `nav.js`, `footer.js`, `sumario.js`, `materia.js` ou `admin.js`, incrementar `?v=N` em todas as páginas que referenciam
+2. **Cache busting** — ao editar `nav.js`, `footer.js`, `materia.js` ou `admin.js`, incrementar `?v=N` em todas as páginas que referenciam
 3. **Slugs em kebab-case** — sempre minúsculas, sem acentos, hífens entre palavras
 4. **Caminho das imagens** — sempre relativo à raiz: `/edicao-XX/[slug]/hero.jpg`
 5. **Commits em português** — ex: `feat: adiciona matéria magna-marinho`
@@ -274,6 +272,16 @@ Função `formatarTituloHero(titulo)` em `painel/admin.js`:
 - Sumário data-driven (eliminou `sumario-en.js` e `sumario-es.js`)
 - Script inline de 180 linhas extraído para `assets/js/materia.js` (-9k linhas em HTML)
 - 8 slugs divergentes corrigidos no admin (cigar-night→eventos, felipe-xavier→materia-de-capa, etc.)
+
+### Vision API nas legendas do painel (12/05/2026, commit `28e71af`)
+Antes desse commit, `admin.js` enviava só título + 600 chars de texto pra Claude API ao gerar legendas — modelo não via as fotos e inventava descrições (pessoas inexistentes, cenas que não estavam nas imagens). Fix:
+- `chamarClaudeAPI()` agora chama `extrairArquivosImagem()` no texto da matéria
+- Para cada imagem, busca via `raw.githubusercontent.com/Aleguife/revista-bni-business/main/${edicao}/${slug}/img/${arquivo}` (Promise.allSettled em paralelo)
+- Converte pra base64 e monta `messages.content` como array com blocos `text+image` intercalados por marcador `"Imagem [nome.webp]:"`
+- Modelo atualizado: `claude-sonnet-4-5` → `claude-sonnet-4-6`
+- Prompt de legenda reescrito pra exigir descrição do visual real, não frase-tese
+- Pré-requisito: imagens versionadas no Git ANTES de gerar matéria (já era regra de ouro). Se 404, painel avisa e gera sem visão pra aquela específica.
+- Fix retroativo de legendas da Ed.1 (33 figcaptions) via Claude Code commit `ced6cde`.
 
 ---
 
@@ -310,7 +318,7 @@ As imagens já estão preparadas localmente em edicao-0[N]/[SLUG]/img/
 
 - NÃO crie o index.html da matéria — isso será feito pelo painel
 - NÃO mexa em outros arquivos do projeto
-- NÃO atualize sumario.js, admin.js, nem outras matérias
+- NÃO atualize admin.js, nem outras matérias
 - Apenas versione as imagens da pasta /img/ desta matéria
 
 ## LEMBRETE
@@ -323,9 +331,5 @@ Se não estiver, o deploy vai dar timeout.
 
 ## Próximas fases
 
-- [ ] **Edição 1**: popular `MATERIAS_POR_EDICAO['edicao-01']` + `SUMARIOS['edicao-01']` quando títulos forem definidos
-- [ ] **Edição 1**: publicar 16 matérias via painel
-- [ ] **Página índice** `/edicao-02/` com grid das 16 matérias
-- [ ] Home com grid de edições (após Ed.1 publicada)
 - [ ] **Edição 3**: digitalizar quando entrar em fase de produção
 - [ ] Templates A (hero vertical) e B (hero horizontal)
