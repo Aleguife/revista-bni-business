@@ -18,9 +18,9 @@ A Revista BNI Business é uma revista **IMPRESSA**. Este CMS é canal de publica
 
 **IMPORTANTE:** Quando Alexandre vai publicar uma matéria, todo o conteúdo (texto, imagens, citações, fotos) **JÁ ESTÁ PRONTO** e aprovado. Não há criação de conteúdo aqui — só replicação digital do que já foi aprovado para impressão.
 
-**Status das edições (09/05/2026):**
+**Status das edições (12/05/2026):**
 - ✅ Edição 2: 16 matérias publicadas (PT/EN/ES)
-- 🚧 Edição 1: pronta para publicação digital — falta popular `MATERIAS_POR_EDICAO['edicao-01']` em `painel/admin.js` e `SUMARIOS['edicao-01']` em `sumario.js` quando os títulos forem definidos
+- ✅ Edição 1: 17 matérias publicadas (PT) — versões EN/ES e índice ainda pendentes
 - 📋 Edição 3: em fase comercial
 
 **Implicação para Claude:** NÃO perguntar se o conteúdo está pronto, se Alexandre vai escrever, se tem rascunho. O conteúdo SEMPRE está pronto. As perguntas válidas são apenas sobre detalhes técnicos da publicação digital (slug, posição no sumário, etc).
@@ -83,6 +83,30 @@ O rsync roda com `--delete` e apaga arquivos não versionados na próxima public
 | Fonte UI | Barlow Condensed 300/400/500/600 (Google Fonts) |
 
 Retrancas de seção sempre em `#CC0000`. Títulos em Playfair Display. Corpo em Barlow.
+
+---
+
+## Edição 1 — Status das 17 matérias
+
+| # | Seção | Título / Empresa | Slug | Status |
+|---|-------|------------------|------|--------|
+| 1 | Eventos | BNI Summit 2026 MOVIMENTO | `eventos` | ✅ no ar |
+| 2 | Turismo | Do passaporte à coragem | `turismo` | ✅ no ar |
+| 3 | Matéria de Capa | BNI Revoluciona o Networking na Região Oeste de SP | `materia-de-capa` | ✅ no ar |
+| 4 | Branding | A transformação acontece quando design e propósito se encontram | `branding` | ✅ no ar |
+| 5 | Case de sucesso | Anderson "Nen" — Givers Gain | `case-bni` | ✅ no ar |
+| 6 | Estilo | Onde paixão encontra propósito | `estilo` | ✅ no ar |
+| 7 | Design | O Alquimista do Aço | `design` | ✅ no ar |
+| 8 | CEOs no BNI | John Rodgerson | `ceos-no-bni` | ✅ no ar |
+| 9 | Desenvolvimento pessoal | A raridade que desperta onde o fim se transforma | `desenvolvimento-pessoal` | ✅ no ar |
+| 10 | Idiomas | "Inglês não é para mim!!" | `idiomas` | ✅ no ar |
+| 11 | Engenharia | Quando a estrutura conta uma história | `engenharia` | ✅ no ar |
+| 12 | ONG | Novas Trilhas | `ong` | ✅ no ar |
+| 13 | Saúde mental | Tonos — líderes sem ansiedade | `saude-mental` | ✅ no ar |
+| 14 | Saúde | A nova era da fisioterapia | `saude` | ✅ no ar |
+| 15 | Publicidade | Quando a luz se acende, a cidade vê | `publicidade` | ✅ no ar |
+| 16 | Investimentos | Além dos números: legados que transcendem gerações | `investimentos` | ✅ no ar |
+| 17 | Investimentos | Educação financeira: segurança, patrimônio e liberdade | `investimentos-2` | ✅ no ar |
 
 ---
 
