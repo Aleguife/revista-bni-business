@@ -336,6 +336,8 @@ function onEdicaoChange() {
   const edicao = getCurrentEdicao();
   const base = document.getElementById('slug-base');
   if (base) base.textContent = 'bnibusiness.com.br/' + edicao + '/';
+  const navLabel = document.getElementById('nav-checklist-label');
+  if (navLabel) navLabel.textContent = 'Checklist Edição ' + edicaoNumero(edicao);
   renderChecklist();
 }
 
