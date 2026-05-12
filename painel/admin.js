@@ -1054,14 +1054,84 @@ function parseAIResponse(text) {
   return parts;
 }
 
+// Extrai a lista de arquivos de imagem que precisam de legenda IA,
+// na mesma ordem em que aparecem no texto. Usado tanto pelo prompt
+// quanto pelo carregamento das imagens via Vision.
+function extrairArquivosImagem(textoPlano) {
+  const imgs = [];
+  // [IMG: arquivo.webp]
+  [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].forEach(m => imgs.push(m[1].trim()));
+  // [SLIDER: ...] — só fotos SEM "::" (manual tem prioridade)
+  [...textoPlano.matchAll(/\[SLIDER:\s*([^\]]+)\]/g)].forEach(m => {
+    m[1].split('|').forEach(part => {
+      const t = part.trim();
+      if (t && t.indexOf('::') === -1) imgs.push(t);
+    });
+  });
+  // [SLIDER-GLOBAL: ...] — todas as fotos contam (uma legenda global)
+  [...textoPlano.matchAll(/\[SLIDER-GLOBAL:\s*([^\]]+)\]/g)].forEach(m => {
+    m[1].split('|').forEach(part => {
+      const t = part.trim();
+      if (t) imgs.push(t);
+    });
+  });
+  return [...new Set(imgs)];
+}
+
+// Baixa uma imagem do raw.githubusercontent.com e devolve em base64
+// pra ser injetada como input multimodal no request à Claude API.
+async function fetchImagemBase64(edicao, slug, arquivo) {
+  const url = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${edicao}/${slug}/img/${arquivo}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`imagem nao encontrada no GitHub: ${arquivo} (HTTP ${res.status})`);
+  const blob = await res.blob();
+  const mediaType = blob.type && blob.type.startsWith('image/') ? blob.type : 'image/webp';
+  const base64 = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = () => reject(new Error('falha ao ler imagem em base64'));
+    reader.readAsDataURL(blob);
+  });
+  return { mediaType, base64 };
+}
+
 async function chamarClaudeAPI(apiKey, dados) {
+  const edicao = getCurrentEdicao();
+  const textoPlano = (dados.texto || '').replace(/<[^>]+>/g, ' ');
+  const arquivos = extrairArquivosImagem(textoPlano);
+
+  // Carrega cada imagem em base64 (em paralelo) pra mandar via Vision.
+  // Se alguma falhar (ex: ainda nao versionada no Git), avisa no log
+  // e segue com as demais — a IA gera legenda sem ver essa especifica.
+  const blocosImagem = [];
+  if (arquivos.length > 0) {
+    addLog(`Carregando ${arquivos.length} imagem(ns) do GitHub raw...`, 'loading');
+    const resultados = await Promise.allSettled(
+      arquivos.map(a => fetchImagemBase64(edicao, dados.slug, a))
+    );
+    resultados.forEach((r, i) => {
+      const arquivo = arquivos[i];
+      if (r.status === 'fulfilled') {
+        blocosImagem.push({ type: 'text', text: `Imagem [${arquivo}]:` });
+        blocosImagem.push({
+          type: 'image',
+          source: { type: 'base64', media_type: r.value.mediaType, data: r.value.base64 }
+        });
+      } else {
+        addLog(`Aviso: ${r.reason.message} — legenda de ${arquivo} sera gerada sem visao`, 'erro');
+      }
+    });
+  }
+
+  const content = [...blocosImagem, { type: 'text', text: montarPrompt(dados) }];
+
   const response = await fetch('/painel/proxy.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1500,
-      messages: [{ role: 'user', content: montarPrompt(dados) }],
+      messages: [{ role: 'user', content }],
     }),
   });
 
@@ -1105,7 +1175,7 @@ function montarPrompt(d) {
 
   let legendaBloco = '';
   if (uniqueImgs.length > 0) {
-    legendaBloco = '\n\nO texto contem ' + uniqueImgs.length + ' imagem(ns) marcada(s). Para cada uma, gere uma legenda adequada ao contexto da materia (1 linha, sem ponto final), usando o formato:\n\n' +
+    legendaBloco = '\n\nAs ' + uniqueImgs.length + ' imagem(ns) foram anexadas acima nesta mensagem, cada uma precedida pelo marcador "Imagem [nome.webp]:". Para cada uma, gere uma legenda baseada NO QUE A IMAGEM EFETIVAMENTE MOSTRA (pessoas, objetos, cena, lugar) — nao em suposicoes a partir do nome do arquivo ou do tema da materia. Estilo: 1 linha, sem ponto final, descricao objetiva ancorada no visual, conectada ao contexto editorial quando fizer sentido. Evite frases-tese genericas. Formato de saida:\n\n' +
       uniqueImgs.map(f => '==LEGENDA:' + f + '==\n[legenda]\n==FIM==').join('\n\n');
   }
 
