@@ -873,7 +873,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
   <!-- FOOTER -->
   
 
-<script src="/assets/js/materia.js?v=2026050901" defer></script>
+<script src="/assets/js/materia.js?v=2026051201" defer></script>
 </body>
 </html>`;
 

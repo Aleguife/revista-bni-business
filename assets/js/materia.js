@@ -132,6 +132,12 @@
   var totalMins = artigoEl ? parseInt(artigoEl.dataset.readingMins, 10) : NaN;
   if (!totalMins || totalMins < 1) totalMins = 5; // fallback
 
+  // Sincroniza os textos iniciais com data-reading-mins (HTML hardcoded
+  // de matérias antigas pode estar divergente; sem isso o byline e o
+  // dot só batem com o valor real depois do primeiro scroll).
+  if (circleMins) circleMins.textContent = totalMins;
+  if (readingTimeEl) readingTimeEl.textContent = totalMins + ' min de leitura';
+
   var circumference = 201; // 2 * PI * 32
 
   window.addEventListener('scroll', function () {
