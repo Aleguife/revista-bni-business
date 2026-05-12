@@ -25,8 +25,10 @@ function edicaoNumero(edicao) {
   return m ? m[1] : '00';
 }
 
-// ── MAPA: valor do <select> → dados da matéria (edição 02) ──────
+// ── MAPA: valor do <select> → dados da matéria ──────────────────
+// Chaves sem prefixo = Edição 02. Chaves com prefixo 'ed1-' = Edição 01.
 const SECAO_MAP = {
+  // Edição 02
   'eventos-1':       { label: 'Eventos',                 slug: 'eventos'                  },
   'case-1':          { label: 'Case de sucesso',         slug: 'magna-marinho'            },
   'capa':            { label: 'Matéria de Capa',         slug: 'materia-de-capa'          },
@@ -43,6 +45,24 @@ const SECAO_MAP = {
   'eventos-2':       { label: 'Eventos',                 slug: 'salleven-eventos'         },
   'case-2':          { label: 'Case de sucesso',         slug: 'jrt-print'                },
   'negocios-2':      { label: 'Negócios',                slug: 'fia-business-school'      },
+  // Edição 01
+  'ed1-eventos':         { label: 'Eventos',                 slug: 'eventos'                 },
+  'ed1-turismo':         { label: 'Turismo',                 slug: 'turismo'                 },
+  'ed1-capa':            { label: 'Matéria de Capa',         slug: 'materia-de-capa'         },
+  'ed1-branding':        { label: 'Branding',                slug: 'branding'                },
+  'ed1-case-bni':        { label: 'Case de sucesso',         slug: 'case-bni'                },
+  'ed1-estilo':          { label: 'Estilo',                  slug: 'estilo'                  },
+  'ed1-design':          { label: 'Design',                  slug: 'design'                  },
+  'ed1-ceos-no-bni':     { label: 'CEOs no BNI',             slug: 'ceos-no-bni'             },
+  'ed1-dev-pessoal':     { label: 'Desenvolvimento pessoal', slug: 'desenvolvimento-pessoal' },
+  'ed1-idiomas':         { label: 'Idiomas',                 slug: 'idiomas'                 },
+  'ed1-engenharia':      { label: 'Engenharia',              slug: 'engenharia'              },
+  'ed1-ong':             { label: 'ONG',                     slug: 'ong'                     },
+  'ed1-saude-mental':    { label: 'Saúde mental',            slug: 'saude-mental'            },
+  'ed1-saude':           { label: 'Saúde',                   slug: 'saude'                   },
+  'ed1-publicidade':     { label: 'Publicidade',             slug: 'publicidade'             },
+  'ed1-investimentos':   { label: 'Investimentos',           slug: 'investimentos'           },
+  'ed1-investimentos-2': { label: 'Investimentos',           slug: 'investimentos-2'         },
 };
 
 // ── CHECKLIST POR EDIÇÃO ────────────────────────────────────────
