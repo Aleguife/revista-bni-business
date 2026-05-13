@@ -227,6 +227,7 @@ node scripts/gerar-sitemap.js --dry-run    # imprime no stdout, nao grava
 ## `.htaccess` raiz (PR 2, 09/05/2026)
 
 Configuração Apache na raiz do projeto:
+- **Force HTTPS 301** (13/05/2026): redirect de `http://` pra `https://` evita duplicate content que confunde crawlers. Sem isso, Locaweb servia HTTP com 200 em vez de redirect.
 - **gzip** via `mod_deflate` para HTML/CSS/JS/SVG/XML
 - **Cache de 1 ano** para imagens, CSS, JS, fontes (`Cache-Control: public, max-age=31536000, immutable`)
 - **Cache curto** para HTML (5min) — permite publicação rápida sem servir cache stale
@@ -234,6 +235,19 @@ Configuração Apache na raiz do projeto:
 - **Bloqueio público** a `.htaccess`, `.htpasswd`, `.gitignore`, `.env*`
 
 Cache busting via `?v=N` continua sendo o mecanismo principal de invalidação.
+
+---
+
+## Scripts auxiliares (`scripts/`)
+
+Scripts Node.js parametrizados por edição. Rodar antes de cada `git push` quando relevante:
+
+| Script | Função |
+|--------|--------|
+| `gerar-sitemap.js` | Gera `sitemap.xml` com 117 URLs (home + índices + matérias PT/EN/ES + páginas legais). Lê `MATERIAS_POR_EDICAO` no admin.js. |
+| `adicionar-breadcrumb.js edicao-XX` | Insere JSON-LD `BreadcrumbList` (Home → Edição → matéria) em todas as matérias da edição (PT+EN+ES). Idempotente. |
+| `atualizar-nav-edicao.js edicao-XX` | Ajusta `href` dos botões "Matéria Anterior / Próxima" com base na ordem do admin.js. Wrap-around. |
+| `atualizar-json-ld.js edicao-XX [YYYY-MM-DD]` | Enriquece JSON-LD Article: troca `author` string por `Person` schema com `sameAs` (Fernanda Sodré → Instagram) + adiciona `dateModified`. |
 
 ---
 
@@ -283,11 +297,38 @@ Antes desse commit, `admin.js` enviava só título + 600 chars de texto pra Clau
 - Pré-requisito: imagens versionadas no Git ANTES de gerar matéria (já era regra de ouro). Se 404, painel avisa e gera sem visão pra aquela específica.
 - Fix retroativo de legendas da Ed.1 (33 figcaptions) via Claude Code commit `ced6cde`.
 
+### Frente SEO + Performance + A11y (13/05/2026)
+Sequência de melhorias após a publicação completa da Ed.1. Cada item commitado separadamente:
+
+**SEO estrutural:**
+- BreadcrumbList JSON-LD em 99 matérias (Ed.1 + Ed.2 × PT/EN/ES) via `scripts/adicionar-breadcrumb.js`
+- `dateModified` + `author` como Person schema com `sameAs` (Instagram Fernanda Sodré) via `scripts/atualizar-json-ld.js`
+- Nav prev/next com `href` real (era `#`) via `scripts/atualizar-nav-edicao.js`
+- Alinhamento `<title>` × card titles no sumário (13 matérias EN/ES tinham divergência editorial entre versões geradas por agentes paralelos)
+- Sitemap submetido em Google Search Console + Bing Webmaster Tools
+
+**Performance:**
+- `srcset` nas capas (`capa1.webp` 1125×1500, `capa1-sm.webp` 500×666 etc.) — mobile baixa versão pequena
+- 3 animações trocadas pra propriedades compositadas (GPU): `btnBreathe` (border-color → opacity), `ctaLetterPulse` (letter-spacing → opacity), `progressFill` (width → transform scaleX)
+- Heading order fix: `footer.js` injetava `<h4>` quebrando hierarquia, trocado por `<h2>`
+
+**Acessibilidade (a11y 90 → 96+):**
+- `--cinza: #888 → #555` (contraste 3.4 → 7.5 em fundo creme, WCAG AAA)
+- `.dep-dot` (depoimento dots): removida margin negativa que sobrepunha touch areas; agora 48×48 com 8px gap
+- ARIA: removido `role="banner"` do `<a class="nav-logo">` e `role="navigation"` redundantes (nav element já tem implicit). Wrapper trocado de `<nav>` pra `<header>`
+- `wordBreathe*` keyframes: opacity mínima 0.65 → 0.88 (mantém contraste 3:1 do hero h1 durante animação)
+
+**Falsos positivos do PageSpeed:** report mostrou "página bloqueada por noindex" e "sem metadescrição" em runs com cache stale. Confirmado falso positivo via Search Console URL Inspection ("URL está no Google", indexada como Googlebot Smartphone). Dica: rodar PageSpeed digitando URL fresh em vez de via link compartilhado.
+
 ---
 
 ## Pendências conhecidas
 
-Nenhuma pendência técnica pendente (auditoria de 10/05/2026). Próximas frentes em `PLANO-CRESCIMENTO.md`.
+Refinos residuais de Performance da home (PageSpeed 88, mobile, 13/05/2026):
+- **Reflow forçado de 167ms**: algum JS força layout síncrono. Suspeito: `void bar.offsetWidth` no script do slider de depoimentos (linha ~1046 de `index.html`) ou queries no `nav.js`.
+- **LCP 3.0s** — capa1/capa2 carregando lento mesmo com `srcset`. Pode melhorar com `<link rel="preload">` + revisar `fetchpriority`.
+
+Não bloqueia ranking — scores atuais: Perf 88 / A11y 96 / BP 100 / SEO 100. Próximas frentes em `PLANO-CRESCIMENTO.md`.
 
 ---
 
@@ -331,5 +372,6 @@ Se não estiver, o deploy vai dar timeout.
 
 ## Próximas fases
 
-- [ ] **Edição 3**: digitalizar quando entrar em fase de produção
+- [ ] **Edição 3**: digitalizar quando entrar em fase de produção. Workflow já está pronto — ao chegar título e imagens, rodar `scripts/adicionar-breadcrumb.js edicao-03` + `scripts/atualizar-nav-edicao.js edicao-03` + `scripts/atualizar-json-ld.js edicao-03` após publicação via painel.
 - [ ] Templates A (hero vertical) e B (hero horizontal)
+- [ ] Refinos de performance da home (reflow + LCP) — só se quiser bater 95+ no PageSpeed
