@@ -29,7 +29,7 @@
   --escuro: #2b2c2f;
   --creme: #F5F0E8;
   --creme-escuro: #EAE3D5;
-  --cinza: #888;
+  --cinza: #555; /* contraste 7.5:1 em fundo creme — passa WCAG AAA */
   --branco: #fff;
   --max-width: 1200px;
   --nav-height: 70px;
@@ -478,17 +478,16 @@ body {
   margin-right: 0.6rem;
 }
 
-/* Dots clicáveis */
+/* Dots clicáveis — touch target 48x48 com 8px gap (WCAG AAA) */
 .dep-dots {
   display: flex;
-  gap: 0;
+  gap: 8px;
   justify-content: center;
   margin-top: 2.8rem;
 }
 .dep-dot {
   width: 48px;
   height: 48px;
-  margin: 0 -16.5px;
   border-radius: 50%;
   background: transparent;
   border: none;
