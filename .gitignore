@@ -28,4 +28,4 @@ package-lock.json
 # Backups locais
 backups/
 *-backup/
-FireShot.png
+FireShot*.png
