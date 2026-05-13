@@ -88,7 +88,7 @@
       /* Coluna 2 — Redes sociais */
       + '<div style="flex:1 1 150px;min-width:150px;">'
       +   '<div style="max-width:450px;margin:0 auto;text-align:center;">'
-      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:30px;text-align:center;">Fale com a Revista BNI Business</h4>'
+      +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:30px;text-align:center;">Fale com a Revista BNI Business</h2>'
       +     '<div style="display:flex;gap:20px;align-items:center;justify-content:center;">'
       +       socialBtnLg('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
       +       socialBtnLg('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
@@ -101,7 +101,7 @@
       /* Coluna 3 — Newsletter (FUNCIONAL) */
       + '<div style="flex:1 1 220px;min-width:220px;">'
       +   '<div id="footer-newsletter-wrap" style="max-width:450px;margin:0 auto;position:relative;">'
-      +     '<h4 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">Inscreva-se</h4>'
+      +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">Inscreva-se</h2>'
       +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0;line-height:1.6;">A cada nova edição, primeiro na sua caixa de entrada.</p>'
       +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0.9rem;line-height:1.6;">Entre uma e outra, entrevistas, bastidores e convites pros eventos que conectam empresários de verdade.</p>'
 

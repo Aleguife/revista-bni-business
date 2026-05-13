@@ -84,8 +84,8 @@ body {
   50%      { opacity: 0.88; }
 }
 @keyframes btnBreathe {
-  0%, 100% { border-color: rgba(245,240,232,0.2); color: rgba(245,240,232,0.3); }
-  50%      { border-color: rgba(245,240,232,0.45); color: rgba(245,240,232,0.5); }
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
 }
 
 /* Mouse */
@@ -103,10 +103,10 @@ body {
   100% { transform: translate(-50%, 6px); opacity: 0; }
 }
 
-/* CTA — letterspacing oscilante */
+/* CTA — opacity pulse (composited) */
 @keyframes ctaLetterPulse {
-  0%, 100% { letter-spacing: 2px; }
-  50%      { letter-spacing: 2.6px; }
+  0%, 100% { opacity: 0.92; }
+  50%      { opacity: 1; }
 }
 
 .anim-fade-up { opacity: 0; animation: fadeUp 0.8s ease forwards; }
@@ -819,12 +819,12 @@ body {
     <h2 class="anim-fade-up d1">Edições</h2>
     <div class="edicoes-grid">
       <a class="ed-card anim-fade-scale d2" href="/edicao-01/">
-        <img src="capa1.webp?v=2" width="1125" height="1500" fetchpriority="high" alt="Edição 1 — Alfredo Tanimoto">
+        <img src="capa1-sm.webp" srcset="capa1-sm.webp 500w, capa1.webp?v=2 1125w" sizes="200px" width="1125" height="1500" fetchpriority="high" alt="Edição 1 — Alfredo Tanimoto">
         <div class="ed-num">Edição 1</div>
         <div class="ed-data">Dezembro 2025</div>
       </a>
       <a class="ed-card anim-fade-scale d3" href="/edicao-02/">
-        <img src="capa2.webp?v=2" width="1200" height="1600" alt="Edição 2 — Felipe Xavier">
+        <img src="capa2-sm.webp" srcset="capa2-sm.webp 500w, capa2.webp?v=2 1200w" sizes="200px" width="1200" height="1600" loading="lazy" alt="Edição 2 — Felipe Xavier">
         <div class="ed-num">Edição 2</div>
         <div class="ed-data">Abril 2026</div>
       </a>
@@ -1086,5 +1086,5 @@ body {
   })();
 </script>
 
-  <script src="footer.js?v=2026050814" defer></script></body>
+  <script src="footer.js?v=2026051301" defer></script></body>
 </html>
