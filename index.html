@@ -524,16 +524,17 @@ body {
 }
 .dep-progress-bar {
   height: 100%;
-  width: 0;
+  width: 100%;
   background: rgba(245,240,232,0.55);
   transform-origin: left;
+  transform: scaleX(0);
 }
 .dep-progress-bar.running {
   animation: progressFill 6s linear forwards;
 }
 @keyframes progressFill {
-  from { width: 0; }
-  to   { width: 100%; }
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 /* ── TICKER ── */
@@ -796,7 +797,7 @@ body {
 </head>
 <body>
 
-<script src="nav.js?v=2026050902" defer></script>
+<script src="nav.js?v=2026051302" defer></script>
 
 <main>
 <!-- HERO -->

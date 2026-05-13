@@ -82,8 +82,8 @@
     var urls = getLangUrls();
     var currentLang = getCurrentLang();
 
-    var html = '<a href="https://bnibusiness.com.br" class="nav-logo" role="banner" aria-label="Revista BNI Business — Página inicial" style="text-decoration:none">' + LOGO_SVG + '</a>'
-      + '<nav role="navigation" aria-label="Menu principal">'
+    var html = '<a href="https://bnibusiness.com.br" class="nav-logo" aria-label="Revista BNI Business — Página inicial" style="text-decoration:none">' + LOGO_SVG + '</a>'
+      + '<nav aria-label="Menu principal">'
       + '<div class="nav-menu">'
 
       /* Link Home */
@@ -127,10 +127,9 @@
     /* Evita injeção dupla */
     if (document.getElementById('bni-nav')) return;
 
-    var wrapper = document.createElement('nav');
+    var wrapper = document.createElement('header');
     wrapper.id = 'bni-nav';
-    wrapper.setAttribute('role', 'navigation');
-    wrapper.setAttribute('aria-label', 'Menu principal');
+    wrapper.setAttribute('aria-label', 'Cabeçalho da página');
     wrapper.innerHTML = buildNav();
 
     /* Insere antes de qualquer outro elemento do body */

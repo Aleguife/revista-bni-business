@@ -17,7 +17,7 @@
   --escuro: #2b2c2f;
   --creme: #F5F0E8;
   --creme-escuro: #EAE3D5;
-  --cinza: #888;
+  --cinza: #555; /* contraste 7.5:1 em fundo creme — passa WCAG AAA */
   --branco: #fff;
   --max-width: 1200px;
   --nav-height: 70px;
@@ -72,8 +72,8 @@ body {
   50%      { opacity: 0.88; }
 }
 @keyframes btnBreathe {
-  0%, 100% { border-color: rgba(245,240,232,0.2); color: rgba(245,240,232,0.3); }
-  50%      { border-color: rgba(245,240,232,0.45); color: rgba(245,240,232,0.5); }
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
 }
 
 /* Mouse */
@@ -91,10 +91,10 @@ body {
   100% { transform: translate(-50%, 6px); opacity: 0; }
 }
 
-/* CTA — letterspacing oscilante */
+/* CTA — opacity pulse (composited) */
 @keyframes ctaLetterPulse {
-  0%, 100% { letter-spacing: 2px; }
-  50%      { letter-spacing: 2.6px; }
+  0%, 100% { opacity: 0.92; }
+  50%      { opacity: 1; }
 }
 
 .anim-fade-up { opacity: 0; animation: fadeUp 0.8s ease forwards; }
@@ -466,17 +466,16 @@ body {
   margin-right: 0.6rem;
 }
 
-/* Dots clicáveis */
+/* Dots clicáveis — touch target 48x48 com 8px gap (WCAG AAA) */
 .dep-dots {
   display: flex;
-  gap: 0;
+  gap: 8px;
   justify-content: center;
   margin-top: 2.8rem;
 }
 .dep-dot {
   width: 48px;
   height: 48px;
-  margin: 0 -16.5px;
   border-radius: 50%;
   background: transparent;
   border: none;
@@ -513,16 +512,17 @@ body {
 }
 .dep-progress-bar {
   height: 100%;
-  width: 0;
+  width: 100%;
   background: rgba(245,240,232,0.55);
   transform-origin: left;
+  transform: scaleX(0);
 }
 .dep-progress-bar.running {
   animation: progressFill 6s linear forwards;
 }
 @keyframes progressFill {
-  from { width: 0; }
-  to   { width: 100%; }
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 /* ── TICKER ── */
@@ -797,7 +797,7 @@ body {
 </head>
 <body>
 
-<script src="/nav.js?v=2026050802" defer></script>
+<script src="/nav.js?v=2026051302" defer></script>
 
 <main>
 <!-- HERO -->
