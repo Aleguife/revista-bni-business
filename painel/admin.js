@@ -5,7 +5,7 @@
 // Hash SHA-256 da senha do painel.
 // Para trocar a senha: gere o hash em https://emn178.github.io/online-tools/sha256.html
 // e substitua a string abaixo. Sem fallback em texto claro.
-const SENHA_HASH = '6e707695dc4b5cd530a06f0245e45abc927f151331d527bdcfda284908275415';
+const SENHA_HASH = '78a560ad10a00bf5b026cb04768dd98c8c436900eb9e5d4be6bb75a58366c221';
 
 const REPO_OWNER = 'Aleguife';
 const REPO_NAME  = 'revista-bni-business';
