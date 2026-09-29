@@ -532,8 +532,10 @@ async function gerarMateria() {
   if (!apiKey) { alert('Informe a chave da API Claude.'); return; }
 
   const secaoVal = val('f-secao');
+  const slugAtual = val('f-slug');
+  const slugChecklist = val('f-materia-checklist') || slugAtual;
   const materiaChecklist = (MATERIAS_POR_EDICAO['edicao-03'] || []).find(function (materia) {
-    return materia.slug === val('f-materia-checklist');
+    return materia.slug === slugChecklist;
   });
   const secaoLabel = (secaoVal && SECAO_MAP[secaoVal] ? SECAO_MAP[secaoVal].label : secaoVal) || (materiaChecklist ? materiaChecklist.secao : '');
 
