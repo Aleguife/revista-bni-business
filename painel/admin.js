@@ -9,11 +9,12 @@ const SENHA_HASH = '78a560ad10a00bf5b026cb04768dd98c8c436900eb9e5d4be6bb75a58366
 
 const REPO_OWNER = 'Aleguife';
 const REPO_NAME  = 'revista-bni-business';
+const LOGIN_SESSION_KEY = 'bni-painel-autenticado';
 
 // ── EDIÇÃO ATUAL ────────────────────────────────────────────────
 // Define qual edição o painel publica por padrão. Pode ser sobrescrito
 // pelo seletor <select id="f-edicao"> no formulário.
-const EDICAO_PADRAO = 'edicao-02';
+const EDICAO_PADRAO = 'edicao-03';
 
 function getCurrentEdicao() {
   const el = document.getElementById('f-edicao');
@@ -103,6 +104,24 @@ const MATERIAS_POR_EDICAO = {
     { num:14, secao:'Turismo',                 titulo:'Mônaco / Convenção BNI 2026',            slug:'monaco',                   status:'publicada' },
     { num:15, secao:'Negócios',                titulo:'FIA Business School',                    slug:'fia-business-school',      status:'publicada' },
     { num:16, secao:'BNI São Francisco',       titulo:'BNI São Francisco',                      slug:'bni-sao-francisco',        status:'publicada' },
+  ],
+  'edicao-03': [
+    { num:1,  secao:'Negócios',                 titulo:'Conexões que a IA não faz',                                                     slug:'conexoes-ia',                            status:'pendente' },
+    { num:2,  secao:'Mercado imobiliário',      titulo:'Do contrato ao negócio: a trajetória de Peter Lima',                             slug:'peter-lima-mercado-imobiliario',         status:'pendente' },
+    { num:3,  secao:'Desenvolvimento pessoal',  titulo:'Taís Araújo: reescrevendo histórias através da liderança',                        slug:'tais-araujo-lideranca',                  status:'pendente' },
+    { num:4,  secao:'Matéria de capa',          titulo:'Thomas Pillet – Após liderar a cultura da Up Brasil, o executivo prepara grande mudança no setor', slug:'thomas-pillet-up-brasil', status:'pendente' },
+    { num:5,  secao:'Estilo',                   titulo:'O que sua joia diz sobre você',                                                   slug:'joias-estilo-pessoal',                   status:'pendente' },
+    { num:6,  secao:'Saúde mental',             titulo:'O que a mente exausta custa ao negócio',                                          slug:'saude-mental-negocios',                  status:'pendente' },
+    { num:7,  secao:'Saúde mental',             titulo:'Quem é o CEO do seu cérebro – tem certeza que é você?',                            slug:'ceo-do-seu-cerebro',                     status:'pendente' },
+    { num:8,  secao:'Direito',                  titulo:'Quem cuida da sua aposentadoria quando você não tem RH pra isso?',                slug:'aposentadoria-sem-rh',                   status:'pendente' },
+    { num:9,  secao:'Alta performance',         titulo:'Wilson Borges: de jogador de futebol a presidente de multinacionais farmacêuticas', slug:'wilson-borges-alta-performance',         status:'pendente' },
+    { num:10, secao:'Negócios',                 titulo:'Liderança sem fronteiras',                                                        slug:'lideranca-sem-fronteiras',                status:'pendente' },
+    { num:11, secao:'Networking',               titulo:'O Valor das Conexões Reais',                                                      slug:'conexoes-reais-networking',               status:'pendente' },
+    { num:12, secao:'Case de sucesso',          titulo:'Foco, força e fé: a fórmula de voo do Comandante Ramos',                           slug:'comandante-ramos-lideranca',              status:'pendente' },
+    { num:13, secao:'Estilo',                   titulo:'Stella Onisko: a arquitetura de uma reconstrução',                                 slug:'stella-onisko-arquitetura',               status:'pendente' },
+    { num:14, secao:'Marketing',                titulo:'Marca não é enfeite: é decisão de negócio',                                       slug:'marca-nao-e-enfeite',                     status:'pendente' },
+    { num:15, secao:'Saúde',                    titulo:'Vitae Flux: a virada que um engenheiro deu rumo ao cuidado integrativo',          slug:'vitae-flux-cuidado-integrativo',          status:'pendente' },
+    { num:16, secao:'Case de sucesso',          titulo:'Rafael Oleinik: pra trás, nem pra pegar impulso!',                                 slug:'rafael-oleinik-case-sucesso',             status:'pendente' },
   ],
 };
 
@@ -235,6 +254,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Auto-save nos campos dinâmicos (CTAs) via event delegation
   document.getElementById('ctas-container').addEventListener('input',    agendarSalvamento);
   document.getElementById('ctas-container').addEventListener('change',   agendarSalvamento);
+
+  // Mantém o acesso durante a sessão atual da aba, sem persistir após fechá-la.
+  if (sessionStorage.getItem(LOGIN_SESSION_KEY) === '1') abrirPainel();
 });
 
 // ── RASCUNHO (AUTO-SAVE) ──────────────────────
@@ -294,16 +316,21 @@ function restaurarRascunho() {
 }
 
 // ── LOGIN ─────────────────────────────────────
+function abrirPainel() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('painel').classList.remove('hidden');
+  onEdicaoChange();
+  renderChecklist();
+  document.getElementById('f-data').valueAsDate = new Date();
+}
+
 async function fazerLogin() {
   const input = document.getElementById('senha-input').value;
   const hash  = await sha256(input);
   const ok    = (hash === SENHA_HASH);
   if (ok) {
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('painel').classList.remove('hidden');
-    onEdicaoChange();
-    renderChecklist();
-    document.getElementById('f-data').valueAsDate = new Date();
+    sessionStorage.setItem(LOGIN_SESSION_KEY, '1');
+    abrirPainel();
   } else {
     document.getElementById('login-error').classList.add('show');
     document.getElementById('senha-input').value = '';
@@ -312,6 +339,7 @@ async function fazerLogin() {
 }
 
 function sair() {
+  sessionStorage.removeItem(LOGIN_SESSION_KEY);
   document.getElementById('painel').classList.add('hidden');
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('senha-input').value = '';
@@ -338,7 +366,63 @@ function onEdicaoChange() {
   if (base) base.textContent = 'bnibusiness.com.br/' + edicao + '/';
   const navLabel = document.getElementById('nav-checklist-label');
   if (navLabel) navLabel.textContent = 'Checklist Edição ' + edicaoNumero(edicao);
+  atualizarSeletorMateriaChecklist();
   renderChecklist();
+}
+
+// Para a Edição 03, a matéria é escolhida diretamente do checklist.
+// Isso mantém seção, título e slug sincronizados, inclusive nas retrancas repetidas.
+function atualizarSeletorMateriaChecklist() {
+  const seletorMateria = document.getElementById('f-materia-checklist');
+  const wrapMateria = document.getElementById('edicao-03-materia-wrap');
+  const seletorSecao = document.getElementById('f-secao');
+  if (!seletorMateria || !wrapMateria || !seletorSecao) return;
+
+  const grupoAnterior = document.getElementById('secoes-edicao-03');
+  if (grupoAnterior) grupoAnterior.remove();
+
+  const ehEdicao03 = getCurrentEdicao() === 'edicao-03';
+  wrapMateria.hidden = !ehEdicao03;
+  seletorSecao.disabled = ehEdicao03;
+
+  if (!ehEdicao03) {
+    seletorMateria.innerHTML = '<option value="">Selecione a matéria...</option>';
+    return;
+  }
+
+  const materias = MATERIAS_POR_EDICAO['edicao-03'] || [];
+  const grupo = document.createElement('optgroup');
+  grupo.id = 'secoes-edicao-03';
+  grupo.label = 'Edição 03';
+  materias.forEach(function (materia) {
+    const chave = 'ed3-' + materia.num;
+    SECAO_MAP[chave] = { label: materia.secao, slug: materia.slug };
+    const option = document.createElement('option');
+    option.value = chave;
+    option.textContent = materia.secao + ' — ' + materia.titulo;
+    grupo.appendChild(option);
+  });
+  seletorSecao.appendChild(grupo);
+
+  seletorMateria.innerHTML = '<option value="">Selecione a matéria...</option>';
+  materias.forEach(function (materia) {
+    const option = document.createElement('option');
+    option.value = materia.slug;
+    option.textContent = String(materia.num).padStart(2, '0') + ' — ' + materia.secao + ': ' + materia.titulo;
+    seletorMateria.appendChild(option);
+  });
+}
+
+function onMateriaChecklistChange() {
+  const slug = document.getElementById('f-materia-checklist').value;
+  const materia = (MATERIAS_POR_EDICAO['edicao-03'] || []).find(function (item) {
+    return item.slug === slug;
+  });
+  if (!materia) return;
+
+  document.getElementById('f-secao').value = 'ed3-' + materia.num;
+  document.getElementById('f-titulo').value = materia.titulo;
+  onSecaoChange();
 }
 
 // ── SLUG + IMAGEM + ALT AUTOMÁTICOS ──────────
@@ -427,6 +511,8 @@ function limparForm() {
   document.getElementById('ctas-container').innerHTML = '';
   document.getElementById('cta-vazio').style.display = 'block';
   document.getElementById('slug-hint').textContent = '';
+  const seletorMateria = document.getElementById('f-materia-checklist');
+  if (seletorMateria) seletorMateria.value = '';
   document.getElementById('card-status').style.display  = 'none';
   document.getElementById('card-preview').style.display = 'none';
   localStorage.removeItem(RASCUNHO_KEY);
@@ -1355,6 +1441,7 @@ function marcarPublicada(slug) {
 
 // ── EXPOSIÇÃO GLOBAL (chamadas via onclick no HTML) ───
 window.onEdicaoChange = onEdicaoChange;
+window.onMateriaChecklistChange = onMateriaChecklistChange;
 window.onSecaoChange  = onSecaoChange;
 window.onTituloInput  = onTituloInput;
 window.adicionarCTA   = adicionarCTA;

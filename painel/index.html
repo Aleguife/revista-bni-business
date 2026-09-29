@@ -71,11 +71,19 @@
             <div class="field-group">
               <label>Edição</label>
               <select id="f-edicao" onchange="onEdicaoChange()">
-                <option value="edicao-02" selected>Edição 02</option>
+                <option value="edicao-02">Edição 02</option>
                 <option value="edicao-01">Edição 01</option>
-                <option value="edicao-03">Edição 03</option>
+                <option value="edicao-03" selected>Edição 03</option>
               </select>
               <small class="field-hint">Define a pasta de publicação e os links gerados (canonical, OG, share).</small>
+            </div>
+
+            <div class="field-group" id="edicao-03-materia-wrap" hidden>
+              <label>Matéria do checklist</label>
+              <select id="f-materia-checklist" onchange="onMateriaChecklistChange()">
+                <option value="">Selecione a matéria...</option>
+              </select>
+              <small class="field-hint">Preenche automaticamente a seção, o título e o slug aprovados para a Edição 03.</small>
             </div>
 
             <div class="field-group">
@@ -277,6 +285,6 @@
 </div>
 
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-<script src="admin.js?v=49"></script>
+<script src="admin.js?v=54"></script>
 </body>
 </html>

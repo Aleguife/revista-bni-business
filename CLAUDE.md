@@ -258,6 +258,16 @@ Scripts Node.js parametrizados por edição. Rodar antes de cada `git push` quan
 3. **Slugs em kebab-case** — sempre minúsculas, sem acentos, hífens entre palavras
 4. **Caminho das imagens** — sempre relativo à raiz: `/edicao-XX/[slug]/hero.jpg`
 5. **Commits em português** — ex: `feat: adiciona matéria magna-marinho`
+
+### Política de SEO para slugs
+
+O responsável pela publicação deve definir os slugs sem pedir validação editorial prévia, salvo quando houver ambiguidade factual no material de origem. Antes da primeira publicação, o slug deve ser final e seguir estas regras:
+
+- usar kebab-case em ASCII: minúsculas, sem acentos e palavras separadas por hífen;
+- ser curto, legível e descritivo do assunto central; remover artigos e palavras de apoio que não acrescentem intenção de busca;
+- combinar nome próprio, marca ou empresa com o tema/especialidade quando isso esclarecer a busca (ex.: `tais-araujo-lideranca`);
+- preferir o tema ao rótulo genérico da revista: nunca usar apenas `materia-de-capa`, `case-de-sucesso` ou a numeração da edição;
+- evitar repetição artificial de palavras-chave e não alterar slugs depois de publicados; se uma mudança posterior for inevitável, criar redirecionamento 301.
 6. **Uma pasta por matéria** — `edicao-XX/[slug]/index.html`
 7. **Preservar HTML do texto** — nunca remover tags `<b>`, `<i>`, `<u>`, `<ul>`, `<ol>`, `<h2>` do texto original
 8. **Atualizar CLAUDE.md** — ao publicar cada matéria, marcar ✅ na tabela acima
