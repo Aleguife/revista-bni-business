@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
         handlers: {
           imagem: function () {
             const range = quill.getSelection(true);
-            const placeholder = '[IMG: img/nome-da-imagem.webp]';
+            const placeholder = '[IMG: nome-da-imagem.webp]';
             quill.insertText(range.index, placeholder, 'user');
             quill.setSelection(range.index + placeholder.length);
           },
@@ -520,13 +520,22 @@ function limparForm() {
 
 function val(id) { return (document.getElementById(id)?.value || '').trim(); }
 
+// Marcadores no texto recebem somente o nome do arquivo. Aceita "img/arquivo"
+// como compatibilidade, mas sempre gera o caminho final dentro de /img/.
+function normalizarArquivoImagem(arquivo) {
+  return String(arquivo || '').trim().replace(/^\/?img\//i, '').replace(/^\/+/, '');
+}
+
 // ── GERAR MATÉRIA ─────────────────────────────
 async function gerarMateria() {
   const apiKey = val('f-api-key');
   if (!apiKey) { alert('Informe a chave da API Claude.'); return; }
 
   const secaoVal = val('f-secao');
-  const secaoLabel = secaoVal && SECAO_MAP[secaoVal] ? SECAO_MAP[secaoVal].label : secaoVal;
+  const materiaChecklist = (MATERIAS_POR_EDICAO['edicao-03'] || []).find(function (materia) {
+    return materia.slug === val('f-materia-checklist');
+  });
+  const secaoLabel = (secaoVal && SECAO_MAP[secaoVal] ? SECAO_MAP[secaoVal].label : secaoVal) || (materiaChecklist ? materiaChecklist.secao : '');
 
   const dados = {
     secao:       secaoLabel,
@@ -660,8 +669,9 @@ function montarCorpoArtigo(d, legendas) {
   }
 
   function imgHtml(tk) {
-    var cap = legendas[tk.file] || '';
-    var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/' + tk.file;
+    var file = normalizarArquivoImagem(tk.file);
+    var cap = legendas[file] || '';
+    var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/img/' + file;
     return '<figure class="foto-larga fade-in"><img src="' + src +
            '" alt="' + cap + '" loading="lazy">' +
            (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
@@ -674,7 +684,7 @@ function montarCorpoArtigo(d, legendas) {
 
     var slidesHtml = parts.map(function(p, idx) {
       var m = p.match(/^(.+?)::(.*)$/);
-      var file = m ? m[1].trim() : p;
+      var file = normalizarArquivoImagem(m ? m[1].trim() : p);
       var cap = '';
       if (tk.type === 'slider') {
         // individual: legenda manual (::) tem prioridade, senão usa IA
@@ -682,7 +692,7 @@ function montarCorpoArtigo(d, legendas) {
       }
       // slider-sl: sem legenda
       // slider-global: legenda fica no rodapé, não por foto
-      var src = '/' + getCurrentEdicao() + '/' + baseSlug + '/' + file;
+      var src = '/' + getCurrentEdicao() + '/' + baseSlug + '/img/' + file;
       return '<figure class="slider-slide' + (idx === 0 ? ' active' : '') + '">' +
              '<img src="' + src + '" alt="' + cap + '" loading="lazy">' +
              (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
@@ -858,7 +868,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <meta property="og:image" content="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/img/og-cover.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%">
+<meta property="og:url" content="https://bnibusiness.com.br/%%EDICAO%%/%%SLUG%%/">
 <meta property="og:locale" content="pt_BR">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="%%AUTOR%%">
@@ -1022,7 +1032,8 @@ function montarTemplate(d, parts) {
   let ctaCopy = null;
   if (parts.cta) {
     const ctaLines = parts.cta.split('\n').map(l => l.trim()).filter(Boolean);
-    if (ctaLines.length >= 1) ctaCopy = { h3: ctaLines[0], p: ctaLines[1] || '' };
+    const limparLinhaCTA = linha => linha.replace(/^\[LINHA\s*[12][^\]]*\]\s*/i, '').trim();
+    if (ctaLines.length >= 1) ctaCopy = { h3: limparLinhaCTA(ctaLines[0]), p: limparLinhaCTA(ctaLines[1] || '') };
   }
   const ctaHtml    = montarCTASection(d, ctaCopy);
 
@@ -1146,19 +1157,19 @@ function parseAIResponse(text) {
 function extrairArquivosImagem(textoPlano) {
   const imgs = [];
   // [IMG: arquivo.webp]
-  [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].forEach(m => imgs.push(m[1].trim()));
+  [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].forEach(m => imgs.push(normalizarArquivoImagem(m[1])));
   // [SLIDER: ...] — só fotos SEM "::" (manual tem prioridade)
   [...textoPlano.matchAll(/\[SLIDER:\s*([^\]]+)\]/g)].forEach(m => {
     m[1].split('|').forEach(part => {
       const t = part.trim();
-      if (t && t.indexOf('::') === -1) imgs.push(t);
+      if (t && t.indexOf('::') === -1) imgs.push(normalizarArquivoImagem(t));
     });
   });
   // [SLIDER-GLOBAL: ...] — todas as fotos contam (uma legenda global)
   [...textoPlano.matchAll(/\[SLIDER-GLOBAL:\s*([^\]]+)\]/g)].forEach(m => {
     m[1].split('|').forEach(part => {
       const t = part.trim();
-      if (t) imgs.push(t);
+      if (t) imgs.push(normalizarArquivoImagem(t));
     });
   });
   return [...new Set(imgs)];
@@ -1167,6 +1178,7 @@ function extrairArquivosImagem(textoPlano) {
 // Baixa uma imagem do raw.githubusercontent.com e devolve em base64
 // pra ser injetada como input multimodal no request à Claude API.
 async function fetchImagemBase64(edicao, slug, arquivo) {
+  arquivo = normalizarArquivoImagem(arquivo);
   const url = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${edicao}/${slug}/img/${arquivo}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`imagem nao encontrada no GitHub: ${arquivo} (HTTP ${res.status})`);
@@ -1241,14 +1253,14 @@ function montarPrompt(d) {
   const textoPlano = (d.texto || '').replace(/<[^>]+>/g, ' ');
 
   // [IMG: arquivo.webp] → sempre gera legenda
-  const imgMatches = [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].map(m => m[1].trim());
+  const imgMatches = [...textoPlano.matchAll(/\[IMG:\s*([^\]]+)\]/g)].map(m => normalizarArquivoImagem(m[1]));
 
   // [SLIDER: ...] → gera legenda individual apenas para fotos SEM "::" (manual)
   const sliderIndividualImgs = [];
   [...textoPlano.matchAll(/\[SLIDER:\s*([^\]]+)\]/g)].forEach(function(m) {
     m[1].split('|').forEach(function(part) {
       var t = part.trim();
-      if (t.indexOf('::') === -1) sliderIndividualImgs.push(t);
+      if (t.indexOf('::') === -1) sliderIndividualImgs.push(normalizarArquivoImagem(t));
     });
   });
 
