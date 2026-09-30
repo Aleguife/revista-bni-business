@@ -646,6 +646,13 @@ function montarCorpoArtigo(d, legendas) {
       tokens.push({ type: 'credit', value: creditoMatch[1].trim() });
       continue;
     }
+    // Legenda editorial manual da imagem imediatamente anterior.
+    // Ela tem prioridade sobre a legenda sugerida pela IA.
+    var legendaMatch = text.match(/^\[LEGENDA:\s*([^\]]+)\]$/i);
+    if (legendaMatch) {
+      tokens.push({ type: 'caption', value: legendaMatch[1].trim() });
+      continue;
+    }
     var sliderMatch = text.match(/^\[SLIDER:\s*([^\]]+)\]$/);
     if (sliderMatch) {
       tokens.push({ type: 'slider', raw: sliderMatch[1].trim() });
@@ -716,11 +723,11 @@ function montarCorpoArtigo(d, legendas) {
     return '<div class="' + cls + '"><div>' + L + '</div><div>' + R + '</div></div>';
   }
 
-  function imgHtml(tk, credito, umaColuna) {
+  function imgHtml(tk, credito, umaColuna, legendaManual) {
     var file = normalizarArquivoImagem(tk.file);
     var dadosImagem = legendaDaImagem(file);
     var alt = dadosImagem.alt || dadosImagem.legenda || '';
-    var cap = dadosImagem.legenda || alt;
+    var cap = legendaManual || dadosImagem.legenda || alt;
     var altSeguro = escaparHtml(alt);
     var capSeguro = escaparHtml(cap);
     var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/img/' + file;
@@ -742,9 +749,11 @@ function montarCorpoArtigo(d, legendas) {
       } else if (item.type === 'para') {
         corpo += item.html;
       } else if (item.type === 'img') {
-        var credito = (items[b + 1] && items[b + 1].type === 'credit') ? items[b + 1].value : '';
-        corpo += imgHtml(item, credito, true);
-        if (credito) b++;
+        var proximo = b + 1;
+        var legendaManual = (items[proximo] && items[proximo].type === 'caption') ? items[proximo++].value : '';
+        var credito = (items[proximo] && items[proximo].type === 'credit') ? items[proximo++].value : '';
+        corpo += imgHtml(item, credito, true, legendaManual);
+        b = proximo - 1;
       } else if (item.type === 'quote') {
         corpo += '<div class="citacao-bloco"><blockquote>' + item.inner + '</blockquote></div>';
       }
@@ -807,7 +816,7 @@ function montarCorpoArtigo(d, legendas) {
 
   // Predicado: inicia nova seção (interrompe coleta de parágrafos)
   function isBreak(type) {
-    return type === 'h2' || type === 'h3' || type === 'img' || type === 'img-one-col' || type === 'credit' || type === 'one-col-block' ||
+    return type === 'h2' || type === 'h3' || type === 'img' || type === 'img-one-col' || type === 'credit' || type === 'caption' || type === 'one-col-block' ||
            type === 'one-col-open' || type === 'one-col-close' ||
            type === 'slider' || type === 'slider-sl' || type === 'slider-global';
   }
@@ -850,8 +859,9 @@ function montarCorpoArtigo(d, legendas) {
 
     // — Imagem standalone —
     if (tk.type === 'img' || tk.type === 'img-one-col') {
-      var credito = tk.credit || ((i + 1 < n && tokens[i + 1].type === 'credit') ? tokens[i + 1].value : '');
       var afterImage = i + 1;
+      var legendaManual = (tokens[afterImage] && tokens[afterImage].type === 'caption') ? tokens[afterImage++].value : '';
+      var credito = tk.credit || ((tokens[afterImage] && tokens[afterImage].type === 'credit') ? tokens[afterImage].value : '');
       if (!tk.credit && credito) afterImage++;
 
       // Uma imagem em 1COL divide a mesma linha com o próximo parágrafo.
@@ -864,23 +874,29 @@ function montarCorpoArtigo(d, legendas) {
         var fimColunaVazia = '</div><div></div></div>';
         if (ultimo >= 0 && out[ultimo].endsWith(fimColunaVazia)) {
           out[ultimo] = out[ultimo].slice(0, -fimColunaVazia.length) +
-            '</div><div>' + imgHtml(tk, credito, true) + tokens[afterImage].html + '</div></div>';
+            '</div><div>' + imgHtml(tk, credito, true, legendaManual) + tokens[afterImage].html + '</div></div>';
           i = afterImage + 1;
           continue;
         }
         out.push('<div class="texto-duplo texto-duplo--imagem-coluna fade-in"><div>' +
-          imgHtml(tk, credito, true) + '</div><div>' + tokens[afterImage].html + '</div></div>');
+          imgHtml(tk, credito, true, legendaManual) + '</div><div>' + tokens[afterImage].html + '</div></div>');
         i = afterImage + 1;
         continue;
       }
 
-      out.push(imgHtml(tk, credito, tk.type === 'img-one-col'));
+      out.push(imgHtml(tk, credito, tk.type === 'img-one-col', legendaManual));
       i = afterImage;
       continue;
     }
 
     // Crédito sem imagem imediatamente anterior: ignora para não exibir a tag bruta.
     if (tk.type === 'credit') {
+      i++;
+      continue;
+    }
+
+    // Legenda sem imagem imediatamente anterior: não vaza como texto na matéria.
+    if (tk.type === 'caption') {
       i++;
       continue;
     }
