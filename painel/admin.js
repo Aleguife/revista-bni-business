@@ -584,6 +584,15 @@ async function gerarMateria() {
 // Elementos estruturais (h2, h3, blockquote, [IMG:]) ficam em
 // largura total e reiniciam um novo grupo.
 // legendas: { 'img/arquivo.webp': 'caption text', ... }
+function escaparHtml(texto) {
+  return String(texto || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function montarCorpoArtigo(d, legendas) {
   legendas = legendas || {};
   var tmp = document.createElement('div');
@@ -673,10 +682,11 @@ function montarCorpoArtigo(d, legendas) {
   function imgHtml(tk) {
     var file = normalizarArquivoImagem(tk.file);
     var cap = legendas[file] || '';
+    var capSeguro = escaparHtml(cap);
     var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/img/' + file;
     return '<figure class="foto-larga fade-in"><img src="' + src +
-           '" alt="' + cap + '" loading="lazy">' +
-           (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
+           '" alt="' + capSeguro + '" loading="lazy">' +
+           (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
   }
 
   function sliderHtml(tk) {
@@ -692,12 +702,13 @@ function montarCorpoArtigo(d, legendas) {
         // individual: legenda manual (::) tem prioridade, senão usa IA
         cap = (m && m[2].trim()) ? m[2].trim() : (legendas[file] || '');
       }
+      var capSeguro = escaparHtml(cap);
       // slider-sl: sem legenda
       // slider-global: legenda fica no rodapé, não por foto
       var src = '/' + getCurrentEdicao() + '/' + baseSlug + '/img/' + file;
       return '<figure class="slider-slide' + (idx === 0 ? ' active' : '') + '">' +
-             '<img src="' + src + '" alt="' + cap + '" loading="lazy">' +
-             (cap ? '<figcaption>' + cap + '</figcaption>' : '') + '</figure>';
+             '<img src="' + src + '" alt="' + capSeguro + '" loading="lazy">' +
+             (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
     }).join('');
 
     var dotsHtml = parts.map(function(_, idx) {
@@ -706,7 +717,7 @@ function montarCorpoArtigo(d, legendas) {
 
     // Legenda global: gerada pela IA para slider-global
     var gc = tk.type === 'slider-global' ? (legendas['__sg-' + tk.idx + '__'] || '') : '';
-    var gcHtml = gc ? '<p class="slider-caption-global">' + gc + '</p>' : '';
+    var gcHtml = gc ? '<p class="slider-caption-global">' + escaparHtml(gc) + '</p>' : '';
 
     var nav = parts.length > 1
       ? '<button class="slider-prev" aria-label="Anterior">&#8592;</button>' +
@@ -1057,7 +1068,7 @@ function montarTemplate(d, parts) {
   R('%%DATA_FORMATADA%%', dataFormatada);
   R('%%IMAGEM_URL%%',   d.imagemUrl || ('/' + getCurrentEdicao() + '/' + slug + '/hero.jpg'));
   R('%%EDICAO%%',       getCurrentEdicao());
-  R('%%IMAGEM_ALT%%',   imagemAlt);
+  R('%%IMAGEM_ALT%%',   escaparHtml(imagemAlt));
   R('%%PROFISSIONAL%%', d.profissional || d.empresa || '');
   R('%%CAPTION%%',      caption);
   R('%%TITULO_HTML%%',  heroTitulo);
