@@ -172,6 +172,31 @@ body { font-family: var(--font-sans); background: var(--gray-bg); color: var(--b
 }
 .field-group input[type="date"] { color: var(--gray-mid); }
 .field-hint { display: block; font-size: 11px; color: #aaa; margin-top: 6px; line-height: 1.5; }
+.tag-guide {
+  margin: 0 0 10px;
+  border: 1px solid var(--gray-light);
+  border-radius: 7px;
+  background: #fafafa;
+  color: var(--gray-mid);
+  font-size: 11px;
+  line-height: 1.55;
+}
+.tag-guide summary {
+  padding: 9px 11px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--gray-dark);
+}
+.tag-guide ol { padding: 0 18px 0 30px; margin: 0 0 8px; }
+.tag-guide li { margin: 3px 0; }
+.tag-guide p { padding: 0 11px 10px; }
+.tag-guide code {
+  font-family: monospace;
+  color: var(--red-dark);
+  background: #fff;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 /* Slug */

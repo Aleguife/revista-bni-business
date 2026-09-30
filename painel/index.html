@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — BNI Business</title>
-<link rel="stylesheet" href="admin.css?v=5">
+<link rel="stylesheet" href="admin.css?v=6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -191,7 +191,20 @@
 
             <div class="field-group">
               <label>Texto base da matéria</label>
-              <small class="field-hint" style="margin-bottom:8px;display:block;">Cole o texto da revista — bold, italic, listas e subtítulos são preservados ao colar do InDesign ou Word. Para creditar uma imagem, escreva em uma linha separada logo após ela: <code>[CRÉDITO: Nome do fotógrafo]</code>. Para criar um bloco com fluxo equilibrado em duas colunas, deixe o subtítulo fora e envolva somente o texto e a imagem com <code>[1COL]</code> e <code>[/1COL]</code>, cada tag em uma linha.</small>
+              <small class="field-hint" style="margin-bottom:8px;display:block;">Cole o texto da revista — bold, italic, listas e subtítulos são preservados ao colar do InDesign ou Word. Use os ícones da barra para inserir as tags sem precisar digitá-las.</small>
+              <details class="tag-guide">
+                <summary>Guia de tags do conteúdo</summary>
+                <ol>
+                  <li><code>[IMG: arquivo.webp]</code> — insere uma imagem da pasta <code>img</code>.</li>
+                  <li><code>[LEGENDA: texto]</code> — vem logo após a imagem e substitui a legenda criada pela IA.</li>
+                  <li><code>[CRÉDITO: nome]</code> — vem logo após a imagem ou após sua legenda; aparece como crédito lateral.</li>
+                  <li><code>[1COL]</code> … <code>[/1COL]</code> — delimita um bloco cujo conteúdo flui em duas colunas equilibradas. Deixe o subtítulo fora dessas tags.</li>
+                  <li><code>[SLIDER: img1.webp | img2.webp]</code> — slider com legenda individual gerada pela IA.</li>
+                  <li><code>[SLIDER-SL: img1.webp | img2.webp]</code> — slider sem legenda.</li>
+                  <li><code>[SLIDER-GLOBAL: img1.webp | img2.webp]</code> — slider com uma legenda única para o conjunto.</li>
+                </ol>
+                <p><strong>Ordem recomendada:</strong> imagem → legenda opcional → crédito opcional. Cada tag deve ficar em sua própria linha.</p>
+              </details>
               <div id="f-texto-editor"></div>
             </div>
 
@@ -285,6 +298,6 @@
 </div>
 
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-<script src="admin.js?v=69"></script>
+<script src="admin.js?v=70"></script>
 </body>
 </html>

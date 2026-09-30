@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
         container: [
           ['bold', 'italic', 'underline'],
           [{ header: 2 }, { header: 3 }, 'blockquote'],
-          ['imagem', 'slider'],
+          ['imagem', 'legenda', 'credito', 'uma-coluna', 'slider'],
           [{ list: 'ordered' }, { list: 'bullet' }],
           ['clean'],
         ],
@@ -182,6 +182,14 @@ document.addEventListener('DOMContentLoaded', function () {
             quill.insertText(range.index, placeholder, 'user');
             quill.setSelection(range.index + placeholder.length);
           },
+          legenda: function () { inserirTagNoEditor('[LEGENDA: Escreva uma legenda editorial personalizada]'); },
+          credito: function () { inserirTagNoEditor('[CRÉDITO: Nome do fotógrafo]'); },
+          'uma-coluna': function () {
+            const range = quill.getSelection(true);
+            const placeholder = '[1COL]\n\n[/1COL]';
+            quill.insertText(range.index, placeholder, 'user');
+            quill.setSelection(range.index + 7);
+          },
           slider: function () { /* tratado pelo dropdown — ver abaixo */ },
         },
       },
@@ -190,9 +198,21 @@ document.addEventListener('DOMContentLoaded', function () {
     placeholder: 'Cole aqui o texto completo. Bold, italic, listas e subtítulos são preservados automaticamente ao colar do InDesign ou Word.',
   });
 
-  // Estiliza botões customizados 📷 e 🎠
+  function inserirTagNoEditor(tag) {
+    const range = quill.getSelection(true);
+    quill.insertText(range.index, tag, 'user');
+    quill.setSelection(range.index + tag.length);
+  }
+
+  // Estiliza botões de tags editoriais
   const btnImg = document.querySelector('.ql-imagem');
   if (btnImg) { btnImg.textContent = '📷'; btnImg.title = 'Inserir imagem [IMG: arquivo.webp]'; }
+  const btnLegenda = document.querySelector('.ql-legenda');
+  if (btnLegenda) { btnLegenda.textContent = '💬'; btnLegenda.title = 'Legenda manual da imagem anterior'; }
+  const btnCredito = document.querySelector('.ql-credito');
+  if (btnCredito) { btnCredito.textContent = '©'; btnCredito.title = 'Crédito da imagem anterior'; }
+  const btnUmaColuna = document.querySelector('.ql-uma-coluna');
+  if (btnUmaColuna) { btnUmaColuna.textContent = '1↔2'; btnUmaColuna.title = 'Bloco com fluxo equilibrado em duas colunas'; btnUmaColuna.style.cssText += 'width:auto;padding:0 5px;font-size:11px;'; }
   // Dropdown 🎠
   const btnSlider = document.querySelector('.ql-slider');
   if (btnSlider) {
