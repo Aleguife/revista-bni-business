@@ -1311,7 +1311,7 @@ function montarPrompt(d) {
 
   let legendaBloco = '';
   if (uniqueImgs.length > 0) {
-    legendaBloco = '\n\nAs ' + uniqueImgs.length + ' imagem(ns) foram anexadas acima nesta mensagem, cada uma precedida pelo marcador "Imagem [nome.webp]:". Para cada uma, gere DOIS textos distintos. ALT: descricao literal e objetiva da imagem para acessibilidade. LEGENDA: frase editorial que acrescente contexto e relacione a imagem ao argumento da materia, sem inventar fatos. Na legenda, evite apenas narrar a acao da foto (como "sorri", "posa" ou "segura um livro"), frases-tese genericas e tom publicitario. Ambos devem ter 1 linha e nao terminar com ponto. Formato de saida:\n\n' +
+    legendaBloco = '\n\nAs ' + uniqueImgs.length + ' imagem(ns) foram anexadas acima nesta mensagem, cada uma precedida pelo marcador "Imagem [nome.webp]:". Para cada uma, gere DOIS textos distintos. ALT: descricao literal e objetiva da imagem para acessibilidade. LEGENDA: frase editorial que acrescente contexto e relacione a imagem ao argumento da materia, sem inventar fatos. A legenda nao pode identificar elementos visuais — pessoa, roupa, pose, ambiente, placa, logotipo ou o que a pessoa esta fazendo; isso e funcao exclusiva do ALT. Em vez disso, use uma decisao, consequencia, contraste ou contexto concreto citado no texto. Evite frases-tese genericas e tom publicitario. Ambos devem ter 1 linha e nao terminar com ponto. Formato de saida:\n\n' +
       uniqueImgs.map(f => '==IMAGEM:' + f + '==\nALT: [descricao objetiva]\nLEGENDA: [leitura editorial]\n==FIM==').join('\n\n');
   }
 
