@@ -621,6 +621,13 @@ function montarCorpoArtigo(d, legendas) {
     if (!tag) continue;
     if (ehVazio(el)) continue;                           // ← filtra &nbsp; e <br> vazios
     var text = el.textContent.replace(/\u00a0/g, ' ').trim();
+    // Formato compacto: [1COL][IMG: arquivo.webp][/1COL]
+    // Crédito opcional: [1COL][IMG: arquivo.webp][CRÉDITO: Nome][/1COL]
+    var imgOneColMatch = text.match(/^\[1COL\]\s*\[IMG:\s*([^\]]+)\]\s*(?:\[CR[ÉE]DITO:\s*([^\]]+)\]\s*)?\[\/1COL\]$/i);
+    if (imgOneColMatch) {
+      tokens.push({ type: 'img-one-col', file: imgOneColMatch[1].trim(), credit: (imgOneColMatch[2] || '').trim() });
+      continue;
+    }
     if (/^\[1COL\]$/i.test(text)) {
       tokens.push({ type: 'one-col-open' });
       continue;
@@ -761,7 +768,7 @@ function montarCorpoArtigo(d, legendas) {
 
   // Predicado: inicia nova seção (interrompe coleta de parágrafos)
   function isBreak(type) {
-    return type === 'h2' || type === 'h3' || type === 'img' || type === 'credit' ||
+    return type === 'h2' || type === 'h3' || type === 'img' || type === 'img-one-col' || type === 'credit' ||
            type === 'one-col-open' || type === 'one-col-close' ||
            type === 'slider' || type === 'slider-sl' || type === 'slider-global';
   }
@@ -797,10 +804,10 @@ function montarCorpoArtigo(d, legendas) {
     }
 
     // — Imagem standalone —
-    if (tk.type === 'img') {
-      var credito = (i + 1 < n && tokens[i + 1].type === 'credit') ? tokens[i + 1].value : '';
-      out.push(imgHtml(tk, credito));
-      if (credito) i++;
+    if (tk.type === 'img' || tk.type === 'img-one-col') {
+      var credito = tk.credit || ((i + 1 < n && tokens[i + 1].type === 'credit') ? tokens[i + 1].value : '');
+      out.push(imgHtml(tk, credito, tk.type === 'img-one-col'));
+      if (!tk.credit && credito) i++;
       i++;
       continue;
     }
