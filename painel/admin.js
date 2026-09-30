@@ -621,6 +621,14 @@ function montarCorpoArtigo(d, legendas) {
     if (!tag) continue;
     if (ehVazio(el)) continue;                           // ← filtra &nbsp; e <br> vazios
     var text = el.textContent.replace(/\u00a0/g, ' ').trim();
+    if (/^\[1COL\]$/i.test(text)) {
+      tokens.push({ type: 'one-col-open' });
+      continue;
+    }
+    if (/^\[\/1COL\]$/i.test(text)) {
+      tokens.push({ type: 'one-col-close' });
+      continue;
+    }
     var imgMatch = text.match(/^\[IMG:\s*([^\]]+)\]$/);
     if (imgMatch) {
       tokens.push({ type: 'img', file: imgMatch[1].trim() });
@@ -684,7 +692,7 @@ function montarCorpoArtigo(d, legendas) {
     return '<div class="' + cls + '"><div>' + L + '</div><div>' + R + '</div></div>';
   }
 
-  function imgHtml(tk, credito) {
+  function imgHtml(tk, credito, umaColuna) {
     var file = normalizarArquivoImagem(tk.file);
     var dadosImagem = legendaDaImagem(file);
     var alt = dadosImagem.alt || dadosImagem.legenda || '';
@@ -697,7 +705,7 @@ function montarCorpoArtigo(d, legendas) {
       imagemHtml = '<div class="foto-larga__moldura">' + imagemHtml +
         '<span class="foto-credito">Foto: ' + escaparHtml(credito) + '</span></div>';
     }
-    return '<figure class="foto-larga fade-in' + (credito ? ' foto-larga--com-credito' : '') + '">' + imagemHtml +
+    return '<figure class="foto-larga fade-in' + (credito ? ' foto-larga--com-credito' : '') + (umaColuna ? ' foto-larga--uma-coluna' : '') + '">' + imagemHtml +
            (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
   }
 
@@ -754,6 +762,7 @@ function montarCorpoArtigo(d, legendas) {
   // Predicado: inicia nova seção (interrompe coleta de parágrafos)
   function isBreak(type) {
     return type === 'h2' || type === 'h3' || type === 'img' || type === 'credit' ||
+           type === 'one-col-open' || type === 'one-col-close' ||
            type === 'slider' || type === 'slider-sl' || type === 'slider-global';
   }
 
@@ -764,6 +773,28 @@ function montarCorpoArtigo(d, legendas) {
 
   while (i < n) {
     var tk = tokens[i];
+
+    // — Imagem em uma coluna: [1COL] + [IMG] + crédito opcional + [/1COL] —
+    if (tk.type === 'one-col-open' && i + 2 < n && tokens[i + 1].type === 'img') {
+      var oneColImg = tokens[i + 1];
+      var nextIndex = i + 2;
+      var oneColCredito = '';
+      if (tokens[nextIndex] && tokens[nextIndex].type === 'credit') {
+        oneColCredito = tokens[nextIndex].value;
+        nextIndex++;
+      }
+      if (tokens[nextIndex] && tokens[nextIndex].type === 'one-col-close') {
+        out.push(imgHtml(oneColImg, oneColCredito, true));
+        i = nextIndex + 1;
+        continue;
+      }
+    }
+
+    // Tags de coluna isoladas ou malformadas não aparecem no artigo.
+    if (tk.type === 'one-col-open' || tk.type === 'one-col-close') {
+      i++;
+      continue;
+    }
 
     // — Imagem standalone —
     if (tk.type === 'img') {
@@ -929,7 +960,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/materia.css?v=4">
+<link rel="stylesheet" href="/assets/css/materia.css?v=5">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

@@ -340,6 +340,12 @@
     writing-mode: vertical-rl;
     transform: rotate(180deg);
   }
+  /* Imagem com a largura de uma das duas colunas editoriais */
+  .foto-larga--uma-coluna {
+    width: calc(50% - 1.25rem);
+    margin-left: 0;
+    margin-right: auto;
+  }
   @media (max-width: 900px) {
     .foto-larga--com-credito {
       padding-right: 1.5rem;
@@ -347,6 +353,9 @@
     .foto-larga--com-credito .foto-credito {
       right: -1.5rem;
       font-size: 10px;
+    }
+    .foto-larga--uma-coluna {
+      width: 100%;
     }
   }
 
