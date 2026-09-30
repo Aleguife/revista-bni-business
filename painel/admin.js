@@ -1338,7 +1338,7 @@ ${textoPlano.replace(/\s+/g, ' ').trim().slice(0, 600)}...
 Retorne APENAS os span e br, sem a tag h1. Nao altere as palavras do titulo.]
 
 ==CAPTION==
-[Legenda narrativa para a foto hero — texto que aparece DEPOIS do nome em negrito. Estilo evocativo, conectado ao conteudo da materia, nunca generico. Referencia real: "de servidor publico ao empreendedor — a trajetoria de quem aprendeu as regras do jogo de dentro para fora". Regras: 1 linha, sem ponto final, sem repetir o nome da pessoa, sem formulas genericas ("especialista em", "profissional com X anos") — use uma perspectiva, contraste ou conquista especifica extraida do texto da materia.]
+[Legenda narrativa para a foto hero — texto que aparece DEPOIS do nome em negrito. Estilo evocativo, conectado ao conteudo da materia, nunca generico. Referencia real: "de servidor publico ao empreendedor — a trajetoria de quem aprendeu as regras do jogo de dentro para fora". Regras: 1 linha, sem ponto final, sem repetir o nome da pessoa. Como o nome ja vem imediatamente antes, a legenda deve começar com verbo ou locucao verbal que complete a frase (ex.: "transformou...", "construiu...", "encontra..."); NUNCA comece com "de quem", "de", "para quem" ou outra construcao que deixe a frase incompleta. Nao use formulas genericas ("especialista em", "profissional com X anos") ou afirmacoes absolutas/nao verificaveis ("nenhum concorrente", "o melhor", "unico") — use uma perspectiva, contraste ou conquista especifica extraida do texto da materia.]
 
 ==ALT_HERO==
 [Descreva a imagem hero anexada em até 125 caracteres. Baseie-se exclusivamente no que ela mostra. Seja objetivo e específico; não comece com "imagem de" e não invente tempo de experiência, cargos, locais ou fatos não visíveis]
