@@ -159,13 +159,26 @@
   .secao-titulo + figure + .texto-duplo {
     margin-top: 1.5rem;
   }
-  .texto-duplo p {
+  .texto-duplo p,
+  .bloco-uma-coluna p {
     font-family: 'Barlow', sans-serif;
     font-size: 1.125rem;
     font-weight: 300;
     line-height: 1.7;
     color: #2a2a2a;
     text-indent: 1.5em;
+  }
+  /* Bloco editorial delimitado por [1COL] ... [/1COL]. */
+  .bloco-uma-coluna {
+    margin-top: 0;
+    column-count: 2;
+    column-gap: 3rem;
+    column-fill: balance;
+  }
+  .bloco-uma-coluna .foto-larga--uma-coluna {
+    width: 100%;
+    margin: 0;
+    break-inside: avoid-column;
   }
 
   /* TEXTO 3 COLUNAS */
@@ -427,7 +440,8 @@
     .hero-foto { height: 100vh; max-height: none; }
     .hero-texto { padding: 2.5rem 1.5rem; }
     .texto-duplo, .texto-triplo { grid-template-columns: 1fr; gap: 0; }
-    .texto-duplo p, .texto-triplo p { font-size: 1.294rem; }
+    .texto-duplo p, .texto-triplo p, .bloco-uma-coluna p { font-size: 1.294rem; }
+    .bloco-uma-coluna { column-count: 1; }
     .citacao-lateral { float: none; width: 100%; margin: 1.5rem 0; }
     .artigo { padding: 3rem 1.2rem; }
     .citacao-bloco { padding: 2rem 1.5rem; }

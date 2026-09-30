@@ -668,6 +668,23 @@ function montarCorpoArtigo(d, legendas) {
     else                           tokens.push({ type: 'para',  html:  el.outerHTML });
   }
 
+  // Um bloco [1COL] envolve uma seção editorial inteira. A regra especial
+  // fica confinada entre as tags e nunca altera as demais seções.
+  var tokensNormalizados = [];
+  for (var t = 0; t < tokens.length; t++) {
+    if (tokens[t].type !== 'one-col-open') {
+      tokensNormalizados.push(tokens[t]);
+      continue;
+    }
+    var fim = t + 1;
+    while (fim < tokens.length && tokens[fim].type !== 'one-col-close') fim++;
+    if (fim < tokens.length) {
+      tokensNormalizados.push({ type: 'one-col-block', items: tokens.slice(t + 1, fim) });
+      t = fim;
+    }
+  }
+  tokens = tokensNormalizados;
+
   // ── textoDuplo ─────────────────────────────────────────────
   // Recebe TODOS os parágrafos da seção de uma vez.
   // O ponto de corte é escolhido por massa de caracteres: encontra
@@ -714,6 +731,29 @@ function montarCorpoArtigo(d, legendas) {
     }
     return '<figure class="foto-larga fade-in' + (credito ? ' foto-larga--com-credito' : '') + (umaColuna ? ' foto-larga--uma-coluna' : '') + '">' + imagemHtml +
            (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
+  }
+
+  function blocoUmaColunaHtml(items) {
+    var titulo = '', texto = '', imagem = '', credito = '', extras = '';
+    for (var b = 0; b < items.length; b++) {
+      var item = items[b];
+      if ((item.type === 'h2' || item.type === 'h3') && !titulo) {
+        titulo = '<' + item.type + ' class="secao-titulo">' + item.inner + '</' + item.type + '>';
+      } else if (item.type === 'para') {
+        texto += item.html;
+      } else if (item.type === 'img' && !imagem) {
+        imagem = item;
+      } else if (item.type === 'credit') {
+        credito = item.value;
+      } else if (item.type === 'quote') {
+        extras += '<div class="citacao-bloco"><blockquote>' + item.inner + '</blockquote></div>';
+      }
+    }
+    var corpo = texto + (imagem ? imgHtml(imagem, credito, true) : '') + extras;
+    // Mesmo se o subtítulo for incluído por engano entre as tags, ele é
+    // retirado do fluxo de colunas e permanece em largura total.
+    return (titulo ? '<div class="fade-in">' + titulo + '</div>' : '') +
+      '<section class="bloco-uma-coluna fade-in">' + corpo + '</section>';
   }
 
   function legendaDaImagem(file) {
@@ -781,6 +821,12 @@ function montarCorpoArtigo(d, legendas) {
   while (i < n) {
     var tk = tokens[i];
 
+    if (tk.type === 'one-col-block') {
+      out.push(blocoUmaColunaHtml(tk.items));
+      i++;
+      continue;
+    }
+
     // — Imagem em uma coluna: [1COL] + [IMG] + crédito opcional + [/1COL] —
     if (tk.type === 'one-col-open' && i + 2 < n && tokens[i + 1].type === 'img') {
       var oneColImg = tokens[i + 1];
@@ -812,6 +858,17 @@ function montarCorpoArtigo(d, legendas) {
       // Uma imagem em 1COL divide a mesma linha com o próximo parágrafo.
       // Assim, ela não cria uma área vazia nem interrompe a leitura em duas colunas.
       if (tk.type === 'img-one-col' && tokens[afterImage] && tokens[afterImage].type === 'para') {
+        // Se o texto anterior ocupou apenas a coluna esquerda, a tag completa
+        // exclusivamente essa linha: imagem e parágrafo seguinte ficam à direita.
+        // Nenhum bloco de texto comum tem seu comportamento alterado.
+        var ultimo = out.length - 1;
+        var fimColunaVazia = '</div><div></div></div>';
+        if (ultimo >= 0 && out[ultimo].endsWith(fimColunaVazia)) {
+          out[ultimo] = out[ultimo].slice(0, -fimColunaVazia.length) +
+            '</div><div>' + imgHtml(tk, credito, true) + tokens[afterImage].html + '</div></div>';
+          i = afterImage + 1;
+          continue;
+        }
         out.push('<div class="texto-duplo texto-duplo--imagem-coluna fade-in"><div>' +
           imgHtml(tk, credito, true) + '</div><div>' + tokens[afterImage].html + '</div></div>');
         i = afterImage + 1;
@@ -978,7 +1035,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/materia.css?v=6">
+<link rel="stylesheet" href="/assets/css/materia.css?v=7">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
