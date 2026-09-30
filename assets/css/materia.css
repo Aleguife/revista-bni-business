@@ -317,6 +317,38 @@
     margin-top: 0.5rem;
     line-height: 1.5;
   }
+  /* CRÉDITO DE FOTO — aplicado apenas quando há autoria a informar */
+  .foto-larga--com-credito {
+    padding-right: 2rem;
+  }
+  .foto-larga__moldura {
+    position: relative;
+  }
+  .foto-larga--com-credito .foto-credito {
+    position: absolute;
+    top: 0;
+    right: -2rem;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: #4b4b4b;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  @media (max-width: 900px) {
+    .foto-larga--com-credito {
+      padding-right: 1.5rem;
+    }
+    .foto-larga--com-credito .foto-credito {
+      right: -1.5rem;
+      font-size: 10px;
+    }
+  }
 
   /* SEPARADOR DE SEÇÃO */
 
