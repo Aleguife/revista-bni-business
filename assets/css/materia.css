@@ -178,6 +178,11 @@
   .bloco-uma-coluna-grupo .secao-titulo {
     margin-bottom: 1.5rem;
   }
+  /* O subtítulo já define o respiro do bloco: não soma a margem padrão
+     aplicada entre seções do artigo. */
+  .artigo > .bloco-uma-coluna-titulo + .bloco-uma-coluna-grupo {
+    margin-top: 0;
+  }
   .bloco-uma-coluna .foto-larga--uma-coluna {
     /* Em um contêiner multicoluna, largura automática significa a largura
        da própria coluna; 100% faria a figura tentar ocupar o bloco todo. */

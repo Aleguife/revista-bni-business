@@ -908,7 +908,8 @@ function montarCorpoArtigo(d, legendas) {
       var headTag = tk.type;
       var headCls = tk.type === 'h2' ? 'secao-titulo' : 'secao-subtitulo';
       i++;
-      var block = '<div class="fade-in"><' + headTag + ' class="' + headCls + '">' + tk.inner + '</' + headTag + '>';
+      var tituloAntesDeBlocoUmaColuna = tokens[i] && tokens[i].type === 'one-col-block';
+      var block = '<div class="fade-in' + (tituloAntesDeBlocoUmaColuna ? ' bloco-uma-coluna-titulo' : '') + '"><' + headTag + ' class="' + headCls + '">' + tk.inner + '</' + headTag + '>';
       var currentParas = [];
       while (i < n && !isBreak(tokens[i].type)) {
         var cur = tokens[i];
@@ -1035,7 +1036,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/materia.css?v=10">
+<link rel="stylesheet" href="/assets/css/materia.css?v=11">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
