@@ -702,6 +702,13 @@ function montarCorpoArtigo(d, legendas) {
       tokens.push({ type: 'caption', value: legendaMatch[1].trim() });
       continue;
     }
+    // Permite legendas editoriais longas, quebradas em mais de um parágrafo
+    // pelo Quill. A normalização abaixo reúne o conteúdo até o ] final.
+    var legendaInicioMatch = text.match(/^\[LEGENDA:\s*(.*)$/i);
+    if (legendaInicioMatch) {
+      tokens.push({ type: 'caption-start', value: legendaInicioMatch[1].trim() });
+      continue;
+    }
     var sliderMatch = text.match(/^\[SLIDER:\s*([^\]]+)\]$/);
     if (sliderMatch) {
       tokens.push({ type: 'slider', raw: sliderMatch[1].trim() });
@@ -723,6 +730,37 @@ function montarCorpoArtigo(d, legendas) {
     else if (tag === 'blockquote') tokens.push({ type: 'quote', inner: el.innerHTML });
     else                           tokens.push({ type: 'para',  html:  el.outerHTML });
   }
+
+  // Une uma [LEGENDA:] que foi dividida pelo editor em vários parágrafos.
+  // Assim a legenda continua sendo aplicada à imagem anterior, mesmo quando
+  // contém nomes, destaque em negrito ou uma quebra de linha.
+  var tokensComLegenda = [];
+  for (var lt = 0; lt < tokens.length; lt++) {
+    if (tokens[lt].type !== 'caption-start') {
+      tokensComLegenda.push(tokens[lt]);
+      continue;
+    }
+    var partesLegenda = [tokens[lt].value];
+    var fechouLegenda = /\]$/.test(tokens[lt].value);
+    var li = lt + 1;
+    while (!fechouLegenda && li < tokens.length && tokens[li].type === 'para') {
+      var textoLegenda = document.createElement('div');
+      textoLegenda.innerHTML = tokens[li].html;
+      var trecho = textoLegenda.textContent.replace(/\u00a0/g, ' ').trim();
+      partesLegenda.push(trecho);
+      fechouLegenda = /\]$/.test(trecho);
+      li++;
+    }
+    if (fechouLegenda) {
+      var legendaCompleta = partesLegenda.join(' ').replace(/\]\s*$/, '').trim();
+      tokensComLegenda.push({ type: 'caption', value: legendaCompleta });
+      lt = li - 1;
+    } else {
+      // Marcador incompleto não deve consumir o texto editorial seguinte.
+      tokensComLegenda.push({ type: 'para', html: '<p>' + escaparHtml('[LEGENDA: ' + tokens[lt].value) + '</p>' });
+    }
+  }
+  tokens = tokensComLegenda;
 
   // Um bloco [1COL] envolve uma seção editorial inteira. A regra especial
   // fica confinada entre as tags e nunca altera as demais seções.
