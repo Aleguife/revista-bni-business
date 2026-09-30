@@ -734,22 +734,21 @@ function montarCorpoArtigo(d, legendas) {
   }
 
   function blocoUmaColunaHtml(items) {
-    var titulo = '', texto = '', imagem = '', credito = '', extras = '';
+    var titulo = '', corpo = '';
     for (var b = 0; b < items.length; b++) {
       var item = items[b];
       if ((item.type === 'h2' || item.type === 'h3') && !titulo) {
         titulo = '<' + item.type + ' class="secao-titulo">' + item.inner + '</' + item.type + '>';
       } else if (item.type === 'para') {
-        texto += item.html;
-      } else if (item.type === 'img' && !imagem) {
-        imagem = item;
-      } else if (item.type === 'credit') {
-        credito = item.value;
+        corpo += item.html;
+      } else if (item.type === 'img') {
+        var credito = (items[b + 1] && items[b + 1].type === 'credit') ? items[b + 1].value : '';
+        corpo += imgHtml(item, credito, true);
+        if (credito) b++;
       } else if (item.type === 'quote') {
-        extras += '<div class="citacao-bloco"><blockquote>' + item.inner + '</blockquote></div>';
+        corpo += '<div class="citacao-bloco"><blockquote>' + item.inner + '</blockquote></div>';
       }
     }
-    var corpo = texto + (imagem ? imgHtml(imagem, credito, true) : '') + extras;
     // Mesmo se o subtítulo for incluído por engano entre as tags, ele é
     // retirado do fluxo de colunas e permanece em largura total.
     return '<div class="bloco-uma-coluna-grupo fade-in">' + titulo +
