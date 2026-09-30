@@ -352,12 +352,16 @@ body { font-family: var(--font-sans); background: var(--gray-bg); color: var(--b
 
 /* ── QUILL EDITOR ── */
 .ql-toolbar.ql-snow {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
   border: 1.5px solid var(--gray-light);
   border-bottom: none;
   border-radius: var(--radius) var(--radius) 0 0;
   background: #fafafa;
   font-family: var(--font-sans);
   padding: 8px 10px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.06);
 }
 .ql-container.ql-snow {
   border: 1.5px solid var(--gray-light);
