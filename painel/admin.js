@@ -752,8 +752,8 @@ function montarCorpoArtigo(d, legendas) {
     var corpo = texto + (imagem ? imgHtml(imagem, credito, true) : '') + extras;
     // Mesmo se o subtítulo for incluído por engano entre as tags, ele é
     // retirado do fluxo de colunas e permanece em largura total.
-    return (titulo ? '<div class="fade-in">' + titulo + '</div>' : '') +
-      '<section class="bloco-uma-coluna fade-in">' + corpo + '</section>';
+    return '<div class="bloco-uma-coluna-grupo fade-in">' + titulo +
+      '<section class="bloco-uma-coluna">' + corpo + '</section></div>';
   }
 
   function legendaDaImagem(file) {
@@ -1035,7 +1035,7 @@ const TEMPLATE_BASE = `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/materia.css?v=8">
+<link rel="stylesheet" href="/assets/css/materia.css?v=9">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

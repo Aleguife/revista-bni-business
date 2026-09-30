@@ -175,6 +175,9 @@
     column-gap: 3rem;
     column-fill: balance;
   }
+  .bloco-uma-coluna-grupo .secao-titulo {
+    margin-bottom: 1.5rem;
+  }
   .bloco-uma-coluna .foto-larga--uma-coluna {
     /* Em um contêiner multicoluna, largura automática significa a largura
        da própria coluna; 100% faria a figura tentar ocupar o bloco todo. */
