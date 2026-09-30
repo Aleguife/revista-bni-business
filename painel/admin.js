@@ -1542,6 +1542,12 @@ async function publicar() {
   const slug = val('f-slug');
   const html = document.getElementById('html-gerado').value;
   if (!slug || !html) { alert('Gere a matéria antes de publicar.'); return; }
+  const marcadorInvalido = /\bundefined\b/i.test(html) || /\[(?:\/?1col|img:|cr[ée]dito:)/i.test(html);
+  if (marcadorInvalido) {
+    addLog('Erro: o HTML contém um marcador inválido. Gere novamente antes de publicar.', 'error');
+    alert('Publicação bloqueada: revise o HTML gerado e gere a matéria novamente.');
+    return;
+  }
 
   const edicao = getCurrentEdicao();
   const caminho = `${edicao}/${slug}/index.html`;
