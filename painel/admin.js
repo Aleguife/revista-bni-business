@@ -681,12 +681,21 @@ function montarCorpoArtigo(d, legendas) {
 
   function imgHtml(tk) {
     var file = normalizarArquivoImagem(tk.file);
-    var cap = legendas[file] || '';
+    var dadosImagem = legendaDaImagem(file);
+    var alt = dadosImagem.alt || dadosImagem.legenda || '';
+    var cap = dadosImagem.legenda || alt;
+    var altSeguro = escaparHtml(alt);
     var capSeguro = escaparHtml(cap);
     var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/img/' + file;
     return '<figure class="foto-larga fade-in"><img src="' + src +
-           '" alt="' + capSeguro + '" loading="lazy">' +
+           '" alt="' + altSeguro + '" loading="lazy">' +
            (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
+  }
+
+  function legendaDaImagem(file) {
+    var dado = legendas[file];
+    if (dado && typeof dado === 'object') return dado;
+    return { alt: dado || '', legenda: dado || '' };
   }
 
   function sliderHtml(tk) {
@@ -697,17 +706,20 @@ function montarCorpoArtigo(d, legendas) {
     var slidesHtml = parts.map(function(p, idx) {
       var m = p.match(/^(.+?)::(.*)$/);
       var file = normalizarArquivoImagem(m ? m[1].trim() : p);
+      var dadosImagem = legendaDaImagem(file);
       var cap = '';
       if (tk.type === 'slider') {
         // individual: legenda manual (::) tem prioridade, senão usa IA
-        cap = (m && m[2].trim()) ? m[2].trim() : (legendas[file] || '');
+        cap = (m && m[2].trim()) ? m[2].trim() : (dadosImagem.legenda || '');
       }
+      var alt = (m && m[2].trim()) ? m[2].trim() : (dadosImagem.alt || cap);
+      var altSeguro = escaparHtml(alt);
       var capSeguro = escaparHtml(cap);
       // slider-sl: sem legenda
       // slider-global: legenda fica no rodapé, não por foto
       var src = '/' + getCurrentEdicao() + '/' + baseSlug + '/img/' + file;
       return '<figure class="slider-slide' + (idx === 0 ? ' active' : '') + '">' +
-             '<img src="' + src + '" alt="' + capSeguro + '" loading="lazy">' +
+             '<img src="' + src + '" alt="' + altSeguro + '" loading="lazy">' +
              (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
     }).join('');
 
@@ -1148,12 +1160,20 @@ function parseAIResponse(text) {
     parts[sec.toLowerCase()] = text.slice(contentStart, end).trim();
   });
 
-  // Extrai ==LEGENDA:arquivo.webp== texto ==FIM==
+  // Extrai ==IMAGEM:arquivo.webp== ALT + LEGENDA ==FIM==
   const legendas = {};
-  const legendaRe = /==LEGENDA:([^=\n]+)==([\s\S]*?)==FIM==/g;
+  const imagemRe = /==IMAGEM:([^=\n]+)==\s*ALT:\s*([\s\S]*?)\s*LEGENDA:\s*([\s\S]*?)\s*==FIM==/g;
   let m;
+  while ((m = imagemRe.exec(text)) !== null) {
+    legendas[m[1].trim()] = { alt: m[2].trim(), legenda: m[3].trim() };
+  }
+
+  // Formato anterior: mantém compatibilidade com respostas já geradas.
+  const legendaRe = /==LEGENDA:([^=\n]+)==([\s\S]*?)==FIM==/g;
   while ((m = legendaRe.exec(text)) !== null) {
-    legendas[m[1].trim()] = m[2].trim();
+    if (!legendas[m[1].trim()]) {
+      legendas[m[1].trim()] = { alt: m[2].trim(), legenda: m[2].trim() };
+    }
   }
   // Extrai ==LEGENDA-SLIDER-GLOBAL:N== texto ==FIM==
   const sgRe = /==LEGENDA-SLIDER-GLOBAL:(\d+)==([\s\S]*?)==FIM==/g;
@@ -1291,8 +1311,8 @@ function montarPrompt(d) {
 
   let legendaBloco = '';
   if (uniqueImgs.length > 0) {
-    legendaBloco = '\n\nAs ' + uniqueImgs.length + ' imagem(ns) foram anexadas acima nesta mensagem, cada uma precedida pelo marcador "Imagem [nome.webp]:". Para cada uma, gere uma legenda baseada NO QUE A IMAGEM EFETIVAMENTE MOSTRA (pessoas, objetos, cena, lugar) — nao em suposicoes a partir do nome do arquivo ou do tema da materia. Estilo: 1 linha, sem ponto final, descricao objetiva ancorada no visual, conectada ao contexto editorial quando fizer sentido. Evite frases-tese genericas. Formato de saida:\n\n' +
-      uniqueImgs.map(f => '==LEGENDA:' + f + '==\n[legenda]\n==FIM==').join('\n\n');
+    legendaBloco = '\n\nAs ' + uniqueImgs.length + ' imagem(ns) foram anexadas acima nesta mensagem, cada uma precedida pelo marcador "Imagem [nome.webp]:". Para cada uma, gere DOIS textos distintos. ALT: descricao literal e objetiva da imagem para acessibilidade. LEGENDA: frase editorial que acrescente contexto e relacione a imagem ao argumento da materia, sem inventar fatos. Na legenda, evite apenas narrar a acao da foto (como "sorri", "posa" ou "segura um livro"), frases-tese genericas e tom publicitario. Ambos devem ter 1 linha e nao terminar com ponto. Formato de saida:\n\n' +
+      uniqueImgs.map(f => '==IMAGEM:' + f + '==\nALT: [descricao objetiva]\nLEGENDA: [leitura editorial]\n==FIM==').join('\n\n');
   }
 
   let sliderGlobalBloco = '';
