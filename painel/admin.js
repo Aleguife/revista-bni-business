@@ -806,9 +806,20 @@ function montarCorpoArtigo(d, legendas) {
     // — Imagem standalone —
     if (tk.type === 'img' || tk.type === 'img-one-col') {
       var credito = tk.credit || ((i + 1 < n && tokens[i + 1].type === 'credit') ? tokens[i + 1].value : '');
+      var afterImage = i + 1;
+      if (!tk.credit && credito) afterImage++;
+
+      // Uma imagem em 1COL divide a mesma linha com o próximo parágrafo.
+      // Assim, ela não cria uma área vazia nem interrompe a leitura em duas colunas.
+      if (tk.type === 'img-one-col' && tokens[afterImage] && tokens[afterImage].type === 'para') {
+        out.push('<div class="texto-duplo texto-duplo--imagem-coluna fade-in"><div>' +
+          imgHtml(tk, credito, true) + '</div><div>' + tokens[afterImage].html + '</div></div>');
+        i = afterImage + 1;
+        continue;
+      }
+
       out.push(imgHtml(tk, credito, tk.type === 'img-one-col'));
-      if (!tk.credit && credito) i++;
-      i++;
+      i = afterImage;
       continue;
     }
 

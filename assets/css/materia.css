@@ -346,6 +346,14 @@
     margin-left: 0;
     margin-right: auto;
   }
+  .texto-duplo--imagem-coluna {
+    align-items: start;
+    margin-top: 3rem;
+  }
+  .texto-duplo--imagem-coluna .foto-larga--uma-coluna {
+    width: 100%;
+    margin: 0;
+  }
   @media (max-width: 900px) {
     .foto-larga--com-credito {
       padding-right: 1.5rem;
@@ -356,6 +364,9 @@
     }
     .foto-larga--uma-coluna {
       width: 100%;
+    }
+    .texto-duplo--imagem-coluna {
+      margin-top: 2rem;
     }
   }
 
