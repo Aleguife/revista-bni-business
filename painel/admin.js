@@ -108,7 +108,7 @@ const MATERIAS_POR_EDICAO = {
   'edicao-03': [
     { num:1,  secao:'Negócios',                 titulo:'Conexões que a IA não faz',                                                     slug:'conexoes-ia',                            status:'publicada' },
     { num:2,  secao:'Mercado imobiliário',      titulo:'Do contrato ao negócio: a trajetória de Peter Lima',                             slug:'peter-lima-mercado-imobiliario',         status:'publicada' },
-    { num:3,  secao:'Desenvolvimento pessoal',  titulo:'Taís Araújo: reescrevendo histórias através da liderança',                        slug:'tais-araujo-lideranca',                  status:'pendente' },
+    { num:3,  secao:'Desenvolvimento pessoal',  titulo:'Taís Araújo: reescrevendo histórias através da liderança',                        slug:'tais-araujo-lideranca',                  status:'publicada' },
     { num:4,  secao:'Matéria de capa',          titulo:'Thomas Pillet – Após liderar a cultura da Up Brasil, o executivo prepara grande mudança no setor', slug:'thomas-pillet-up-brasil', status:'pendente' },
     { num:5,  secao:'Estilo',                   titulo:'O que sua joia diz sobre você',                                                   slug:'joias-estilo-pessoal',                   status:'pendente' },
     { num:6,  secao:'Saúde mental',             titulo:'O que a mente exausta custa ao negócio',                                          slug:'saude-mental-negocios',                  status:'pendente' },
