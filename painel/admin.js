@@ -626,6 +626,11 @@ function montarCorpoArtigo(d, legendas) {
       tokens.push({ type: 'img', file: imgMatch[1].trim() });
       continue;
     }
+    var creditoMatch = text.match(/^\[CR[ÉE]DITO:\s*([^\]]+)\]$/i);
+    if (creditoMatch) {
+      tokens.push({ type: 'credit', value: creditoMatch[1].trim() });
+      continue;
+    }
     var sliderMatch = text.match(/^\[SLIDER:\s*([^\]]+)\]$/);
     if (sliderMatch) {
       tokens.push({ type: 'slider', raw: sliderMatch[1].trim() });
@@ -679,7 +684,7 @@ function montarCorpoArtigo(d, legendas) {
     return '<div class="' + cls + '"><div>' + L + '</div><div>' + R + '</div></div>';
   }
 
-  function imgHtml(tk) {
+  function imgHtml(tk, credito) {
     var file = normalizarArquivoImagem(tk.file);
     var dadosImagem = legendaDaImagem(file);
     var alt = dadosImagem.alt || dadosImagem.legenda || '';
@@ -687,8 +692,12 @@ function montarCorpoArtigo(d, legendas) {
     var altSeguro = escaparHtml(alt);
     var capSeguro = escaparHtml(cap);
     var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/img/' + file;
-    return '<figure class="foto-larga fade-in"><img src="' + src +
-           '" alt="' + altSeguro + '" loading="lazy">' +
+    var imagemHtml = '<img src="' + src + '" alt="' + altSeguro + '" loading="lazy">';
+    if (credito) {
+      imagemHtml = '<div class="foto-larga__moldura">' + imagemHtml +
+        '<span class="foto-credito">Foto: ' + escaparHtml(credito) + '</span></div>';
+    }
+    return '<figure class="foto-larga fade-in' + (credito ? ' foto-larga--com-credito' : '') + '">' + imagemHtml +
            (cap ? '<figcaption>' + capSeguro + '</figcaption>' : '') + '</figure>';
   }
 
@@ -744,7 +753,7 @@ function montarCorpoArtigo(d, legendas) {
 
   // Predicado: inicia nova seção (interrompe coleta de parágrafos)
   function isBreak(type) {
-    return type === 'h2' || type === 'h3' || type === 'img' ||
+    return type === 'h2' || type === 'h3' || type === 'img' || type === 'credit' ||
            type === 'slider' || type === 'slider-sl' || type === 'slider-global';
   }
 
@@ -758,7 +767,15 @@ function montarCorpoArtigo(d, legendas) {
 
     // — Imagem standalone —
     if (tk.type === 'img') {
-      out.push(imgHtml(tk));
+      var credito = (i + 1 < n && tokens[i + 1].type === 'credit') ? tokens[i + 1].value : '';
+      out.push(imgHtml(tk, credito));
+      if (credito) i++;
+      i++;
+      continue;
+    }
+
+    // Crédito sem imagem imediatamente anterior: ignora para não exibir a tag bruta.
+    if (tk.type === 'credit') {
       i++;
       continue;
     }
