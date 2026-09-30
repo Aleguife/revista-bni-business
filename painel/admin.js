@@ -699,14 +699,22 @@ function montarCorpoArtigo(d, legendas) {
     // Ela tem prioridade sobre a legenda sugerida pela IA.
     var legendaMatch = text.match(/^\[LEGENDA:\s*([^\]]+)\]$/i);
     if (legendaMatch) {
-      tokens.push({ type: 'caption', value: legendaMatch[1].trim() });
+      tokens.push({
+        type: 'caption',
+        value: legendaMatch[1].trim(),
+        html: el.innerHTML.replace(/^\s*\[LEGENDA:\s*/i, '').replace(/\]\s*$/, '').trim()
+      });
       continue;
     }
     // Permite legendas editoriais longas, quebradas em mais de um parágrafo
     // pelo Quill. A normalização abaixo reúne o conteúdo até o ] final.
     var legendaInicioMatch = text.match(/^\[LEGENDA:\s*(.*)$/i);
     if (legendaInicioMatch) {
-      tokens.push({ type: 'caption-start', value: legendaInicioMatch[1].trim() });
+      tokens.push({
+        type: 'caption-start',
+        value: legendaInicioMatch[1].trim(),
+        html: el.innerHTML.replace(/^\s*\[LEGENDA:\s*/i, '').trim()
+      });
       continue;
     }
     var sliderMatch = text.match(/^\[SLIDER:\s*([^\]]+)\]$/);
@@ -741,6 +749,7 @@ function montarCorpoArtigo(d, legendas) {
       continue;
     }
     var partesLegenda = [tokens[lt].value];
+    var partesLegendaHtml = [tokens[lt].html || escaparHtml(tokens[lt].value)];
     var fechouLegenda = /\]$/.test(tokens[lt].value);
     var li = lt + 1;
     while (!fechouLegenda && li < tokens.length && tokens[li].type === 'para') {
@@ -748,12 +757,14 @@ function montarCorpoArtigo(d, legendas) {
       textoLegenda.innerHTML = tokens[li].html;
       var trecho = textoLegenda.textContent.replace(/\u00a0/g, ' ').trim();
       partesLegenda.push(trecho);
+      partesLegendaHtml.push(tokens[li].html);
       fechouLegenda = /\]$/.test(trecho);
       li++;
     }
     if (fechouLegenda) {
       var legendaCompleta = partesLegenda.join(' ').replace(/\]\s*$/, '').trim();
-      tokensComLegenda.push({ type: 'caption', value: legendaCompleta });
+      var legendaCompletaHtml = partesLegendaHtml.join('<br>').replace(/\]\s*$/, '').trim();
+      tokensComLegenda.push({ type: 'caption', value: legendaCompleta, html: legendaCompletaHtml });
       lt = li - 1;
     } else {
       // Marcador incompleto não deve consumir o texto editorial seguinte.
@@ -810,13 +821,31 @@ function montarCorpoArtigo(d, legendas) {
     return '<div class="' + cls + '"><div>' + L + '</div><div>' + R + '</div></div>';
   }
 
+  function legendaHtmlSeguro(html) {
+    var origem = document.createElement('div');
+    var destino = document.createElement('div');
+    origem.innerHTML = html || '';
+    function copiar(no, pai) {
+      if (no.nodeType === Node.TEXT_NODE) { pai.appendChild(document.createTextNode(no.nodeValue)); return; }
+      if (no.nodeType !== Node.ELEMENT_NODE) return;
+      var tag = no.tagName.toLowerCase();
+      if (tag === 'br') { pai.appendChild(document.createElement('br')); return; }
+      var permitido = tag === 'strong' || tag === 'b' || tag === 'em' || tag === 'i';
+      var alvo = permitido ? document.createElement(tag === 'b' ? 'strong' : (tag === 'i' ? 'em' : tag)) : pai;
+      if (permitido) pai.appendChild(alvo);
+      Array.from(no.childNodes).forEach(function (filho) { copiar(filho, alvo); });
+    }
+    Array.from(origem.childNodes).forEach(function (no) { copiar(no, destino); });
+    return destino.innerHTML;
+  }
+
   function imgHtml(tk, credito, umaColuna, legendaManual) {
     var file = normalizarArquivoImagem(tk.file);
     var dadosImagem = legendaDaImagem(file);
     var alt = dadosImagem.alt || dadosImagem.legenda || '';
     var cap = legendaManual || dadosImagem.legenda || alt;
     var altSeguro = escaparHtml(alt);
-    var capSeguro = escaparHtml(cap);
+    var capSeguro = legendaManual ? legendaHtmlSeguro(legendaManual) : escaparHtml(cap);
     var src = '/' + getCurrentEdicao() + '/' + (d.slug || 'materia') + '/img/' + file;
     var imagemHtml = '<img src="' + src + '" alt="' + altSeguro + '" loading="lazy">';
     if (credito) {
@@ -837,7 +866,7 @@ function montarCorpoArtigo(d, legendas) {
         corpo += item.html;
       } else if (item.type === 'img') {
         var proximo = b + 1;
-        var legendaManual = (items[proximo] && items[proximo].type === 'caption') ? items[proximo++].value : '';
+        var legendaManual = (items[proximo] && items[proximo].type === 'caption') ? (items[proximo++].html || items[proximo - 1].value) : '';
         var credito = (items[proximo] && items[proximo].type === 'credit') ? items[proximo++].value : '';
         corpo += imgHtml(item, credito, true, legendaManual);
         b = proximo - 1;
@@ -947,7 +976,8 @@ function montarCorpoArtigo(d, legendas) {
     // — Imagem standalone —
     if (tk.type === 'img' || tk.type === 'img-one-col') {
       var afterImage = i + 1;
-      var legendaManual = (tokens[afterImage] && tokens[afterImage].type === 'caption') ? tokens[afterImage++].value : '';
+      var legendaManual = (tokens[afterImage] && tokens[afterImage].type === 'caption') ? (tokens[afterImage].html || tokens[afterImage].value) : '';
+      if (legendaManual) afterImage++;
       var credito = tk.credit || ((tokens[afterImage] && tokens[afterImage].type === 'credit') ? tokens[afterImage].value : '');
       if (!tk.credit && credito) afterImage++;
 
