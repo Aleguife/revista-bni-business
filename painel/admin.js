@@ -808,7 +808,7 @@ function montarCorpoArtigo(d, legendas) {
 
   // Predicado: inicia nova seção (interrompe coleta de parágrafos)
   function isBreak(type) {
-    return type === 'h2' || type === 'h3' || type === 'img' || type === 'img-one-col' || type === 'credit' ||
+    return type === 'h2' || type === 'h3' || type === 'img' || type === 'img-one-col' || type === 'credit' || type === 'one-col-block' ||
            type === 'one-col-open' || type === 'one-col-close' ||
            type === 'slider' || type === 'slider-sl' || type === 'slider-global';
   }
