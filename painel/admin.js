@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Auto-save nos campos simples (exclui credenciais)
   document.querySelectorAll('#aba-nova-materia input, #aba-nova-materia select, #aba-nova-materia textarea')
     .forEach(function (el) {
-      if (el.id === 'f-api-key' || el.id === 'f-github-token') return;
+      if (el.id === 'f-api-key' || el.id === 'f-deepl-key' || el.id === 'f-github-token') return;
       el.addEventListener('input',  agendarSalvamento);
       el.addEventListener('change', agendarSalvamento);
     });
