@@ -1019,6 +1019,7 @@ function montarTemplate(d, parts) {
 
   const seoDesc    = (parts.seo    || '').replace(/%%/g, '').trim();
   const caption    = (parts.caption || '').trim();
+  const imagemAlt  = (parts.alt_hero || '').trim() || d.imagemAlt || '';
 
   // Título do hero: pipe manual → sempre JS (determinístico);
   // sem pipe → prefere resultado da IA, JS como fallback.
@@ -1056,7 +1057,7 @@ function montarTemplate(d, parts) {
   R('%%DATA_FORMATADA%%', dataFormatada);
   R('%%IMAGEM_URL%%',   d.imagemUrl || ('/' + getCurrentEdicao() + '/' + slug + '/hero.jpg'));
   R('%%EDICAO%%',       getCurrentEdicao());
-  R('%%IMAGEM_ALT%%',   d.imagemAlt || '');
+  R('%%IMAGEM_ALT%%',   imagemAlt);
   R('%%PROFISSIONAL%%', d.profissional || d.empresa || '');
   R('%%CAPTION%%',      caption);
   R('%%TITULO_HTML%%',  heroTitulo);
@@ -1121,7 +1122,7 @@ function formatarTituloHero(titulo) {
 
 // ── API CLAUDE ─────────────────────────────────
 function parseAIResponse(text) {
-  const sections = ['SEO', 'TITULO', 'CAPTION', 'TAGS', 'CTA'];
+  const sections = ['SEO', 'TITULO', 'CAPTION', 'ALT_HERO', 'TAGS', 'CTA'];
   const parts = {};
   sections.forEach((sec, i) => {
     const marker = '==' + sec + '==';
@@ -1198,9 +1199,13 @@ async function fetchImagemBase64(edicao, slug, arquivo) {
 async function chamarClaudeAPI(apiKey, dados) {
   const edicao = getCurrentEdicao();
   const textoPlano = (dados.texto || '').replace(/<[^>]+>/g, ' ');
-  const arquivos = extrairArquivosImagem(textoPlano);
+  const arquivoHero = normalizarArquivoImagem(dados.imagemUrl || '');
+  const arquivos = [...new Set([
+    ...(arquivoHero ? [arquivoHero] : []),
+    ...extrairArquivosImagem(textoPlano),
+  ])];
 
-  // Carrega cada imagem em base64 (em paralelo) pra mandar via Vision.
+  // Carrega hero e imagens do corpo em base64 (em paralelo) pra mandar via Vision.
   // Se alguma falhar (ex: ainda nao versionada no Git), avisa no log
   // e segue com as demais — a IA gera legenda sem ver essa especifica.
   const blocosImagem = [];
@@ -1334,6 +1339,9 @@ Retorne APENAS os span e br, sem a tag h1. Nao altere as palavras do titulo.]
 
 ==CAPTION==
 [Legenda narrativa para a foto hero — texto que aparece DEPOIS do nome em negrito. Estilo evocativo, conectado ao conteudo da materia, nunca generico. Referencia real: "de servidor publico ao empreendedor — a trajetoria de quem aprendeu as regras do jogo de dentro para fora". Regras: 1 linha, sem ponto final, sem repetir o nome da pessoa, sem formulas genericas ("especialista em", "profissional com X anos") — use uma perspectiva, contraste ou conquista especifica extraida do texto da materia.]
+
+==ALT_HERO==
+[Descreva a imagem hero anexada em até 125 caracteres. Baseie-se exclusivamente no que ela mostra. Seja objetivo e específico; não comece com "imagem de" e não invente tempo de experiência, cargos, locais ou fatos não visíveis]
 
 ==TAGS==
 [entre 3 e 5 tags de SEO para esta materia, separadas por virgula. REGRAS: (1) portugues sem acentos; (2) tudo em minusculo; (3) foco em palavras que pessoas buscam no Google; (4) incluir 1 tag especifica do tema (ex: "outsourcing de impressao", "esclerose lateral amiotrofica"), 1 tag tematica ampla (ex: "empreendedorismo", "saude"), e obrigatoriamente a tag "bni"; (5) evitar genericos sem contexto ("negocios", "sucesso"). Ex para JRT Print: outsourcing de impressao, networking empresarial, bni osasco, empreendedorismo, bni]
