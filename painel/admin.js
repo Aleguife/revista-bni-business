@@ -142,6 +142,7 @@ const CAMPOS_SIMPLES = [
   ['f-data',         'data'],
   ['f-imagem-url',   'imagemUrl'],
   ['f-imagem-alt',   'imagemAlt'],
+  ['f-materia-checklist', 'materiaChecklist'],
 ];
 
 // ── HELPERS ───────────────────────────────────
@@ -275,12 +276,20 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('ctas-container').addEventListener('input',    agendarSalvamento);
   document.getElementById('ctas-container').addEventListener('change',   agendarSalvamento);
 
+  // Não depende do atraso do autosave quando o usuário atualiza a página
+  // logo após editar algum campo.
+  window.addEventListener('pagehide', salvarRascunho);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') salvarRascunho();
+  });
+
   // Mantém o acesso durante a sessão atual da aba, sem persistir após fechá-la.
   if (sessionStorage.getItem(LOGIN_SESSION_KEY) === '1') abrirPainel();
 });
 
 // ── RASCUNHO (AUTO-SAVE) ──────────────────────
 let _saveTimer = null;
+let rascunhoRestaurado = false;
 
 function agendarSalvamento() {
   clearTimeout(_saveTimer);
@@ -301,6 +310,7 @@ function restaurarRascunho() {
   if (!raw) return;
   let r;
   try { r = JSON.parse(raw); } catch (e) { return; }
+  rascunhoRestaurado = true;
 
   // Campos simples
   CAMPOS_SIMPLES.forEach(function ([id, key]) {
@@ -310,6 +320,23 @@ function restaurarRascunho() {
 
   // Sincroniza preview do slug-base com a edição restaurada
   onEdicaoChange();
+
+  // A lista da Edição 03 é reconstruída por onEdicaoChange; por isso a
+  // matéria escolhida é aplicada somente depois de a lista existir.
+  const seletorMateria = document.getElementById('f-materia-checklist');
+  if (seletorMateria && r.materiaChecklist) {
+    seletorMateria.value = r.materiaChecklist;
+    onMateriaChecklistChange();
+  }
+
+  // A seleção da matéria preenche título, slug, URL Hero e alt com sugestões
+  // padrão. O rascunho, porém, é a fonte de verdade depois de uma recarga.
+  // Reaplica os valores salvos sem desfazer a lista recém-montada.
+  CAMPOS_SIMPLES.forEach(function ([id, key]) {
+    if (id === 'f-edicao' || id === 'f-materia-checklist') return;
+    const el = document.getElementById(id);
+    if (el && r[key] != null) el.value = r[key];
+  });
 
   // Editor Quill
   if (quill && r.texto) quill.root.innerHTML = r.texto;
@@ -341,7 +368,8 @@ function abrirPainel() {
   document.getElementById('painel').classList.remove('hidden');
   onEdicaoChange();
   renderChecklist();
-  document.getElementById('f-data').valueAsDate = new Date();
+  const data = document.getElementById('f-data');
+  if (!rascunhoRestaurado && data && !data.value) data.valueAsDate = new Date();
 }
 
 async function fazerLogin() {
@@ -438,11 +466,12 @@ function onMateriaChecklistChange() {
   const materia = (MATERIAS_POR_EDICAO['edicao-03'] || []).find(function (item) {
     return item.slug === slug;
   });
-  if (!materia) return;
+  if (!materia) { agendarSalvamento(); return; }
 
   document.getElementById('f-secao').value = 'ed3-' + materia.num;
   document.getElementById('f-titulo').value = materia.titulo;
   onSecaoChange();
+  agendarSalvamento();
 }
 
 // ── SLUG + IMAGEM + ALT AUTOMÁTICOS ──────────
