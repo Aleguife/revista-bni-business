@@ -186,6 +186,60 @@
     link.href = indiceUrl;
   }
 
+  /* ── Navegação anterior/próxima da Edição 03 ──
+   * Mantém a sequência centralizada: as três versões de idioma usam os
+   * mesmos slugs, mudando apenas o prefixo (/en ou /es).
+   */
+  function configureArticleNavigation() {
+    var editionThree = [
+      'conexoes-ia',
+      'peter-lima-mercado-imobiliario',
+      'tais-araujo-lideranca',
+      'thomas-pillet-up-brasil',
+      'joias-estilo-pessoal',
+      'saude-mental-negocios',
+      'ceo-do-seu-cerebro',
+      'aposentadoria-sem-rh',
+      'wilson-borges-alta-performance',
+      'lideranca-sem-fronteiras',
+      'conexoes-reais-networking',
+      'comandante-ramos-lideranca',
+      'stella-onisko-arquitetura',
+      'marca-nao-e-enfeite',
+      'vitae-flux-cuidado-integrativo',
+      'rafael-oleinik-case-sucesso'
+    ];
+    var match = location.pathname.match(/^\/(?:en\/|es\/)?edicao-03\/([^/]+)\/?$/);
+    if (!match) return;
+
+    var language = location.pathname.indexOf('/en/') === 0 ? 'en' : (location.pathname.indexOf('/es/') === 0 ? 'es' : 'pt');
+    // Until the remaining translations are published, EN and ES expose
+    // only the three pages that already exist and return to their contents.
+    var available = language === 'pt' ? editionThree : editionThree.slice(0, 3);
+    var current = available.indexOf(match[1]);
+    if (current < 0) return;
+
+    var prefix = language === 'pt' ? '' : '/' + language;
+    var copy = language === 'en'
+      ? { prev: 'Previous Article', next: 'Next Article', contents: 'Contents' }
+      : language === 'es'
+        ? { prev: 'Artículo anterior', next: 'Artículo siguiente', contents: 'Sumario' }
+        : { prev: 'Matéria anterior', next: 'Próxima matéria', contents: 'Sumário' };
+    var prev = document.querySelector('.nav-edicao-prev');
+    var next = document.querySelector('.nav-edicao-next');
+    var prevTarget = current === 0 ? prefix + '/edicao-03/' : prefix + '/edicao-03/' + available[current - 1] + '/';
+    var nextTarget = current === available.length - 1 ? prefix + '/edicao-03/' : prefix + '/edicao-03/' + available[current + 1] + '/';
+
+    if (prev) {
+      prev.href = prevTarget;
+      prev.setAttribute('aria-label', current === 0 ? copy.contents : copy.prev);
+    }
+    if (next) {
+      next.href = nextTarget;
+      next.setAttribute('aria-label', current === available.length - 1 ? copy.contents : copy.next);
+    }
+  }
+
   /* ── API pública exposta globalmente ── */
   window.BNINav = {
     toggleDropdown: function (id) {
@@ -223,8 +277,12 @@
   /* ── Injeta assim que o body estiver disponível ── */
   if (document.body) {
     injectNav();
+    configureArticleNavigation();
   } else {
-    document.addEventListener('DOMContentLoaded', injectNav);
+    document.addEventListener('DOMContentLoaded', function () {
+      injectNav();
+      configureArticleNavigation();
+    });
   }
 
 })();

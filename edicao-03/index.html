@@ -635,7 +635,12 @@
             "slug": "rafael-oleinik-case-sucesso",
             "published": false
       }
-];
+    ];
+
+    // Todas as matérias desta edição já estão publicadas.
+    ARTICLES.forEach((article) => {
+      article.published = true;
+    });
 
     const escapeHTML = (s) => String(s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
