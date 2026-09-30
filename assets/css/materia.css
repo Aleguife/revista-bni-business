@@ -187,6 +187,10 @@
     break-inside: avoid-column;
     -webkit-column-break-inside: avoid;
   }
+  /* O fechamento de [/1COL] não acrescenta respiro próprio. */
+  .bloco-uma-coluna > :last-child {
+    margin-bottom: 0;
+  }
 
   /* TEXTO 3 COLUNAS */
   .texto-triplo {
