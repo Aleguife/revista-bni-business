@@ -215,7 +215,7 @@
     var language = location.pathname.indexOf('/en/') === 0 ? 'en' : (location.pathname.indexOf('/es/') === 0 ? 'es' : 'pt');
     // Until the remaining translations are published, EN and ES expose
     // only the three pages that already exist and return to their contents.
-    var available = language === 'pt' ? editionThree : editionThree.slice(0, 3);
+    var available = editionThree;
     var current = available.indexOf(match[1]);
     if (current < 0) return;
 
