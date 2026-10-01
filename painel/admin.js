@@ -1754,6 +1754,152 @@ function marcarPublicada(slug) {
   renderChecklist();
 }
 
+// ── TRADUÇÃO DA EDIÇÃO 03 (DeepL) ────────────────────────────
+const SLUGS_TRADUCAO_EDICAO_03 = [
+  'thomas-pillet-up-brasil', 'joias-estilo-pessoal', 'saude-mental-negocios',
+  'ceo-do-seu-cerebro', 'aposentadoria-sem-rh', 'wilson-borges-alta-performance',
+  'lideranca-sem-fronteiras', 'conexoes-reais-networking', 'comandante-ramos-lideranca',
+  'stella-onisko-arquitetura', 'marca-nao-e-enfeite', 'vitae-flux-cuidado-integrativo',
+  'rafael-oleinik-case-sucesso'
+];
+
+async function chamarDeepL(chave, textos, idioma, html) {
+  const resposta = await fetch('https://bnibusiness.com.br/painel/deepl-proxy.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-deepl-auth-key': chave },
+    body: JSON.stringify({ text: textos, target_lang: idioma, ...(html ? { tag_handling: 'html' } : {}) })
+  });
+  const dados = await resposta.json().catch(() => ({}));
+  if (!resposta.ok || !Array.isArray(dados.translations)) {
+    throw new Error(dados.error?.message || `DeepL retornou HTTP ${resposta.status}`);
+  }
+  return dados.translations.map(item => item.text);
+}
+
+function ajustarUrlsTraduzidas(doc, idioma, slug) {
+  const prefixo = `https://bnibusiness.com.br/${idioma.toLowerCase()}/edicao-03/${slug}/`;
+  doc.documentElement.lang = idioma === 'EN' ? 'en' : 'es';
+  doc.documentElement.dataset.lang = idioma;
+  const canonical = doc.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.href = prefixo;
+  const ogUrl = doc.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.content = prefixo;
+  const locale = doc.querySelector('meta[property="og:locale"]');
+  if (locale) locale.content = idioma === 'EN' ? 'en_US' : 'es_ES';
+  doc.querySelectorAll('script[type="application/ld+json"]').forEach(script => {
+    try {
+      const schema = JSON.parse(script.textContent);
+      if (schema && schema['@type'] === 'Article') {
+        schema.inLanguage = idioma === 'EN' ? 'en' : 'es';
+        schema.mainEntityOfPage = prefixo;
+        script.textContent = JSON.stringify(schema, null, 2);
+      }
+    } catch (_) { /* mantém dados não estruturados */ }
+  });
+}
+
+async function traduzirPaginaDeepL(chave, idioma, slug) {
+  const origem = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/edicao-03/${slug}/index.html`;
+  const resposta = await fetch(origem);
+  if (!resposta.ok) throw new Error(`${slug}: fonte não encontrada (HTTP ${resposta.status})`);
+  const doc = new DOMParser().parseFromString(await resposta.text(), 'text/html');
+  const scripts = Array.from(doc.body.querySelectorAll('script'));
+  const scriptsHtml = scripts.map(script => script.outerHTML);
+  scripts.forEach(script => script.remove());
+
+  // O DeepL recebe o corpo inteiro com tag_handling=html: preserva classes,
+  // imagens, links, citações e a distribuição editorial em colunas.
+  const [corpo, titulo, descricao] = await chamarDeepL(chave, [
+    doc.body.innerHTML,
+    doc.title || '',
+    doc.querySelector('meta[name="description"]')?.content || ''
+  ], idioma, true);
+  doc.body.innerHTML = corpo + scriptsHtml.join('');
+  doc.title = titulo || doc.title;
+  const description = doc.querySelector('meta[name="description"]');
+  if (description && descricao) description.content = descricao;
+  ['og:title', 'twitter:title'].forEach(property => {
+    const meta = doc.querySelector(`meta[property="${property}"], meta[name="${property}"]`);
+    if (meta && titulo) meta.content = titulo;
+  });
+  ['og:description', 'twitter:description'].forEach(property => {
+    const meta = doc.querySelector(`meta[property="${property}"], meta[name="${property}"]`);
+    if (meta && descricao) meta.content = descricao;
+  });
+  ajustarUrlsTraduzidas(doc, idioma, slug);
+  return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+}
+
+async function criarBlobGitHub(token, conteudo) {
+  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/blobs`, {
+    method: 'POST', headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(conteudo))), encoding: 'base64' })
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).message || 'Falha ao criar arquivo no GitHub');
+  return (await res.json()).sha;
+}
+
+async function publicarLoteTraduzido(token, arquivos) {
+  const headers = { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
+  const ref = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/ref/heads/main`, { headers });
+  if (!ref.ok) throw new Error('Não foi possível ler a branch principal.');
+  const baseCommit = (await ref.json()).object.sha;
+  const commitData = await (await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/commits/${baseCommit}`, { headers })).json();
+  const arvore = [];
+  for (const arquivo of arquivos) {
+    const sha = await criarBlobGitHub(token, arquivo.html);
+    arvore.push({ path: arquivo.path, mode: '100644', type: 'blob', sha });
+  }
+  const treeRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees`, { method: 'POST', headers, body: JSON.stringify({ base_tree: commitData.tree.sha, tree: arvore }) });
+  if (!treeRes.ok) throw new Error('Falha ao montar o lote de traduções.');
+  const tree = await treeRes.json();
+  const commitRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/commits`, { method: 'POST', headers, body: JSON.stringify({ message: 'feat: traduções EN e ES da edição 03', tree: tree.sha, parents: [baseCommit] }) });
+  if (!commitRes.ok) throw new Error('Falha ao criar o commit de traduções.');
+  const commit = await commitRes.json();
+  const update = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/refs/heads/main`, { method: 'PATCH', headers, body: JSON.stringify({ sha: commit.sha, force: false }) });
+  if (!update.ok) throw new Error('A branch mudou durante a publicação. Execute novamente.');
+}
+
+async function traduzirEdicao03() {
+  const chave = val('f-deepl-key');
+  const token = val('f-github-token');
+  if (!chave) { alert('Cole a chave da API DeepL nas credenciais.'); return; }
+  if (!token) { alert('Informe também o token GitHub para publicar o lote traduzido.'); return; }
+  if (!confirm('Traduzir as 13 matérias restantes para inglês e espanhol? O processo cria 26 páginas em um único commit.')) return;
+  mostrarStatus();
+  const arquivos = [];
+  try {
+    for (const idioma of ['EN', 'ES']) {
+      for (const slug of SLUGS_TRADUCAO_EDICAO_03) {
+        addLog(`Traduzindo ${slug} para ${idioma}...`, 'loading');
+        const html = await traduzirPaginaDeepL(chave, idioma, slug);
+        arquivos.push({ path: `${idioma.toLowerCase()}/edicao-03/${slug}/index.html`, html });
+      }
+    }
+    // Ativa a sequência completa e os cards do sumário no mesmo commit das páginas.
+    const navUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/nav.js`;
+    const nav = await (await fetch(navUrl)).text();
+    arquivos.push({ path: 'nav.js', html: nav.replace(
+      "var available = language === 'pt' ? editionThree : editionThree.slice(0, 3);",
+      'var available = editionThree;'
+    ) });
+    for (const idioma of ['en', 'es']) {
+      const indiceUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${idioma}/edicao-03/index.html`;
+      const indice = await (await fetch(indiceUrl)).text();
+      const ativado = indice.replace(
+        'const escapeHTML = (s) => String(s)',
+        'ARTICLES.forEach((article) => { article.published = true; });\n\n    const escapeHTML = (s) => String(s)'
+      );
+      arquivos.push({ path: `${idioma}/edicao-03/index.html`, html: ativado });
+    }
+    addLog('Publicando 26 páginas traduzidas em um único commit...', 'loading');
+    await publicarLoteTraduzido(token, arquivos);
+    addLog('✓ Traduções enviadas. O deploy será iniciado em instantes.', 'ok');
+  } catch (erro) {
+    addLog('Erro na tradução: ' + erro.message, 'erro');
+  }
+}
+
 // ── EXPOSIÇÃO GLOBAL (chamadas via onclick no HTML) ───
 window.onEdicaoChange = onEdicaoChange;
 window.onMateriaChecklistChange = onMateriaChecklistChange;
@@ -1768,3 +1914,4 @@ window.gerarMateria   = gerarMateria;
 window.limparForm     = limparForm;
 window.copiarHTML     = copiarHTML;
 window.publicar       = publicar;
+window.traduzirEdicao03 = traduzirEdicao03;

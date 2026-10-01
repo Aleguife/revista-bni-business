@@ -37,21 +37,23 @@ foreach ($headers as $name => $value) {
 }
 $texts = $payload['text'] ?? [];
 $target = strtoupper(trim($payload['target_lang'] ?? ''));
+$tagHandling = !empty($payload['tag_handling']) ? 'html' : '';
 if (!$authKey || !is_array($texts) || !$texts || !in_array($target, ['EN', 'ES'], true)) {
     http_response_code(400);
     echo json_encode(['error' => ['message' => 'Chave, textos ou idioma de destino inválidos.']]);
     exit;
 }
 
-$fields = ['target_lang' => $target, 'source_lang' => 'PT'];
+$fields = 'target_lang=' . rawurlencode($target) . '&source_lang=PT';
+if ($tagHandling) $fields .= '&tag_handling=html&preserve_formatting=1';
 foreach (array_slice($texts, 0, 50) as $text) {
-    if (is_string($text) && $text !== '') $fields['text'][] = $text;
+    if (is_string($text) && $text !== '') $fields .= '&text=' . rawurlencode($text);
 }
 $ch = curl_init('https://api-free.deepl.com/v2/translate');
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => http_build_query($fields),
+    CURLOPT_POSTFIELDS => $fields,
     CURLOPT_TIMEOUT => 120,
     CURLOPT_HTTPHEADER => [
         'Authorization: DeepL-Auth-Key ' . $authKey,
