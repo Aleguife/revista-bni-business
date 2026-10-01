@@ -1798,6 +1798,20 @@ function ajustarUrlsTraduzidas(doc, idioma, slug) {
   });
 }
 
+function corrigirCaminhosTraduzidos(doc, slug) {
+  // As traduções ficam um nível acima da página original (/en ou /es).
+  // Mantemos imagens compartilhadas na versão PT e ajustamos os scripts globais.
+  doc.querySelectorAll('script[src]').forEach(script => {
+    script.src = script.getAttribute('src')
+      .replace(/^\.\.\/\.\.\/nav\.js/, '../../../nav.js')
+      .replace(/^\.\.\/\.\.\/footer\.js/, '../../../footer.js');
+  });
+  doc.querySelectorAll('img[src]').forEach(image => {
+    const src = image.getAttribute('src');
+    if (src && src.indexOf('img/') === 0) image.setAttribute('src', `../../../edicao-03/${slug}/${src}`);
+  });
+}
+
 async function traduzirPaginaDeepL(chave, idioma, slug) {
   const origem = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/edicao-03/${slug}/index.html`;
   const resposta = await fetch(origem);
@@ -1827,6 +1841,7 @@ async function traduzirPaginaDeepL(chave, idioma, slug) {
     if (meta && descricao) meta.content = descricao;
   });
   ajustarUrlsTraduzidas(doc, idioma, slug);
+  corrigirCaminhosTraduzidos(doc, slug);
   return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
 }
 

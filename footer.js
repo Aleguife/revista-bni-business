@@ -72,8 +72,20 @@
       + '</a>';
   }
 
+  function footerCopy() {
+    var lang = (document.documentElement.getAttribute('lang') || 'pt').toLowerCase();
+    var copy = {
+      pt: { slogan: 'Conectando empresários. Gerando resultados.', contact: 'Fale com a Revista BNI Business', subscribe: 'Inscreva-se', intro: 'A cada nova edição, primeiro na sua caixa de entrada.', details: 'Entre uma e outra, entrevistas, bastidores e convites pros eventos que conectam empresários de verdade.', placeholder: 'Seu melhor e-mail', aria: 'Assinar newsletter', consent: 'Concordo em receber a newsletter. Posso cancelar quando quiser.', almost: 'Quase lá!', confirm: 'Confira sua caixa de entrada<br>para confirmar a inscrição.', cookies: 'Cookies', privacy: 'Privacidade', terms: 'Termos de Uso', errorEmail: 'Por favor, informe seu e-mail.', invalidEmail: 'E-mail inválido.', accept: 'Aceite os termos para continuar.', subscribed: 'Você já está inscrito.', retry: 'Erro, tente novamente.', paths: ['', 'privacidade', 'termos'] },
+      en: { slogan: 'Connecting entrepreneurs. Generating results.', contact: 'Talk to BNI Business Magazine', subscribe: 'Subscribe', intro: 'With every new edition, straight to your inbox.', details: 'In between, interviews, behind the scenes and invitations to events that connect real entrepreneurs.', placeholder: 'Your best email', aria: 'Subscribe to newsletter', consent: 'I agree to receive the newsletter. I can unsubscribe at any time.', almost: 'Almost there!', confirm: 'Check your inbox<br>to confirm your subscription.', cookies: 'Cookies', privacy: 'Privacy', terms: 'Terms of Use', errorEmail: 'Please enter your email.', invalidEmail: 'Invalid email address.', accept: 'Please accept the terms to continue.', subscribed: 'You are already subscribed.', retry: 'Something went wrong. Please try again.', paths: ['en', 'en/privacidade', 'en/termos'] },
+      es: { slogan: 'Conectando empresarios. Generando resultados.', contact: 'Hable con la Revista BNI Business', subscribe: 'Suscríbase', intro: 'Con cada nueva edición, primero en su bandeja de entrada.', details: 'Entre una edición y otra, entrevistas, detrás de escena e invitaciones a eventos que conectan a empresarios de verdad.', placeholder: 'Tu mejor correo electrónico', aria: 'Suscribirse al boletín', consent: 'Acepto recibir el boletín. Puedo cancelar la suscripción cuando quiera.', almost: '¡Casi listo!', confirm: 'Revisa tu bandeja de entrada<br>para confirmar la suscripción.', cookies: 'Cookies', privacy: 'Privacidad', terms: 'Términos de uso', errorEmail: 'Por favor, ingresa tu correo electrónico.', invalidEmail: 'Correo electrónico no válido.', accept: 'Acepta los términos para continuar.', subscribed: 'Ya estás suscrito.', retry: 'Ocurrió un error. Inténtalo de nuevo.', paths: ['es', 'es/privacidade', 'es/termos'] }
+    };
+    return copy[lang] || copy.pt;
+  }
+
   /* ── Constrói o HTML do footer ── */
   function buildFooter() {
+    var copy = footerCopy();
+    var footerUrl = function (path) { return 'https://bnibusiness.com.br/' + path.replace(/^\/+/, ''); };
     return ''
       + '<div style="padding:2rem 2rem 1.5rem;display:flex;flex-wrap:wrap;gap:1.5rem;background:var(--vermelho);">'
 
@@ -81,14 +93,14 @@
       + '<div style="flex:1 1 200px;min-width:200px;">'
       +   '<div style="max-width:450px;margin:0 auto;">'
       +     '<div style="margin-bottom:0.75rem;">' + FOOTER_LOGO_SVG + '</div>'
-      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7);">Conectando empresários. Gerando resultados.</p>'
+      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7);">' + copy.slogan + '</p>'
       +   '</div>'
       + '</div>'
 
       /* Coluna 2 — Redes sociais */
       + '<div style="flex:1 1 150px;min-width:150px;">'
       +   '<div style="max-width:450px;margin:0 auto;text-align:center;">'
-      +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:30px;text-align:center;">Fale com a Revista BNI Business</h2>'
+      +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:30px;text-align:center;">' + copy.contact + '</h2>'
       +     '<div style="display:flex;gap:20px;align-items:center;justify-content:center;">'
       +       socialBtnLg('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
       +       socialBtnLg('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
@@ -101,27 +113,27 @@
       /* Coluna 3 — Newsletter (FUNCIONAL) */
       + '<div style="flex:1 1 220px;min-width:220px;">'
       +   '<div id="footer-newsletter-wrap" style="max-width:450px;margin:0 auto;position:relative;">'
-      +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">Inscreva-se</h2>'
-      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0;line-height:1.6;">A cada nova edição, primeiro na sua caixa de entrada.</p>'
-      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0.9rem;line-height:1.6;">Entre uma e outra, entrevistas, bastidores e convites pros eventos que conectam empresários de verdade.</p>'
+      +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:0.4rem;text-align:center;">' + copy.subscribe + '</h2>'
+      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0;line-height:1.6;">' + copy.intro + '</p>'
+      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.8rem;color:#fff;text-align:center;margin-bottom:0.9rem;line-height:1.6;">' + copy.details + '</p>'
 
       /* Estado inicial: campo + checkbox */
       +     '<div id="footer-newsletter-form" style="transition:opacity 0.3s ease;">'
       +       '<div style="display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.5);margin-bottom:0.4rem;">'
-      +         '<input type="email" placeholder="Seu melhor e-mail" id="footer-newsletter-email" autocomplete="email" style="flex:1;background:none;border:none;outline:none;font-family:\'Barlow\',sans-serif;font-size:13px;color:#fff;padding:0.6rem 0;text-align:center;padding-left:32px;" />'
-      +         '<button id="footer-newsletter-btn" type="button" style="background:none;border:none;cursor:pointer;color:#fff;padding:0.4rem;display:flex;align-items:center;transition:opacity 0.2s;" aria-label="Assinar newsletter"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>'
+      +         '<input type="email" placeholder="' + copy.placeholder + '" id="footer-newsletter-email" autocomplete="email" style="flex:1;background:none;border:none;outline:none;font-family:\'Barlow\',sans-serif;font-size:13px;color:#fff;padding:0.6rem 0;text-align:center;padding-left:32px;" />'
+      +         '<button id="footer-newsletter-btn" type="button" style="background:none;border:none;cursor:pointer;color:#fff;padding:0.4rem;display:flex;align-items:center;transition:opacity 0.2s;" aria-label="' + copy.aria + '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>'
       +       '</div>'
       +       '<div id="footer-newsletter-error" style="font-family:\'Barlow\',sans-serif;font-size:0.75rem;color:#fff;text-align:center;min-height:1rem;margin-bottom:0.4rem;opacity:0;transition:opacity 0.2s;" role="alert" aria-live="polite"></div>'
       +       '<div style="display:flex;align-items:flex-start;justify-content:center;gap:8px;">'
       +         '<input type="checkbox" id="footer-newsletter-consent" style="margin-top:3px;flex-shrink:0;accent-color:#fff;outline:none;border:none;box-shadow:none;" />'
-      +         '<label for="footer-newsletter-consent" style="font-family:\'Barlow\',sans-serif;font-size:0.8375rem;color:#fff;line-height:1.4;text-align:center;">Concordo em receber a newsletter. Posso cancelar quando quiser.</label>'
+      +         '<label for="footer-newsletter-consent" style="font-family:\'Barlow\',sans-serif;font-size:0.8375rem;color:#fff;line-height:1.4;text-align:center;">' + copy.consent + '</label>'
       +       '</div>'
       +     '</div>'
 
       /* Estado de sucesso (oculto por padrão) */
       +     '<div id="footer-newsletter-success" style="display:none;opacity:0;transition:opacity 0.4s ease;text-align:center;padding:1.2rem 0;">'
-      +       '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-bottom:0.5rem;">Quase lá!</div>'
-      +       '<div style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.9);line-height:1.5;">Confira sua caixa de entrada<br>para confirmar a inscrição.</div>'
+      +       '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-bottom:0.5rem;">' + copy.almost + '</div>'
+      +       '<div style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.9);line-height:1.5;">' + copy.confirm + '</div>'
       +     '</div>'
       +   '</div>'
       + '</div>'
@@ -132,9 +144,9 @@
       + '<div class="footer-bar" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.75rem 2rem;">'
       +   '<span class="footer-bar-copy" style="white-space:nowrap;font-size:11px;letter-spacing:0.5px;color:#fff;">© 2026 — <a href="https://alefdesign.com.br" target="_blank" class="footer-bar-link">Alef Design</a></span>'
       +   '<div class="footer-bar-links" style="display:flex;gap:1rem;flex-shrink:0;">'
-      +     '<a href="https://bnibusiness.com.br/cookies/" class="footer-bar-link" style="font-size:11px;">Cookies</a>'
-      +     '<a href="https://bnibusiness.com.br/privacidade/" class="footer-bar-link" style="font-size:11px;">Privacidade</a>'
-      +     '<a href="https://bnibusiness.com.br/termos/" class="footer-bar-link" style="font-size:11px;">Termos de Uso</a>'
+      +     '<a href="' + footerUrl(copy.paths[0] ? copy.paths[0] + '/cookies/' : 'cookies/') + '" class="footer-bar-link" style="font-size:11px;">' + copy.cookies + '</a>'
+      +     '<a href="' + footerUrl(copy.paths[1] + '/') + '" class="footer-bar-link" style="font-size:11px;">' + copy.privacy + '</a>'
+      +     '<a href="' + footerUrl(copy.paths[2] + '/') + '" class="footer-bar-link" style="font-size:11px;">' + copy.terms + '</a>'
       +   '</div>'
       + '</div>';
   }
@@ -215,6 +227,7 @@
 
   /* Submete inscrição pra API do Kit */
   function submitSubscription() {
+    var copy = footerCopy();
     var emailInput = document.getElementById('footer-newsletter-email');
     var consent = document.getElementById('footer-newsletter-consent');
     var btn = document.getElementById('footer-newsletter-btn');
@@ -224,17 +237,17 @@
 
     /* Validações client-side */
     if (!email) {
-      showError('Por favor, informe seu e-mail.');
+      showError(copy.errorEmail);
       emailInput.focus();
       return;
     }
     if (!EMAIL_REGEX.test(email)) {
-      showError('E-mail inválido.');
+      showError(copy.invalidEmail);
       emailInput.focus();
       return;
     }
     if (!consent.checked) {
-      showError('Aceite os termos para continuar.');
+      showError(copy.accept);
       return;
     }
 
@@ -263,18 +276,18 @@
           /* Erro — interpreta resposta */
           var msg = (result.data && (result.data.message || result.data.error)) || '';
           if (/already subscribed|exists|duplicate/i.test(msg)) {
-            showError('Você já está inscrito.');
+            showError(copy.subscribed);
           } else if (result.status === 400 || /invalid email/i.test(msg)) {
-            showError('E-mail inválido.');
+            showError(copy.invalidEmail);
           } else {
-            showError('Erro, tente novamente.');
+            showError(copy.retry);
           }
           btn.disabled = false;
         }
       })
       .catch(function () {
         /* Falha de rede */
-        showError('Erro, tente novamente.');
+        showError(copy.retry);
         btn.disabled = false;
       });
   }
