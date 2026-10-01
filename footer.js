@@ -223,6 +223,17 @@
       void success.offsetWidth; // força reflow
       success.style.opacity = '1';
     }, 300);
+
+    // Evento de conversão sem incluir o e-mail do assinante no Analytics.
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'newsletter_subscribe', {
+          page_location: window.location.href,
+          page_title: document.title || '',
+          page_language: (document.documentElement.lang || 'pt').split('-')[0]
+        });
+      }
+    } catch (e) { /* a newsletter nao depende do Analytics */ }
   }
 
   /* Submete inscrição pra API do Kit */

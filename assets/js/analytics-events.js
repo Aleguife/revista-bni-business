@@ -78,10 +78,19 @@
     }
 
     // Botao de compartilhamento (sidebar ou inline)
-    if (/\bshare-btn\b/.test(classes)) {
+   if (/\bshare-btn\b/.test(classes)) {
       track('share_click', Object.assign({}, ctx, {
         share_canal: detectCanal(anchor),
         outbound_url: href
+      }));
+      return;
+    }
+
+    // Navegacao editorial entre materias da mesma edicao
+    if (/\bnav-edicao-btn\b/.test(classes)) {
+      track('edition_navigation', Object.assign({}, ctx, {
+        direction: /\bnav-edicao-prev\b/.test(classes) ? 'previous' : 'next',
+        destination_url: href
       }));
       return;
     }
