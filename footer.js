@@ -318,6 +318,183 @@
     });
   }
 
+  /* ════════════════════════════════════════════════════════════
+   * POP-UP DE NEWSLETTER — somente na página inicial
+   * Exibe após 5 s ou, no desktop, quando houver intenção de saída.
+   * Fechar pausa o convite por 14 dias; após cadastro, não reaparece.
+   * ════════════════════════════════════════════════════════════ */
+  var POPUP_STORAGE_KEY = 'bni_newsletter_popup';
+  var POPUP_DISMISS_MS = 14 * 24 * 60 * 60 * 1000;
+
+  function popupCopy() {
+    var lang = (document.documentElement.getAttribute('lang') || 'pt').toLowerCase();
+    var copy = {
+      pt: { eyebrow: 'CONTEÚDO QUE MOVE NEGÓCIOS', title: 'A próxima edição chega primeiro para você.', text: 'Receba novas matérias, entrevistas e oportunidades diretamente na sua caixa de entrada.', placeholder: 'Seu melhor e-mail', consent: 'Concordo em receber a newsletter. Posso cancelar quando quiser.', submit: 'Quero receber', sending: 'Enviando...', later: 'Agora não', close: 'Fechar convite para newsletter', errorEmail: 'Por favor, informe seu e-mail.', invalidEmail: 'E-mail inválido.', accept: 'Aceite os termos para continuar.', subscribed: 'Você já está inscrito.', retry: 'Erro, tente novamente.', successTitle: 'Quase lá!', successText: 'Confira sua caixa de entrada para confirmar a inscrição.' },
+      en: { eyebrow: 'CONTENT THAT MOVES BUSINESS', title: 'Be the first to receive the next edition.', text: 'Get new articles, interviews and opportunities delivered straight to your inbox.', placeholder: 'Your best email', consent: 'I agree to receive the newsletter. I can unsubscribe at any time.', submit: 'Subscribe', sending: 'Sending...', later: 'Not now', close: 'Close newsletter invitation', errorEmail: 'Please enter your email.', invalidEmail: 'Invalid email address.', accept: 'Please accept the terms to continue.', subscribed: 'You are already subscribed.', retry: 'Something went wrong. Please try again.', successTitle: 'Almost there!', successText: 'Check your inbox to confirm your subscription.' },
+      es: { eyebrow: 'CONTENIDO QUE IMPULSA NEGOCIOS', title: 'Recibe la próxima edición antes que nadie.', text: 'Recibe nuevos artículos, entrevistas y oportunidades directamente en tu bandeja de entrada.', placeholder: 'Tu mejor correo electrónico', consent: 'Acepto recibir el boletín. Puedo cancelar la suscripción cuando quiera.', submit: 'Suscribirme', sending: 'Enviando...', later: 'Ahora no', close: 'Cerrar invitación al boletín', errorEmail: 'Por favor, ingresa tu correo electrónico.', invalidEmail: 'Correo electrónico no válido.', accept: 'Acepta los términos para continuar.', subscribed: 'Ya estás suscrito.', retry: 'Ocurrió un error. Inténtalo de nuevo.', successTitle: '¡Casi listo!', successText: 'Revisa tu bandeja de entrada para confirmar la suscripción.' }
+    };
+    return copy[lang] || copy.pt;
+  }
+
+  function shouldShowNewsletterPopup() {
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    if (path !== '/' && path !== '/en' && path !== '/es') return false;
+    try {
+      var state = JSON.parse(window.localStorage.getItem(POPUP_STORAGE_KEY) || 'null');
+      if (state && state.status === 'subscribed') return false;
+      if (state && state.status === 'dismissed' && Date.now() - state.at < POPUP_DISMISS_MS) return false;
+    } catch (e) { /* Sem storage disponível: exibe normalmente. */ }
+    return true;
+  }
+
+  function injectNewsletterPopupStyles() {
+    if (document.getElementById('newsletter-popup-styles')) return;
+    var style = document.createElement('style');
+    style.id = 'newsletter-popup-styles';
+    style.textContent = [
+      '.newsletter-popup[hidden] { display: none !important; }',
+      '.newsletter-popup { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(25,18,18,.62); backdrop-filter: blur(5px); }',
+      '.newsletter-popup__dialog { width: min(100%,510px); position: relative; overflow: hidden; padding: 42px; background: #f6f0e8; color: #2b2c2f; box-shadow: 0 24px 80px rgba(0,0,0,.32); }',
+      '.newsletter-popup__dialog::before { content:""; position:absolute; top:0; left:0; width:100%; height:7px; background:var(--vermelho,#c8102e); }',
+      '.newsletter-popup__close { position:absolute; top:16px; right:16px; width:38px; height:38px; border:0; border-radius:50%; background:transparent; color:#2b2c2f; font-size:28px; line-height:1; cursor:pointer; }',
+      '.newsletter-popup__close:hover,.newsletter-popup__close:focus-visible { background:rgba(0,0,0,.08); outline:none; }',
+      '.newsletter-popup__eyebrow { margin:0 0 12px; color:var(--vermelho,#c8102e); font:700 12px "Barlow Condensed",sans-serif; letter-spacing:2px; }',
+      '.newsletter-popup h2 { max-width:390px; margin:0 0 14px; font-family:"Playfair Display",Georgia,serif; font-size:clamp(30px,5vw,42px); line-height:1.05; }',
+      '.newsletter-popup__text { margin:0 0 24px; font:16px/1.5 "Barlow",sans-serif; }',
+      '.newsletter-popup__input { width:100%; box-sizing:border-box; border:1px solid #b8afa7; background:#fff; color:#2b2c2f; font:16px "Barlow",sans-serif; padding:14px; }',
+      '.newsletter-popup__input:focus { border-color:var(--vermelho,#c8102e); outline:2px solid rgba(200,16,46,.18); outline-offset:1px; }',
+      '.newsletter-popup__consent { display:flex; gap:9px; align-items:flex-start; margin:14px 0; font:13px/1.4 "Barlow",sans-serif; }',
+      '.newsletter-popup__consent input { margin-top:3px; accent-color:var(--vermelho,#c8102e); }',
+      '.newsletter-popup__error { min-height:20px; margin:-5px 0 8px; color:#a00d24; font:13px "Barlow",sans-serif; }',
+      '.newsletter-popup__submit { width:100%; border:2px solid var(--vermelho,#c8102e); background:var(--vermelho,#c8102e); color:#fff; cursor:pointer; font:700 13px "Barlow Condensed",sans-serif; letter-spacing:1.8px; padding:14px 18px; text-transform:uppercase; transition:background .2s,color .2s; }',
+      '.newsletter-popup__submit:hover,.newsletter-popup__submit:focus-visible { background:transparent; color:var(--vermelho,#c8102e); outline:none; }',
+      '.newsletter-popup__submit:disabled { cursor:wait; opacity:.65; }',
+      '.newsletter-popup__later { display:block; width:fit-content; margin:16px auto 0; border:0; background:transparent; color:#514b47; cursor:pointer; font:13px "Barlow",sans-serif; text-decoration:underline; text-underline-offset:3px; }',
+      '.newsletter-popup__success { padding:24px 0 8px; text-align:center; }',
+      '.newsletter-popup__success strong { display:block; margin-bottom:8px; color:var(--vermelho,#c8102e); font:700 26px "Playfair Display",Georgia,serif; }',
+      '.newsletter-popup__success p { margin:0; font:16px/1.5 "Barlow",sans-serif; }',
+      '@media (max-width:540px) { .newsletter-popup { align-items:flex-end; padding:0; } .newsletter-popup__dialog { width:100%; padding:34px 24px 28px; } .newsletter-popup h2 { font-size:32px; } }',
+      '@media (prefers-reduced-motion:reduce) { .newsletter-popup { backdrop-filter:none; } }'
+    ].join('\n');
+    document.head.appendChild(style);
+  }
+
+  function setPopupState(status) {
+    try { window.localStorage.setItem(POPUP_STORAGE_KEY, JSON.stringify({ status: status, at: Date.now() })); } catch (e) { /* sem persistência */ }
+  }
+
+  function closeNewsletterPopup(status) {
+    var popup = document.getElementById('newsletter-popup');
+    if (!popup) return;
+    setPopupState(status || 'dismissed');
+    popup.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  function popupError(message) {
+    var error = document.getElementById('newsletter-popup-error');
+    if (error) error.textContent = message;
+  }
+
+  function submitPopupSubscription() {
+    var copy = popupCopy();
+    var emailInput = document.getElementById('newsletter-popup-email');
+    var consent = document.getElementById('newsletter-popup-consent');
+    var btn = document.getElementById('newsletter-popup-submit');
+    if (!emailInput || !consent || !btn) return;
+    var email = (emailInput.value || '').trim();
+    popupError('');
+    if (!email) { popupError(copy.errorEmail); emailInput.focus(); return; }
+    if (!EMAIL_REGEX.test(email)) { popupError(copy.invalidEmail); emailInput.focus(); return; }
+    if (!consent.checked) { popupError(copy.accept); return; }
+    btn.disabled = true;
+    btn.textContent = copy.sending;
+    fetch(KIT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ api_key: KIT_API_KEY, email: email })
+    })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, status: res.status, data: data }; }); })
+      .then(function (result) {
+        if (result.ok && result.data && result.data.subscription) {
+          document.getElementById('newsletter-popup-form').hidden = true;
+          document.getElementById('newsletter-popup-success').hidden = false;
+          setPopupState('subscribed');
+          try {
+            if (typeof window.gtag === 'function') window.gtag('event', 'newsletter_subscribe', {
+              page_location: window.location.href,
+              page_title: document.title || '',
+              page_language: (document.documentElement.lang || 'pt').split('-')[0],
+              signup_source: 'popup'
+            });
+          } catch (e) { /* A inscrição não depende do Analytics. */ }
+          return;
+        }
+        var msg = (result.data && (result.data.message || result.data.error)) || '';
+        popupError(/already subscribed|exists|duplicate/i.test(msg) ? copy.subscribed : (result.status === 400 || /invalid email/i.test(msg) ? copy.invalidEmail : copy.retry));
+        btn.disabled = false;
+        btn.textContent = copy.submit;
+      })
+      .catch(function () {
+        popupError(copy.retry);
+        btn.disabled = false;
+        btn.textContent = copy.submit;
+      });
+  }
+
+  function injectNewsletterPopup() {
+    if (!shouldShowNewsletterPopup() || document.getElementById('newsletter-popup')) return;
+    var copy = popupCopy();
+    injectNewsletterPopupStyles();
+    var popup = document.createElement('section');
+    popup.id = 'newsletter-popup';
+    popup.className = 'newsletter-popup';
+    popup.hidden = true;
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-modal', 'true');
+    popup.setAttribute('aria-labelledby', 'newsletter-popup-title');
+    popup.innerHTML = ''
+      + '<div class="newsletter-popup__dialog">'
+      + '<button class="newsletter-popup__close" type="button" aria-label="' + copy.close + '">&times;</button>'
+      + '<p class="newsletter-popup__eyebrow">' + copy.eyebrow + '</p>'
+      + '<h2 id="newsletter-popup-title">' + copy.title + '</h2>'
+      + '<p class="newsletter-popup__text">' + copy.text + '</p>'
+      + '<div id="newsletter-popup-form">'
+      + '<input class="newsletter-popup__input" id="newsletter-popup-email" type="email" autocomplete="email" placeholder="' + copy.placeholder + '">'
+      + '<label class="newsletter-popup__consent"><input id="newsletter-popup-consent" type="checkbox"> <span>' + copy.consent + '</span></label>'
+      + '<div id="newsletter-popup-error" class="newsletter-popup__error" role="alert" aria-live="polite"></div>'
+      + '<button id="newsletter-popup-submit" class="newsletter-popup__submit" type="button">' + copy.submit + '</button>'
+      + '<button id="newsletter-popup-later" class="newsletter-popup__later" type="button">' + copy.later + '</button>'
+      + '</div>'
+      + '<div id="newsletter-popup-success" class="newsletter-popup__success" hidden><strong>' + copy.successTitle + '</strong><p>' + copy.successText + '</p></div>'
+      + '</div>';
+    document.body.appendChild(popup);
+
+    function openPopup() {
+      if (!popup.hidden) return;
+      popup.hidden = false;
+      document.body.style.overflow = 'hidden';
+      var input = document.getElementById('newsletter-popup-email');
+      if (input) input.focus();
+    }
+
+    var timer = setTimeout(openPopup, 5000);
+    var desktopExitIntent = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var onMouseOut = function (e) {
+      if (e.clientY > 0 || e.relatedTarget) return;
+      clearTimeout(timer);
+      document.removeEventListener('mouseout', onMouseOut);
+      openPopup();
+    };
+    if (desktopExitIntent) document.addEventListener('mouseout', onMouseOut);
+    document.querySelector('.newsletter-popup__close').addEventListener('click', function () { closeNewsletterPopup('dismissed'); });
+    document.getElementById('newsletter-popup-later').addEventListener('click', function () { closeNewsletterPopup('dismissed'); });
+    document.getElementById('newsletter-popup-submit').addEventListener('click', submitPopupSubscription);
+    document.getElementById('newsletter-popup-email').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); submitPopupSubscription(); } });
+    popup.addEventListener('click', function (e) { if (e.target === popup) closeNewsletterPopup('dismissed'); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !popup.hidden) closeNewsletterPopup('dismissed'); });
+  }
+
   /* ── Injeta o footer no final do <body> ── */
   function injectFooter() {
     /* Evita injeção dupla */
@@ -335,6 +512,7 @@
 
     /* Liga a lógica da newsletter */
     bindNewsletter();
+    injectNewsletterPopup();
 
     /* ── Ocultar .share-mobile quando o footer estiver visível ── */
     var _shareMobile = document.querySelector('.share-mobile');
