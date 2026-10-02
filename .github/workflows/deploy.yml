@@ -14,15 +14,21 @@ name: Deploy para Locaweb
 #
 # A chave pública correspondente está em ~/.ssh/authorized_keys
 # do usuário bnibusiness1 no servidor.
+#
+#   ALEF_SSH_PASSWORD → senha FTP/SSH do usuário alefbusiness1.
+#                       Usada exclusivamente pela branch alef-preview,
+#                       que publica em alefbusiness.com.br.
 # ──────────────────────────────────────────────────────────────
 
 on:
   push:
     branches:
       - main
+      - alef-preview
 
 jobs:
-  deploy:
+  deploy-bnibusiness:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -54,3 +60,42 @@ jobs:
             --exclude='README.md' \
             -e "ssh -i ~/.ssh/deploy_key -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             ./ bnibusiness1@ftp.bnibusiness.com.br:/home/bnibusiness1/public_html/
+
+  deploy-alef-preview:
+    if: github.ref == 'refs/heads/alef-preview'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar rsync e sshpass
+        run: sudo apt-get install -y rsync sshpass
+
+      - name: Validar credencial da Alef Business
+        env:
+          SSHPASS: ${{ secrets.ALEF_SSH_PASSWORD }}
+        run: |
+          if [ -z "$SSHPASS" ]; then
+            echo "O secret ALEF_SSH_PASSWORD nao foi encontrado."
+            exit 1
+          fi
+
+      - name: Registrar servidor SSH da Alef Business
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -p 22 ftp.alefbusiness.com.br >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Deploy de pré-lançamento via rsync sobre SSH
+        env:
+          SSHPASS: ${{ secrets.ALEF_SSH_PASSWORD }}
+        run: |
+          sshpass -e rsync -az --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.DS_Store' \
+            --exclude='*.nfs*' \
+            --exclude='README.md' \
+            -e "ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            ./ alefbusiness1@ftp.alefbusiness.com.br:/home/alefbusiness1/public_html/

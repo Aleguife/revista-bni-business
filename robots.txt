@@ -1,16 +1,4 @@
+# PRÉ-LANÇAMENTO ALEF BUSINESS — remover antes da virada oficial.
+# A branch main mantém as regras de rastreamento e o sitemap públicos.
 User-agent: *
-Allow: /
-Disallow: /painel/
-Disallow: /checklist/
-Disallow: /newsletter/obrigado/
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-Sitemap: https://bnibusiness.com.br/sitemap.xml
+Disallow: /
