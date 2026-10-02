@@ -321,10 +321,10 @@
   /* ════════════════════════════════════════════════════════════
    * POP-UP DE NEWSLETTER — somente na página inicial
    * Exibe após 5 s ou, no desktop, quando houver intenção de saída.
-   * Fechar pausa o convite por 14 dias; após cadastro, não reaparece.
+   * Fechar pausa o convite por 7 dias; após cadastro, não reaparece.
    * ════════════════════════════════════════════════════════════ */
   var POPUP_STORAGE_KEY = 'bni_newsletter_popup';
-  var POPUP_DISMISS_MS = 14 * 24 * 60 * 60 * 1000;
+  var POPUP_DISMISS_MS = 7 * 24 * 60 * 60 * 1000;
 
   function popupCopy() {
     var lang = (document.documentElement.getAttribute('lang') || 'pt').toLowerCase();
