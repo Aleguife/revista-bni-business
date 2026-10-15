@@ -230,7 +230,9 @@
         window.gtag('event', 'newsletter_subscribe', {
           page_location: window.location.href,
           page_title: document.title || '',
-          page_language: (document.documentElement.lang || 'pt').split('-')[0]
+          page_language: (document.documentElement.lang || 'pt').split('-')[0],
+          signup_source: 'footer',
+          method: 'kit_form'
         });
       }
     } catch (e) { /* a newsletter nao depende do Analytics */ }
@@ -425,7 +427,8 @@
               page_location: window.location.href,
               page_title: document.title || '',
               page_language: (document.documentElement.lang || 'pt').split('-')[0],
-              signup_source: 'popup'
+              signup_source: 'popup',
+              method: 'kit_form'
             });
           } catch (e) { /* A inscrição não depende do Analytics. */ }
           return;
