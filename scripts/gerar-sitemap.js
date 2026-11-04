@@ -44,12 +44,12 @@ function readArticleMeta(htmlRelPath) {
   const titleMatch    = html.match(/<title>([^<]+)<\/title>/);
   const pubDateMatch  = html.match(/<meta\s+property="article:published_time"\s+content="([^"]+)"/);
 
-  const mtime = fs.statSync(htmlPath).mtime.toISOString().slice(0, 10);
+  const modified = html.match(/<meta\s+property="article:modified_time"\s+content="(\d{4}-\d{2}-\d{2})(?:T[^"]*)?"/);
 
   return {
     title:         titleMatch ? titleMatch[1].trim().replace(/\s+/g, ' ') : '',
     publishedTime: pubDateMatch ? pubDateMatch[1] : TODAY,
-    lastmod:       mtime,
+    lastmod:       modified ? modified[1] : pubDateMatch?.[1].slice(0, 10),
   };
 }
 
@@ -67,7 +67,7 @@ function buildUrlEntry(opts) {
 
   let entry = '  <url>\n';
   entry += '    <loc>' + loc + '</loc>\n';
-  entry += '    <lastmod>' + lastmod + '</lastmod>\n';
+  if (lastmod) entry += '    <lastmod>' + lastmod + '</lastmod>\n';
   entry += '    <changefreq>' + changefreq + '</changefreq>\n';
   entry += '    <priority>' + priority + '</priority>\n';
   entry += '    <xhtml:link rel="alternate" hreflang="pt-BR" href="' + hreflangs.pt + '"/>\n';
@@ -104,7 +104,6 @@ function generateSitemap() {
     const langPath = lang ? '/' + lang + '/' : '/';
     out += buildUrlEntry({
       loc: BASE_URL + langPath,
-      lastmod: TODAY,
       changefreq: 'weekly',
       priority: lang === '' ? '1.0' : '0.8',
       hreflangs: {
@@ -129,7 +128,6 @@ function generateSitemap() {
         : '/' + edicao + '/';
       out += buildUrlEntry({
         loc: BASE_URL + langPath,
-        lastmod: TODAY,
         changefreq: 'monthly',
         priority: lang === '' ? '0.9' : '0.7',
         hreflangs: {
@@ -188,7 +186,6 @@ function generateSitemap() {
         : '/' + legal + '/';
       out += buildUrlEntry({
         loc: BASE_URL + langPath,
-        lastmod: TODAY,
         changefreq: 'yearly',
         priority: lang === '' ? '0.4' : '0.3',
         hreflangs: {
