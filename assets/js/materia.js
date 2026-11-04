@@ -87,7 +87,13 @@
       ? scrolled < outrasMaterias.getBoundingClientRect().top + scrolled - 80
       : true;
     var show = afterHero && beforeOtras;
-    if (shareSidebar) shareSidebar.classList.toggle('visible', show);
+    if (shareSidebar) {
+      var footer = document.querySelector('footer');
+      var beforeFooter = !footer || footer.getBoundingClientRect().top >= window.innerHeight;
+      var showSidebar = afterHero && beforeFooter;
+      shareSidebar.classList.toggle('visible', showSidebar);
+      shareSidebar.inert = !showSidebar;
+    }
     if (shareMobile)  shareMobile.classList.toggle('visible', show);
   }, { passive: true });
 
