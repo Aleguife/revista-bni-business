@@ -380,6 +380,13 @@ Se não estiver, o deploy vai dar timeout.
 
 ---
 
+## Revisão editorial antes de publicar uma matéria
+
+- No sumário, use os próprios cartões para destacar as matérias. Se necessário, refine o título do cartão para deixar o assunto mais claro e atrativo. Evite listas extras que repitam o sumário.
+- Inclua **Leia também** com três cartões no estilo do sumário, escolhidos por afinidade temática em todo o acervo. Em caso de empate, prefira a edição atual. Identifique a edição nos cartões de outras edições.
+- Mantenha **Matéria anterior** e **Próxima matéria** logo após o texto e acima das recomendações, como navegação discreta na sequência da edição. Escolha leituras que não repitam os destinos desses botões.
+- Use o título **Mais lidas** apenas quando a seleção vier de um ranking real.
+
 ## Próximas fases
 
 - [ ] **Edição 3**: digitalizar quando entrar em fase de produção. Workflow já está pronto — ao chegar título e imagens, rodar `scripts/adicionar-breadcrumb.js edicao-03` + `scripts/atualizar-nav-edicao.js edicao-03` + `scripts/atualizar-json-ld.js edicao-03` após publicação via painel.
