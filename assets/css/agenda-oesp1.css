@@ -1,0 +1,95 @@
+.oesp-agenda,
+.oesp-numeros {
+  margin-block: 2rem;
+  padding: clamp(1rem, 5vw, 3rem);
+  font-family: 'Barlow', sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.oesp-agenda {
+  background: var(--creme-escuro);
+  border-block: 3px solid var(--vermelho);
+}
+
+.oesp-agenda h2,
+.oesp-numeros h2 {
+  margin: 0 0 1rem;
+  font: 700 clamp(1.65rem, 5vw, 3rem)/1.15 'Playfair Display', serif;
+}
+
+.oesp-agenda h2,
+.oesp-agenda__dia {
+  color: var(--vermelho);
+}
+
+.oesp-agenda table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+.oesp-agenda th,
+.oesp-agenda td {
+  padding: .3rem .5rem .3rem 0;
+  vertical-align: top;
+}
+
+.oesp-agenda th[scope="row"] {
+  width: 35%;
+}
+
+.oesp-agenda thead {
+  border-bottom: 1px solid currentColor;
+}
+
+.oesp-agenda th.oesp-agenda__dia {
+  padding-block-start: 1rem;
+  text-transform: uppercase;
+}
+
+.oesp-agenda time {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.oesp-numeros {
+  background: var(--vermelho);
+  color: #fff;
+  text-align: center;
+}
+
+.oesp-numeros h2 span {
+  font: 400 .65em 'Barlow', sans-serif;
+}
+
+.oesp-numeros dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 1.5rem 0;
+}
+
+.oesp-numeros dt {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.oesp-numeros dd {
+  margin: .25rem 0 0;
+}
+
+.oesp-numeros dl > div + div {
+  border-inline-start: 1px solid rgb(255 255 255 / 55%);
+}
+
+@media (max-width: 600px) {
+  .oesp-numeros dl {
+    grid-template-columns: 1fr;
+  }
+
+  .oesp-numeros dl > div + div {
+    border-inline-start: 0;
+    border-block-start: 1px solid rgb(255 255 255 / 55%);
+    padding-block-start: .75rem;
+  }
+}
