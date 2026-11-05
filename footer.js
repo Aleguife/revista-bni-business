@@ -81,7 +81,7 @@
       + '<div style="flex:1 1 200px;min-width:200px;">'
       +   '<div style="max-width:450px;margin:0 auto;">'
       +     '<div style="margin-bottom:0.75rem;">' + FOOTER_LOGO_SVG + '</div>'
-      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7);">' + copy.slogan + '</p>'
+      +     '<p style="font-family:\'Barlow\',sans-serif;font-size:calc(0.85rem + 2px);color:rgba(255,255,255,0.7);">' + copy.slogan + '</p>'
       +   '</div>'
       + '</div>'
 
