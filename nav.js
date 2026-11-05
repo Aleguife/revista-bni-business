@@ -14,7 +14,7 @@
 
   /* ── Resolve URLs de idioma a partir da URL atual ── */
   function getLangUrls() {
-    var base = 'https://bnibusiness.com.br';
+    var base = window.location.origin;
     var path = window.location.pathname; // ex: /edicao-02/materia-de-capa/ ou /en/edicao-02/materia-de-capa/
 
     var ptPath, enPath, esPath;
@@ -58,13 +58,13 @@
     var urls = getLangUrls();
     var currentLang = getCurrentLang();
 
-    var html = '<a href="https://bnibusiness.com.br" class="nav-logo" aria-label="Alef Business — Página inicial" style="text-decoration:none">' + LOGO_SVG + '</a>'
+    var html = '<a href="' + window.location.origin + '" class="nav-logo" aria-label="Alef Business — Página inicial" style="text-decoration:none">' + LOGO_SVG + '</a>'
       + '<nav aria-label="Menu principal">'
       + '<div class="nav-menu">'
 
       /* Link Home */
       + '<div class="nav-item">'
-      +   '<a class="nav-btn" href="https://bnibusiness.com.br" aria-label="Página inicial">'
+      +   '<a class="nav-btn" href="' + window.location.origin + '" aria-label="Página inicial">'
       +     ICON_HOME
       +     '<span class="nav-label">Home</span>'
       +   '</a>'

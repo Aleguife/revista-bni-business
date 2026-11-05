@@ -73,7 +73,7 @@
   /* ── Constrói o HTML do footer ── */
   function buildFooter() {
     var copy = footerCopy();
-    var footerUrl = function (path) { return 'https://bnibusiness.com.br/' + path.replace(/^\/+/, ''); };
+    var footerUrl = function (path) { return window.location.origin + '/' + path.replace(/^\/+/, ''); };
     return ''
       + '<div style="padding:2rem 2rem 1.5rem;display:flex;flex-wrap:wrap;gap:1.5rem;background:var(--vermelho);">'
 
