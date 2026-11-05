@@ -91,7 +91,7 @@
       +     '<h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:30px;text-align:center;">' + copy.contact + '</h2>'
       +     '<div style="display:flex;gap:20px;align-items:center;justify-content:center;">'
       +       socialBtnLg('https://wa.me/5511968592642?text=Estou%20entrando%20em%20contato%20atrav%C3%A9s%20do%20site%20da%20Revista%20BNI%20Business', 'WhatsApp', ICON_WA)
-      +       socialBtnLg('mailto:contato@bnibusiness.com.br', 'Email', ICON_EMAIL, '_self')
+      +       socialBtnLg('mailto:contato@alefbusiness.com.br', 'Email', ICON_EMAIL, '_self')
       +       socialBtnLg('https://instagram.com/revistabnibusiness', 'Instagram', ICON_IG)
       +       socialBtnLg('https://linkedin.com/company/revistabnibusiness', 'LinkedIn', ICON_LI)
       +     '</div>'
